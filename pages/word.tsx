@@ -99,15 +99,15 @@ const Word: NextPage = () => {
                 </div>
             </Link>
             <div className="flex justify-center items-center h-4/5">
-                <div className="flex h-fit w-1/4 justify-between">
+                <div className="flex h-fit w-1/4 justify-start">
                     <div className="p-2 bg-green-500 w-fit rounded-md">
                         <AiFillSound size={'10em'} />
                     </div>
-                    <div className="flex flex-col justify-between">
-                        <div className="ml-3">
+                    <div className="flex flex-col justify-between ml-5">
+                        <div className="">
                             <span className="text-5xl font-bold">{word?.ja}</span>
                         </div>
-                        <div className="ml-1">
+                        <div className="">
                             <span className="text-8xl font-bold">{typed}</span>
                             <span className="text-8xl font-bold text-gray-300">{unTyped}</span>
                         </div>
