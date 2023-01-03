@@ -1,10 +1,8 @@
-import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
-import SettingsIcon from '@mui/icons-material/Settings';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { Box, Stack } from '@mui/system';
-import { VolumeDown, VolumeUp } from '@mui/icons-material';
+import React, { useContext } from 'react';
+import { Box } from '@mui/system';
+import { VolumeUp } from '@mui/icons-material';
 import { Grid, Input, Slider, Typography } from '@mui/material';
-import { pronounce, sound } from '../pages/word';
+import { pronounce, sound } from '../pages/practice/[id]';
 import { pronounceVolumeContext, setPronounceVolumeContext } from '../Contexts/PronounceProvider';
 import { setSoundEffectVolumeContext, soundEffectVolumeContext } from '../Contexts/SoundEffectProvider';
 

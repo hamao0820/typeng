@@ -3,9 +3,9 @@ import Link from 'next/link';
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { pronounceVolumeContext } from '../Contexts/PronounceProvider';
-import { soundEffectVolumeContext } from '../Contexts/SoundEffectProvider';
-import SettingButton from '../components/SettingButton';
+import { pronounceVolumeContext } from '../../Contexts/PronounceProvider';
+import { soundEffectVolumeContext } from '../../Contexts/SoundEffectProvider';
+import SettingButton from '../../components/SettingButton';
 
 type Word = {
     id: number;
