@@ -19,14 +19,19 @@ export const Setting = () => {
 
     const handlePronounceInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setPronounceVolume(event.target.value === '' ? 0 : Number(event.target.value));
+        sound('sine', 0.1, Number(event.target.value) / 100);
     };
 
     const handlePronounceBlur = () => {
         if (pronounceVolume < 0) {
             setPronounceVolume(0);
-        } else if (pronounceVolume > 100) {
-            setPronounceVolume(100);
+            return;
         }
+        if (pronounceVolume > 100) {
+            setPronounceVolume(100);
+            return;
+        }
+        pronounce(String(pronounceVolume), pronounceVolume / 100);
     };
     const handleSoundEffectSliderChange = (event: Event, newValue: number | number[]) => {
         if (Array.isArray(newValue)) return;
@@ -35,17 +40,21 @@ export const Setting = () => {
 
     const handleSoundEffectInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSoundEffectVolume(event.target.value === '' ? 0 : Number(event.target.value));
+        sound('sine', 0.1, Number(event.target.value) / 100);
     };
 
     const handleSoundEffectBlur = () => {
         if (soundEffectVolume < 0) {
             setSoundEffectVolume(0);
-        } else if (soundEffectVolume > 100) {
+            return;
+        }
+        if (soundEffectVolume > 100) {
             setSoundEffectVolume(100);
+            return;
         }
     };
     return (
-        <div className="h-40 w-60 border-2 border-solid border-black rounded-md absolute top-16 right-2 z-10 flex flex-col justify-center items-center">
+        <div className="h-40 w-60 border-2 border-solid border-black rounded-md absolute top-16 right-2 z-10 flex flex-col justify-center items-center bg-white">
             <div className="m-2">
                 <Box sx={{ width: 200 }}>
                     <span className="text-lg ml-1">Pronounce: </span>
