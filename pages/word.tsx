@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
 import Link from 'next/link';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { AiFillSound } from 'react-icons/ai';
 import { IoMdReturnLeft } from 'react-icons/io';
 
@@ -46,6 +46,19 @@ const Word: NextPage = () => {
     const [word, setWord] = useState<Word>();
     const [typed, setTyped] = useState<string>('');
     const [unTyped, setUnTyped] = useState<string>('');
+    const ref = useRef<HTMLDivElement>(null);
+
+    const sound = useCallback((type: OscillatorType, sec: number, volume: number) => {
+        const ctx = new AudioContext();
+        const gain = ctx.createGain();
+        const osc = ctx.createOscillator();
+        osc.type = type;
+        gain.gain.value = volume;
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(sec);
+    }, []);
 
     useEffect(() => {
         if (word === undefined) {
@@ -68,9 +81,17 @@ const Word: NextPage = () => {
             if (unTyped.startsWith(key)) {
                 setUnTyped((prev) => prev.slice(1));
                 setTyped((prev) => prev + key);
+            } else {
+                const body = ref.current;
+                if (body === null) return;
+                sound('triangle', 0.1, 0.1);
+                body.animate([{ backgroundColor: 'rgba(200, 0, 0, 0.1)' }, { backgroundColor: '' }], {
+                    duration: 200,
+                    direction: 'alternate',
+                });
             }
         },
-        [unTyped]
+        [sound, unTyped]
     );
 
     useEffect(() => {
@@ -84,7 +105,7 @@ const Word: NextPage = () => {
                 let next = data[index];
                 while (prev?.id === next.id) {
                     const index = Math.floor(Math.random() * data.length);
-                    next = data[index]
+                    next = data[index];
                 }
                 return next;
             });
@@ -92,7 +113,7 @@ const Word: NextPage = () => {
     }, [data, typed, unTyped]);
 
     return (
-        <div className="flex flex-col h-screen w-screen">
+        <div className="flex flex-col h-screen w-screen" ref={ref}>
             <Link href={'/'}>
                 <div className="flex items-center m-2">
                     <div className="p-2 bg-blue-300 w-fit rounded-md">
