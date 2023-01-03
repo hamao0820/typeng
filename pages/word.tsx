@@ -7,6 +7,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Setting } from '../components/Setting';
 import { pronounceVolumeContext } from '../Contexts/PronounceProvider';
 import { soundEffectVolumeContext } from '../Contexts/SoundEffectProvider';
+import SettingButton from '../components/SettingButton';
 
 type Word = {
     id: number;
@@ -73,7 +74,7 @@ const Word: NextPage = () => {
     const [typed, setTyped] = useState<string>('');
     const [unTyped, setUnTyped] = useState<string>('');
     const ref = useRef<HTMLDivElement>(null);
-    const [isSetting, setIsSetting] = useState<boolean>(false);
+    // const [isSetting, setIsSetting] = useState<boolean>(false);
     const pronounceVolume = useContext(pronounceVolumeContext);
     const soundEffectVolume = useContext(soundEffectVolumeContext);
 
@@ -123,13 +124,6 @@ const Word: NextPage = () => {
         }
     }, [data, typed, unTyped]);
 
-    const handleSetting = () => {
-        setIsSetting((prev) => !prev);
-        document.onclick = () => {
-            setIsSetting(false);
-        };
-    };
-
     return (
         <div className="h-screen w-screen overflow-hidden" ref={ref}>
             <div className="w-full flex justify-between">
@@ -152,10 +146,7 @@ const Word: NextPage = () => {
                         e.stopPropagation();
                     }}
                 >
-                    <div className="cursor-pointer" onClick={handleSetting}>
-                        <SettingsIcon style={{ width: '3rem', height: '3rem' }} />
-                    </div>
-                    {isSetting && <Setting />}
+                    <SettingButton />
                 </div>
             </div>
             <div className="h-4/5 relative">
