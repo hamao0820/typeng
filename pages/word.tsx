@@ -43,20 +43,14 @@ const Word: NextPage = () => {
             ja: '計算機',
         },
     ]);
-    const [id, setId] = useState<number>(Math.floor(Math.random() * (data.length + 1)));
-    const [word, setWord] = useState<Word>({
-        id: 0,
-        en: 'mathematic',
-        ja: '数学',
-    });
+    const [word, setWord] = useState<Word>();
     const [typed, setTyped] = useState<string>('');
     const [unTyped, setUnTyped] = useState<string>('');
 
     useEffect(() => {
-        setWord(data[id]);
-    }, [data, id]);
-
-    useEffect(() => {
+        if (word === undefined) {
+            return;
+        }
         const synthesis = window.speechSynthesis;
         const utterance = new SpeechSynthesisUtterance(word.en);
         const voice = window.speechSynthesis.getVoices().find((voice) => voice.voiceURI === 'Google US English');
@@ -85,10 +79,12 @@ const Word: NextPage = () => {
 
     useEffect(() => {
         if (unTyped === '') {
-            setId((prev) => {
-                let next = Math.floor(Math.random() * data.length);
-                while (next === prev) {
-                    next = Math.floor(Math.random() * data.length);
+            setWord((prev) => {
+                const index = Math.floor(Math.random() * data.length);
+                let next = data[index];
+                while (prev?.id === next.id) {
+                    const index = Math.floor(Math.random() * data.length);
+                    next = data[index]
                 }
                 return next;
             });
