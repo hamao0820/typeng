@@ -6,6 +6,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { pronounceVolumeContext } from '../../Contexts/PronounceProvider';
 import { soundEffectVolumeContext } from '../../Contexts/SoundEffectProvider';
 import SettingButton from '../../components/SettingButton';
+import Header from '../../components/Header';
 
 type Word = {
     id: number;
@@ -124,29 +125,7 @@ const Word: NextPage = () => {
 
     return (
         <div className="h-screen w-screen overflow-hidden" ref={ref}>
-            <div className="w-full flex justify-between">
-                <div className="w-fit">
-                    <Link href={'/'}>
-                        <div className="flex items-center m-2">
-                            <div className="p-2 bg-blue-300 w-fit rounded-md">
-                                <ArrowBackIcon style={{ width: '3rem', height: '3rem' }} />
-                            </div>
-                            <span className="text-lg font-bold">レベル選択に戻る</span>
-                        </div>
-                    </Link>
-                </div>
-                <div
-                    className="flex justify-center items-center m-2 p-2 relative"
-                    onClick={(e) => {
-                        e.stopPropagation();
-                    }}
-                    onKeyDown={(e) => {
-                        e.stopPropagation();
-                    }}
-                >
-                    <SettingButton />
-                </div>
-            </div>
+            <Header text="選択画面に戻る" href="/practice" />
             <div className="h-4/5 relative">
                 <div className="flex h-fit w-1/4 justify-start absolute top-1/3 left-1/4">
                     <div
