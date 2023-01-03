@@ -4,6 +4,9 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import SettingsIcon from '@mui/icons-material/Settings';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { Box, Stack } from '@mui/system';
+import { VolumeDown, VolumeUp } from '@mui/icons-material';
+import { Grid, Input, Slider, Typography } from '@mui/material';
 
 type Word = {
     id: number;
@@ -48,6 +51,20 @@ const Word: NextPage = () => {
     const [typed, setTyped] = useState<string>('');
     const [unTyped, setUnTyped] = useState<string>('');
     const ref = useRef<HTMLDivElement>(null);
+    const [pronounceVolume, setPronounceVolume] = useState<number>(100);
+    const [soundEffectVolume, setSoundEffectVolume] = useState<number>(10);
+    const [isSetting, setIsSetting] = useState<boolean>(false);
+
+    const pronounce = useCallback((word: string, volume: number) => {
+        const synthesis = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(word);
+        const voice = window.speechSynthesis.getVoices().find((voice) => voice.voiceURI === 'Google US English');
+        if (voice !== undefined) {
+            utterance.voice = voice;
+        }
+        utterance.volume = volume;
+        synthesis.speak(utterance);
+    }, []);
 
     const sound = useCallback((type: OscillatorType, sec: number, volume: number) => {
         const ctx = new AudioContext();
@@ -65,13 +82,7 @@ const Word: NextPage = () => {
         if (word === undefined) {
             return;
         }
-        const synthesis = window.speechSynthesis;
-        const utterance = new SpeechSynthesisUtterance(word.en);
-        const voice = window.speechSynthesis.getVoices().find((voice) => voice.voiceURI === 'Google US English');
-        if (voice !== undefined) {
-            utterance.voice = voice;
-        }
-        // synthesis.speak(utterance);
+        pronounce(word.en, pronounceVolume / 100);
         setUnTyped(word.en);
         setTyped('');
     }, [word]);
@@ -85,14 +96,14 @@ const Word: NextPage = () => {
             } else {
                 const body = ref.current;
                 if (body === null) return;
-                // sound('triangle', 0.1, 0.1);
-                body.animate([{ backgroundColor: 'rgba(200, 0, 0, 0.1)' }, { backgroundColor: '' }], {
+                sound('sine', 0.1, soundEffectVolume / 100);
+                body.animate([{ backgroundColor: 'rgba(255, 0, 0, 0.2)' }, { backgroundColor: '' }], {
                     duration: 200,
                     direction: 'alternate',
                 });
             }
         },
-        [sound, unTyped]
+        [sound, unTyped, soundEffectVolume]
     );
 
     useEffect(() => {
@@ -113,6 +124,46 @@ const Word: NextPage = () => {
         }
     }, [data, typed, unTyped]);
 
+    const handleSetting = () => {
+        setIsSetting((prev) => !prev);
+        document.onclick = () => {
+            setIsSetting(false);
+        };
+    };
+
+    const handlePronounceSliderChange = (event: Event, newValue: number | number[]) => {
+        if (Array.isArray(newValue)) return;
+        setPronounceVolume(newValue);
+    };
+
+    const handlePronounceInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setPronounceVolume(event.target.value === '' ? 0 : Number(event.target.value));
+    };
+
+    const handlePronounceBlur = () => {
+        if (pronounceVolume < 0) {
+            setPronounceVolume(0);
+        } else if (pronounceVolume > 100) {
+            setPronounceVolume(100);
+        }
+    };
+    const handleSoundEffectSliderChange = (event: Event, newValue: number | number[]) => {
+        if (Array.isArray(newValue)) return;
+        setSoundEffectVolume(newValue);
+    };
+
+    const handleSoundEffectInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSoundEffectVolume(event.target.value === '' ? 0 : Number(event.target.value));
+    };
+
+    const handleSoundEffectBlur = () => {
+        if (soundEffectVolume < 0) {
+            setSoundEffectVolume(0);
+        } else if (soundEffectVolume > 100) {
+            setSoundEffectVolume(100);
+        }
+    };
+
     return (
         <div className="h-screen w-screen overflow-hidden" ref={ref}>
             <div className="w-full flex justify-between">
@@ -126,8 +177,101 @@ const Word: NextPage = () => {
                         </div>
                     </Link>
                 </div>
-                <div className="flex justify-center items-center m-2 p-2">
-                    <SettingsIcon style={{ width: '3rem', height: '3rem' }} />
+                <div
+                    className="flex justify-center items-center m-2 p-2 relative"
+                    onClick={(e) => {
+                        e.stopPropagation();
+                    }}
+                    onKeyDown={(e) => {
+                        e.stopPropagation();
+                    }}
+                >
+                    <div className="cursor-pointer" onClick={handleSetting}>
+                        <SettingsIcon style={{ width: '3rem', height: '3rem' }} />
+                    </div>
+                    {isSetting && (
+                        <div className="h-40 w-60 border-2 border-solid border-black rounded-md absolute top-16 right-2 z-10 flex flex-col justify-center items-center">
+                            <div className="m-2">
+                                <Box sx={{ width: 200 }}>
+                                    <span className="text-lg ml-1">Pronounce: </span>
+                                    <Grid container spacing={2} alignItems="center">
+                                        <Grid item>
+                                            <VolumeUp />
+                                        </Grid>
+                                        <Grid item xs>
+                                            <Slider
+                                                value={typeof pronounceVolume === 'number' ? pronounceVolume : 0}
+                                                onChange={handlePronounceSliderChange}
+                                                onChangeCommitted={(e) => {
+                                                    const target = e.target;
+                                                    if (target === undefined) return;
+                                                    const value = (target as HTMLElement).querySelector('input')?.value;
+                                                    if (value === undefined) return;
+                                                    pronounce(value, Number(value) / 100);
+                                                }}
+                                                aria-labelledby="input-slider"
+                                            />
+                                        </Grid>
+                                        <Grid item>
+                                            <Input
+                                                value={pronounceVolume}
+                                                size="small"
+                                                onChange={handlePronounceInputChange}
+                                                onBlur={handlePronounceBlur}
+                                                inputProps={{
+                                                    step: 10,
+                                                    min: 0,
+                                                    max: 100,
+                                                    type: 'number',
+                                                    'aria-labelledby': 'input-slider',
+                                                }}
+                                            />
+                                        </Grid>
+                                    </Grid>
+                                </Box>
+                            </div>
+                            <div className="m-2">
+                                <Box sx={{ width: 200 }}>
+                                    <span className="text-lg ml-1">Sound Effect: </span>
+
+                                    <Grid container spacing={2} alignItems="center">
+                                        <Grid item>
+                                            <VolumeUp />
+                                        </Grid>
+                                        <Grid item xs>
+                                            <Slider
+                                                value={typeof soundEffectVolume === 'number' ? soundEffectVolume : 0}
+                                                onChange={handleSoundEffectSliderChange}
+                                                onChangeCommitted={(e) => {
+                                                    const target = e.target;
+                                                    if (target === undefined) return;
+                                                    const value = (target as HTMLElement).querySelector('input')?.value;
+                                                    if (value === undefined) return;
+                                                    sound("sine", 0.1, Number(value) / 100);
+                                                }}
+                                                aria-labelledby="input-slider"
+                                            />
+                                        </Grid>
+                                        <Grid item>
+                                            <Input
+                                                value={soundEffectVolume}
+                                                size="small"
+                                                onChange={handleSoundEffectInputChange}
+                                                onBlur={handleSoundEffectBlur}
+                                                inputProps={{
+                                                    step: 10,
+                                                    min: 0,
+                                                    max: 100,
+                                                    type: 'number',
+                                                    'aria-labelledby': 'input-slider',
+                                                }}
+                                            />
+                                        </Grid>
+                                    </Grid>
+                                </Box>
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
             <div className="h-4/5 relative">
