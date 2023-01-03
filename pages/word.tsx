@@ -1,17 +1,39 @@
 import type { NextPage } from 'next';
 import Link from 'next/link';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import SettingsIcon from '@mui/icons-material/Settings';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { Box, Stack } from '@mui/system';
-import { VolumeDown, VolumeUp } from '@mui/icons-material';
-import { Grid, Input, Slider, Typography } from '@mui/material';
+import { Setting } from '../components/Setting';
+import { pronounceVolumeContext } from '../Contexts/PronounceProvider';
+import { soundEffectVolumeContext } from '../Contexts/SoundEffectProvider';
 
 type Word = {
     id: number;
     en: string;
     ja: string;
+};
+export const pronounce = (word: string, volume: number) => {
+    const synthesis = window.speechSynthesis;
+    const utterance = new SpeechSynthesisUtterance(word);
+    const voice = window.speechSynthesis.getVoices().find((voice) => voice.voiceURI === 'Google US English');
+    if (voice !== undefined) {
+        utterance.voice = voice;
+    }
+    utterance.volume = volume;
+    synthesis.speak(utterance);
+};
+
+export const sound = (type: OscillatorType, sec: number, volume: number) => {
+    const ctx = new AudioContext();
+    const gain = ctx.createGain();
+    const osc = ctx.createOscillator();
+    osc.type = type;
+    gain.gain.value = volume;
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    osc.stop(sec);
 };
 
 const Word: NextPage = () => {
@@ -51,32 +73,9 @@ const Word: NextPage = () => {
     const [typed, setTyped] = useState<string>('');
     const [unTyped, setUnTyped] = useState<string>('');
     const ref = useRef<HTMLDivElement>(null);
-    const [pronounceVolume, setPronounceVolume] = useState<number>(100);
-    const [soundEffectVolume, setSoundEffectVolume] = useState<number>(10);
     const [isSetting, setIsSetting] = useState<boolean>(false);
-
-    const pronounce = useCallback((word: string, volume: number) => {
-        const synthesis = window.speechSynthesis;
-        const utterance = new SpeechSynthesisUtterance(word);
-        const voice = window.speechSynthesis.getVoices().find((voice) => voice.voiceURI === 'Google US English');
-        if (voice !== undefined) {
-            utterance.voice = voice;
-        }
-        utterance.volume = volume;
-        synthesis.speak(utterance);
-    }, []);
-
-    const sound = useCallback((type: OscillatorType, sec: number, volume: number) => {
-        const ctx = new AudioContext();
-        const gain = ctx.createGain();
-        const osc = ctx.createOscillator();
-        osc.type = type;
-        gain.gain.value = volume;
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.start();
-        osc.stop(sec);
-    }, []);
+    const pronounceVolume = useContext(pronounceVolumeContext);
+    const soundEffectVolume = useContext(soundEffectVolumeContext);
 
     useEffect(() => {
         if (word === undefined) {
@@ -103,7 +102,7 @@ const Word: NextPage = () => {
                 });
             }
         },
-        [sound, unTyped, soundEffectVolume]
+        [unTyped, soundEffectVolume]
     );
 
     useEffect(() => {
@@ -131,39 +130,6 @@ const Word: NextPage = () => {
         };
     };
 
-    const handlePronounceSliderChange = (event: Event, newValue: number | number[]) => {
-        if (Array.isArray(newValue)) return;
-        setPronounceVolume(newValue);
-    };
-
-    const handlePronounceInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setPronounceVolume(event.target.value === '' ? 0 : Number(event.target.value));
-    };
-
-    const handlePronounceBlur = () => {
-        if (pronounceVolume < 0) {
-            setPronounceVolume(0);
-        } else if (pronounceVolume > 100) {
-            setPronounceVolume(100);
-        }
-    };
-    const handleSoundEffectSliderChange = (event: Event, newValue: number | number[]) => {
-        if (Array.isArray(newValue)) return;
-        setSoundEffectVolume(newValue);
-    };
-
-    const handleSoundEffectInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSoundEffectVolume(event.target.value === '' ? 0 : Number(event.target.value));
-    };
-
-    const handleSoundEffectBlur = () => {
-        if (soundEffectVolume < 0) {
-            setSoundEffectVolume(0);
-        } else if (soundEffectVolume > 100) {
-            setSoundEffectVolume(100);
-        }
-    };
-
     return (
         <div className="h-screen w-screen overflow-hidden" ref={ref}>
             <div className="w-full flex justify-between">
@@ -189,89 +155,7 @@ const Word: NextPage = () => {
                     <div className="cursor-pointer" onClick={handleSetting}>
                         <SettingsIcon style={{ width: '3rem', height: '3rem' }} />
                     </div>
-                    {isSetting && (
-                        <div className="h-40 w-60 border-2 border-solid border-black rounded-md absolute top-16 right-2 z-10 flex flex-col justify-center items-center">
-                            <div className="m-2">
-                                <Box sx={{ width: 200 }}>
-                                    <span className="text-lg ml-1">Pronounce: </span>
-                                    <Grid container spacing={2} alignItems="center">
-                                        <Grid item>
-                                            <VolumeUp />
-                                        </Grid>
-                                        <Grid item xs>
-                                            <Slider
-                                                value={typeof pronounceVolume === 'number' ? pronounceVolume : 0}
-                                                onChange={handlePronounceSliderChange}
-                                                onChangeCommitted={(e) => {
-                                                    const target = e.target;
-                                                    if (target === undefined) return;
-                                                    const value = (target as HTMLElement).querySelector('input')?.value;
-                                                    if (value === undefined) return;
-                                                    pronounce(value, Number(value) / 100);
-                                                }}
-                                                aria-labelledby="input-slider"
-                                            />
-                                        </Grid>
-                                        <Grid item>
-                                            <Input
-                                                value={pronounceVolume}
-                                                size="small"
-                                                onChange={handlePronounceInputChange}
-                                                onBlur={handlePronounceBlur}
-                                                inputProps={{
-                                                    step: 10,
-                                                    min: 0,
-                                                    max: 100,
-                                                    type: 'number',
-                                                    'aria-labelledby': 'input-slider',
-                                                }}
-                                            />
-                                        </Grid>
-                                    </Grid>
-                                </Box>
-                            </div>
-                            <div className="m-2">
-                                <Box sx={{ width: 200 }}>
-                                    <span className="text-lg ml-1">Sound Effect: </span>
-
-                                    <Grid container spacing={2} alignItems="center">
-                                        <Grid item>
-                                            <VolumeUp />
-                                        </Grid>
-                                        <Grid item xs>
-                                            <Slider
-                                                value={typeof soundEffectVolume === 'number' ? soundEffectVolume : 0}
-                                                onChange={handleSoundEffectSliderChange}
-                                                onChangeCommitted={(e) => {
-                                                    const target = e.target;
-                                                    if (target === undefined) return;
-                                                    const value = (target as HTMLElement).querySelector('input')?.value;
-                                                    if (value === undefined) return;
-                                                    sound("sine", 0.1, Number(value) / 100);
-                                                }}
-                                                aria-labelledby="input-slider"
-                                            />
-                                        </Grid>
-                                        <Grid item>
-                                            <Input
-                                                value={soundEffectVolume}
-                                                size="small"
-                                                onChange={handleSoundEffectInputChange}
-                                                onBlur={handleSoundEffectBlur}
-                                                inputProps={{
-                                                    step: 10,
-                                                    min: 0,
-                                                    max: 100,
-                                                    type: 'number',
-                                                    'aria-labelledby': 'input-slider',
-                                                }}
-                                            />
-                                        </Grid>
-                                    </Grid>
-                                </Box>
-                            </div>
-                        </div>
-                    )}
+                    {isSetting && <Setting />}
                 </div>
             </div>
             <div className="h-4/5 relative">
