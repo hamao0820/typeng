@@ -1,8 +1,9 @@
 import type { NextPage } from 'next';
 import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { AiFillSound } from 'react-icons/ai';
-import { IoMdReturnLeft } from 'react-icons/io';
+import VolumeUpIcon from '@mui/icons-material/VolumeUp';
+import SettingsIcon from '@mui/icons-material/Settings';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 type Word = {
     id: number;
@@ -70,7 +71,7 @@ const Word: NextPage = () => {
         if (voice !== undefined) {
             utterance.voice = voice;
         }
-        synthesis.speak(utterance);
+        // synthesis.speak(utterance);
         setUnTyped(word.en);
         setTyped('');
     }, [word]);
@@ -84,7 +85,7 @@ const Word: NextPage = () => {
             } else {
                 const body = ref.current;
                 if (body === null) return;
-                sound('triangle', 0.1, 0.1);
+                // sound('triangle', 0.1, 0.1);
                 body.animate([{ backgroundColor: 'rgba(200, 0, 0, 0.1)' }, { backgroundColor: '' }], {
                     duration: 200,
                     direction: 'alternate',
@@ -113,19 +114,26 @@ const Word: NextPage = () => {
     }, [data, typed, unTyped]);
 
     return (
-        <div className="flex flex-col h-screen w-screen" ref={ref}>
-            <Link href={'/'}>
-                <div className="flex items-center m-2">
-                    <div className="p-2 bg-blue-300 w-fit rounded-md">
-                        <IoMdReturnLeft size={'3rem'} />
-                    </div>
-                    <span className="text-lg font-bold">レベル選択に戻る</span>
+        <div className="h-screen w-screen overflow-hidden" ref={ref}>
+            <div className="w-full flex justify-between">
+                <div className="w-fit">
+                    <Link href={'/'}>
+                        <div className="flex items-center m-2">
+                            <div className="p-2 bg-blue-300 w-fit rounded-md">
+                                <ArrowBackIcon style={{ width: '3rem', height: '3rem' }} />
+                            </div>
+                            <span className="text-lg font-bold">レベル選択に戻る</span>
+                        </div>
+                    </Link>
                 </div>
-            </Link>
-            <div className="flex justify-center items-center h-4/5">
-                <div className="flex h-fit w-1/4 justify-start">
-                    <div className="p-2 bg-green-500 w-fit rounded-md">
-                        <AiFillSound size={'10em'} />
+                <div className="flex justify-center items-center m-2 p-2">
+                    <SettingsIcon style={{ width: '3rem', height: '3rem' }} />
+                </div>
+            </div>
+            <div className="h-4/5 relative">
+                <div className="flex h-fit w-1/4 justify-start absolute top-1/3 left-1/4">
+                    <div className="w-fit h-fit flex items-center justify-center p-2 bg-green-500 rounded-md">
+                        <VolumeUpIcon style={{ width: '10rem', height: '10rem' }} />
                     </div>
                     <div className="flex flex-col justify-between ml-5">
                         <div className="">
