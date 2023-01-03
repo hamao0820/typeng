@@ -1,15 +1,35 @@
-import type { NextPage } from 'next';
+import type { GetStaticPaths, GetStaticProps, GetStaticPropsResult, NextPage } from 'next';
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import { pronounceVolumeContext } from '../../../Contexts/PronounceProvider';
 import { soundEffectVolumeContext } from '../../../Contexts/SoundEffectProvider';
 import Header from '../../../components/Header';
+import fs from 'fs';
 
 type Word = {
     id: number;
     en: string;
     ja: string;
 };
+
+type PageProps = {
+    words: Word[];
+};
+
+type PathParams = {
+    rank: '1' | '2' | '3' | '4';
+    id: '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10';
+};
+
+export const sliceByNumber = <T,>(array: T[], number: number): T[][] => {
+    const length = Math.ceil(array.length / number);
+    const newArr: T[][] = [];
+    for (let i = 0; i < length; i++) {
+        newArr.push(array.slice(number * i, number * (i + 1)));
+    }
+    return newArr;
+};
+
 export const pronounce = (word: string, volume: number) => {
     const synthesis = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(word);
@@ -33,39 +53,65 @@ export const sound = (type: OscillatorType, sec: number, volume: number) => {
     osc.stop(sec);
 };
 
-const Word: NextPage = () => {
-    const [data, setData] = useState<Word[]>([
-        {
-            id: 0,
-            en: 'mathematic',
-            ja: '数学',
+export const getStaticPaths: GetStaticPaths<PathParams> = async () => {
+    return {
+        paths: [
+            { params: { rank: '1', id: '0' } },
+            { params: { rank: '1', id: '1' } },
+            { params: { rank: '1', id: '2' } },
+            { params: { rank: '1', id: '3' } },
+            { params: { rank: '1', id: '4' } },
+            { params: { rank: '1', id: '5' } },
+            { params: { rank: '1', id: '6' } },
+            { params: { rank: '1', id: '7' } },
+            { params: { rank: '1', id: '8' } },
+            { params: { rank: '1', id: '9' } },
+            { params: { rank: '2', id: '0' } },
+            { params: { rank: '2', id: '1' } },
+            { params: { rank: '2', id: '2' } },
+            { params: { rank: '2', id: '3' } },
+            { params: { rank: '2', id: '4' } },
+            { params: { rank: '2', id: '5' } },
+            { params: { rank: '2', id: '6' } },
+            { params: { rank: '2', id: '7' } },
+            { params: { rank: '2', id: '8' } },
+            { params: { rank: '3', id: '0' } },
+            { params: { rank: '3', id: '1' } },
+            { params: { rank: '3', id: '2' } },
+            { params: { rank: '3', id: '3' } },
+            { params: { rank: '3', id: '4' } },
+            { params: { rank: '3', id: '5' } },
+            { params: { rank: '3', id: '6' } },
+            { params: { rank: '3', id: '7' } },
+            { params: { rank: '3', id: '8' } },
+            { params: { rank: '3', id: '9' } },
+            { params: { rank: '3', id: '10' } },
+            { params: { rank: '4', id: '0' } },
+            { params: { rank: '4', id: '1' } },
+            { params: { rank: '4', id: '2' } },
+            { params: { rank: '4', id: '3' } },
+            { params: { rank: '4', id: '4' } },
+            { params: { rank: '4', id: '5' } },
+            { params: { rank: '4', id: '6' } },
+            { params: { rank: '4', id: '7' } },
+            { params: { rank: '4', id: '8' } },
+            { params: { rank: '4', id: '9' } },
+        ],
+        fallback: false,
+    };
+};
+
+export const getStaticProps: GetStaticProps<PageProps> = async (context): Promise<GetStaticPropsResult<PageProps>> => {
+    const { rank, id } = context.params as PathParams;
+    const words = JSON.parse(fs.readFileSync(`data/rank${rank}.json`, 'utf-8')) as Word[];
+    return {
+        props: {
+            words: sliceByNumber(words, 100)[Number(id)],
         },
-        {
-            id: 1,
-            en: 'car',
-            ja: '車',
-        },
-        {
-            id: 2,
-            en: 'book',
-            ja: '本',
-        },
-        {
-            id: 3,
-            en: 'science',
-            ja: '科学',
-        },
-        {
-            id: 4,
-            en: 'water',
-            ja: '水',
-        },
-        {
-            id: 5,
-            en: 'computer',
-            ja: '計算機',
-        },
-    ]);
+    };
+};
+
+const Word: NextPage<PageProps> = ({ words }) => {
     const [word, setWord] = useState<Word>();
     const [typed, setTyped] = useState<string>('');
     const [unTyped, setUnTyped] = useState<string>('');
@@ -109,16 +155,16 @@ const Word: NextPage = () => {
     useEffect(() => {
         if (unTyped === '') {
             setWord((prev) => {
-                const index = Math.floor(Math.random() * data.length);
-                let next = data[index];
+                const index = Math.floor(Math.random() * words.length);
+                let next = words[index];
                 while (prev?.id === next.id) {
-                    const index = Math.floor(Math.random() * data.length);
-                    next = data[index];
+                    const index = Math.floor(Math.random() * words.length);
+                    next = words[index];
                 }
                 return next;
             });
         }
-    }, [data, typed, unTyped]);
+    }, [typed, unTyped, words]);
 
     return (
         <div className="h-screen w-screen overflow-hidden" ref={ref}>
