@@ -57,6 +57,13 @@ const Word: NextPage = () => {
     }, [data, id]);
 
     useEffect(() => {
+        const synthesis = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(word.en);
+        const voice = window.speechSynthesis.getVoices().find((voice) => voice.voiceURI === 'Google US English');
+        if (voice !== undefined) {
+            utterance.voice = voice;
+        }
+        synthesis.speak(utterance);
         setUnTyped(word.en);
         setTyped('');
     }, [word]);
