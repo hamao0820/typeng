@@ -20,7 +20,7 @@ const Home: NextPage = () => {
             <div className="flex flex-col justify-center items-center h-3/5">
                 <div className="text-2xl font-bold">モード選択{' : '}</div>
                 <div className="flex">
-                    <ModeCard title="練習モード" explanation="訳と単語が同時に表示されます" href="practice/1" />
+                    <ModeCard title="練習モード" explanation="訳と単語が同時に表示されます" href="practice" />
                     <ModeCard
                         title="チャレンジモード"
                         explanation="訳のみが表示されます. 間違えた時に単語が表示されます"
