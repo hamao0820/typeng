@@ -1,9 +1,9 @@
 import type { NextPage } from 'next';
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
-import { pronounceVolumeContext } from '../../Contexts/PronounceProvider';
-import { soundEffectVolumeContext } from '../../Contexts/SoundEffectProvider';
-import Header from '../../components/Header';
+import { pronounceVolumeContext } from '../../../Contexts/PronounceProvider';
+import { soundEffectVolumeContext } from '../../../Contexts/SoundEffectProvider';
+import Header from '../../../components/Header';
 
 type Word = {
     id: number;

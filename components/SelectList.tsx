@@ -46,7 +46,7 @@ const SelectList: React.FC<Props> = ({ rank, wordsNum }) => {
                 <Divider />
                 {stages.map((stage, i) => {
                     return (
-                        <Link href={`practice/${i}`} key={i}>
+                        <Link href={`practice/${rank}/${i}`} key={i}>
                             <ListItemButton>
                                 <ListItemIcon>
                                     <span className="text-3xl font-bold">{i + 1}</span>

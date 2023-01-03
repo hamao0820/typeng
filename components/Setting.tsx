@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import { Box } from '@mui/system';
 import { VolumeUp } from '@mui/icons-material';
-import { Grid, Input, Slider, Typography } from '@mui/material';
-import { pronounce, sound } from '../pages/practice/[id]';
+import { Grid, Input, Slider } from '@mui/material';
+import { pronounce, sound } from '../pages/practice/[rank]/[id]';
 import { pronounceVolumeContext, setPronounceVolumeContext } from '../Contexts/PronounceProvider';
 import { setSoundEffectVolumeContext, soundEffectVolumeContext } from '../Contexts/SoundEffectProvider';
 
