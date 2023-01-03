@@ -2,9 +2,7 @@ import type { NextPage } from 'next';
 import Link from 'next/link';
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
-import SettingsIcon from '@mui/icons-material/Settings';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { Setting } from '../components/Setting';
 import { pronounceVolumeContext } from '../Contexts/PronounceProvider';
 import { soundEffectVolumeContext } from '../Contexts/SoundEffectProvider';
 import SettingButton from '../components/SettingButton';
@@ -151,7 +149,13 @@ const Word: NextPage = () => {
             </div>
             <div className="h-4/5 relative">
                 <div className="flex h-fit w-1/4 justify-start absolute top-1/3 left-1/4">
-                    <div className="w-fit h-fit flex items-center justify-center p-2 bg-green-500 rounded-md">
+                    <div
+                        className="w-fit h-fit flex items-center justify-center p-2 bg-green-500 rounded-md"
+                        onClick={() => {
+                            if (word === undefined) return;
+                            pronounce(word.en, pronounceVolume);
+                        }}
+                    >
                         <VolumeUpIcon style={{ width: '10rem', height: '10rem' }} />
                     </div>
                     <div className="flex flex-col justify-between ml-5">
