@@ -88,7 +88,7 @@ const SelectList: React.FC<Props> = ({ rank, wordsNum }) => {
                             </ListItemButton>
                             <Collapse in={openStates[block].open} timeout="auto" unmountOnExit>
                                 <List component="div" disablePadding>
-                                    <Link href={`practice/${rank}/${block}`}>
+                                    <Link href={{ pathname: `practice/${rank}/${block}`, query: { stage: "all" } }}>
                                         <ListItemButton sx={{ pl: 4 }}>
                                             <ListItemIcon>
                                                 <span className="text-xl font-bold">{1}</span>
@@ -107,7 +107,12 @@ const SelectList: React.FC<Props> = ({ rank, wordsNum }) => {
                                     {sliceByNumber(wordIndices, 10).map((wordIndices, i) => {
                                         return (
                                             <React.Fragment key={`${block}-${i}`}>
-                                                <Link href={`practice/${rank}/${i}`}>
+                                                <Link
+                                                    href={{
+                                                        pathname: `practice/${rank}/${i}`,
+                                                        query: { stage: String(i)},
+                                                    }}
+                                                >
                                                     <ListItemButton sx={{ pl: 4 }}>
                                                         <ListItemIcon>
                                                             <span className="text-xl font-bold">{i + 2}</span>

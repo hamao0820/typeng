@@ -6,6 +6,7 @@ import { soundEffectVolumeContext } from '../../../Contexts/SoundEffectProvider'
 import Header from '../../../components/Header';
 import fs from 'fs';
 import { typingVolumeContext } from '../../../Contexts/TypingVolumeProvider';
+import { useRouter } from 'next/router';
 
 type Word = {
     id: number;
@@ -14,7 +15,7 @@ type Word = {
 };
 
 type PageProps = {
-    words: Word[];
+    allWords: Word[];
 };
 
 type PathParams = {
@@ -110,23 +111,25 @@ export const getStaticPaths: GetStaticPaths<PathParams> = async () => {
 
 export const getStaticProps: GetStaticProps<PageProps> = async (context): Promise<GetStaticPropsResult<PageProps>> => {
     const { rank, id } = context.params as PathParams;
-    const words = JSON.parse(fs.readFileSync(`data/rank${rank}.json`, 'utf-8')) as Word[];
+    const allWords = JSON.parse(fs.readFileSync(`data/rank${rank}.json`, 'utf-8')) as Word[];
     return {
         props: {
-            words: sliceByNumber(words, 100)[Number(id)],
+            allWords: sliceByNumber(allWords, 100)[Number(id)],
         },
     };
 };
 
-const Word: NextPage<PageProps> = ({ words }) => {
+const Word: NextPage<PageProps> = ({ allWords }) => {
     const [word, setWord] = useState<Word>();
     const [typed, setTyped] = useState<string>('');
     const [unTyped, setUnTyped] = useState<string>('');
     const ref = useRef<HTMLDivElement>(null);
-    // const [isSetting, setIsSetting] = useState<boolean>(false);
     const pronounceVolume = useContext(pronounceVolumeContext);
     const soundEffectVolume = useContext(soundEffectVolumeContext);
     const typingVolume = useContext(typingVolumeContext);
+    const router = useRouter();
+    const { stage } = router.query as { stage: string };
+    const [words, setWords] = useState<Word[]>(stage === 'all' ? allWords : sliceByNumber(allWords, 10)[Number(stage)]);
 
     useEffect(() => {
         if (word === undefined) {
@@ -165,6 +168,16 @@ const Word: NextPage<PageProps> = ({ words }) => {
     }, [handleKeyDown]);
 
     useEffect(() => {
+        if (words === undefined) {
+            const words_ = stage === 'all' ? allWords : sliceByNumber(allWords, 10)[Number(stage)];
+            if (stage !== undefined && words_ === undefined) {
+                router.push('/practice');
+                return;
+            }
+            if (words_ === undefined) return;
+            setWords(stage === 'all' ? allWords : words_);
+            return;
+        }
         if (unTyped === '') {
             setWord((prev) => {
                 const index = Math.floor(Math.random() * words.length);
@@ -176,7 +189,7 @@ const Word: NextPage<PageProps> = ({ words }) => {
                 return next;
             });
         }
-    }, [typed, unTyped, words]);
+    }, [allWords, router, stage, typed, unTyped, words]);
 
     return (
         <div className="h-screen w-screen overflow-hidden" ref={ref}>
