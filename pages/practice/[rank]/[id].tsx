@@ -132,7 +132,7 @@ const Word: NextPage<PageProps> = ({ words }) => {
         if (word === undefined) {
             return;
         }
-        // pronounce(word.en, pronounceVolume / 100);
+        pronounce(word.en, pronounceVolume / 100);
         setUnTyped(word.en);
         setTyped('');
     }, [word]);
