@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import SelectList from '../../components/SelectList';
 import Header from '../../components/Header';
+import { pronounce } from './[rank]/[id]';
 
 const Practice = () => {
-    `●RANK 1　TOEFL iBT61点前後までの単語（956語）
-     ●RANK 2　TOEFL iBT80点前後までの単語（882語）
-     ●RANK 3　TOEFL iBT100点前後までの単語（1024語）
-     ●RANK 4　TOEFL iBT105点を超える単語（938語）`;
+    useEffect(() => {
+        // speechSynthesisAPIを初期化
+        pronounce('', 0);
+    }, []);
     return (
         <div className="h-screen w-screen overflow-hidden">
             <Header text="モード選択に戻る" href="/" />

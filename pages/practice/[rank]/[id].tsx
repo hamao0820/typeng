@@ -134,13 +134,16 @@ const Word: NextPage<PageProps> = ({ words }) => {
             const key = e.key;
             if (unTyped.startsWith(key)) {
                 setUnTyped((prev) => prev.slice(1));
-                setTyped((prev) => prev + key);
+                setTyped((prev) => prev + (key === ' ' ? '_' : key));
             } else {
+                if (unTyped[0].toUpperCase() === unTyped[0] && e.shiftKey) {
+                    return;
+                }
                 const body = ref.current;
                 if (body === null) return;
                 sound('sine', 0.1, soundEffectVolume / 100);
-                body.animate([{ backgroundColor: 'rgba(255, 0, 0, 0.2)' }, { backgroundColor: '' }], {
-                    duration: 200,
+                body.animate([{ backgroundColor: 'rgba(200, 0, 0, 0.1)' }, { backgroundColor: '' }], {
+                    duration: 300,
                     direction: 'alternate',
                 });
             }
@@ -182,11 +185,13 @@ const Word: NextPage<PageProps> = ({ words }) => {
                     </div>
                     <div className="flex flex-col justify-between ml-5">
                         <div className="">
-                            <span className="text-5xl font-bold">{word?.ja}</span>
+                            <span className="text-5xl font-bold whitespace-nowrap h-fit max-w-2xl overflow-hidden text-ellipsis inline-block">
+                                {word?.ja}
+                            </span>
                         </div>
-                        <div className="">
-                            <span className="text-8xl font-bold">{typed}</span>
-                            <span className="text-8xl font-bold text-gray-300">{unTyped}</span>
+                        <div className="whitespace-nowrap">
+                            <span className="text-8xl font-bold whitespace-nowrap">{typed}</span>
+                            <span className="text-8xl font-bold text-gray-300 whitespace-nowrap">{unTyped}</span>
                         </div>
                     </div>
                 </div>
