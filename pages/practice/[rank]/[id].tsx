@@ -5,6 +5,7 @@ import { pronounceVolumeContext } from '../../../Contexts/PronounceProvider';
 import { soundEffectVolumeContext } from '../../../Contexts/SoundEffectProvider';
 import Header from '../../../components/Header';
 import fs from 'fs';
+import { typingVolumeContext } from '../../../Contexts/TypingVolumeProvider';
 
 type Word = {
     id: number;
@@ -51,6 +52,12 @@ export const sound = (type: OscillatorType, sec: number, volume: number) => {
     gain.connect(ctx.destination);
     osc.start();
     osc.stop(sec);
+};
+
+export const typeSound = async (volume: number): Promise<void> => {
+    const audio = new Audio('/typing.mp3');
+    audio.volume = volume;
+    audio.play();
 };
 
 export const getStaticPaths: GetStaticPaths<PathParams> = async () => {
@@ -119,12 +126,13 @@ const Word: NextPage<PageProps> = ({ words }) => {
     // const [isSetting, setIsSetting] = useState<boolean>(false);
     const pronounceVolume = useContext(pronounceVolumeContext);
     const soundEffectVolume = useContext(soundEffectVolumeContext);
+    const typingVolume = useContext(typingVolumeContext);
 
     useEffect(() => {
         if (word === undefined) {
             return;
         }
-        pronounce(word.en, pronounceVolume / 100);
+        // pronounce(word.en, pronounceVolume / 100);
         setUnTyped(word.en);
         setTyped('');
     }, [word]);
@@ -133,6 +141,7 @@ const Word: NextPage<PageProps> = ({ words }) => {
         (e: React.KeyboardEvent<HTMLDivElement> | KeyboardEvent) => {
             const key = e.key;
             if (unTyped.startsWith(key)) {
+                typeSound(typingVolume / 100);
                 setUnTyped((prev) => prev.slice(1));
                 setTyped((prev) => prev + (key === ' ' ? '_' : key));
             } else {
@@ -148,7 +157,7 @@ const Word: NextPage<PageProps> = ({ words }) => {
                 });
             }
         },
-        [unTyped, soundEffectVolume]
+        [unTyped, typingVolume, soundEffectVolume]
     );
 
     useEffect(() => {

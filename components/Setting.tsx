@@ -2,15 +2,18 @@ import React, { useContext } from 'react';
 import { Box } from '@mui/system';
 import { VolumeUp } from '@mui/icons-material';
 import { Grid, Input, Slider } from '@mui/material';
-import { pronounce, sound } from '../pages/practice/[rank]/[id]';
+import { pronounce, sound, typeSound } from '../pages/practice/[rank]/[id]';
 import { pronounceVolumeContext, setPronounceVolumeContext } from '../Contexts/PronounceProvider';
 import { setSoundEffectVolumeContext, soundEffectVolumeContext } from '../Contexts/SoundEffectProvider';
+import { setTypingVolumeContext, typingVolumeContext } from '../Contexts/TypingVolumeProvider';
 
 export const Setting = () => {
     const pronounceVolume = useContext(pronounceVolumeContext);
     const setPronounceVolume = useContext(setPronounceVolumeContext);
     const soundEffectVolume = useContext(soundEffectVolumeContext);
     const setSoundEffectVolume = useContext(setSoundEffectVolumeContext);
+    const typingVolume = useContext(typingVolumeContext);
+    const setTypingVolume = useContext(setTypingVolumeContext);
 
     const handlePronounceSliderChange = (event: Event, newValue: number | number[]) => {
         if (Array.isArray(newValue)) return;
@@ -53,8 +56,28 @@ export const Setting = () => {
             return;
         }
     };
+    const handleTypingSliderChange = (event: Event, newValue: number | number[]) => {
+        if (Array.isArray(newValue)) return;
+        setTypingVolume(newValue);
+    };
+
+    const handleTypingInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setTypingVolume(event.target.value === '' ? 0 : Number(event.target.value));
+        typeSound(Number(event.target.value) / 100);
+    };
+
+    const handleTypingBlur = () => {
+        if (soundEffectVolume < 0) {
+            setTypingVolume(0);
+            return;
+        }
+        if (soundEffectVolume > 100) {
+            setTypingVolume(100);
+            return;
+        }
+    };
     return (
-        <div className="h-40 w-60 border-2 border-solid border-black rounded-md absolute top-16 right-2 z-10 flex flex-col justify-center items-center bg-white">
+        <div className="fit w-60 border-2 border-solid border-black rounded-md absolute top-16 right-2 z-10 flex flex-col justify-center items-center bg-white">
             <div className="m-2">
                 <Box sx={{ width: 200 }}>
                     <span className="text-lg ml-1">Pronounce: </span>
@@ -97,7 +120,6 @@ export const Setting = () => {
             <div className="m-2">
                 <Box sx={{ width: 200 }}>
                     <span className="text-lg ml-1">Sound Effect: </span>
-
                     <Grid container spacing={2} alignItems="center">
                         <Grid item>
                             <VolumeUp />
@@ -122,6 +144,45 @@ export const Setting = () => {
                                 size="small"
                                 onChange={handleSoundEffectInputChange}
                                 onBlur={handleSoundEffectBlur}
+                                inputProps={{
+                                    step: 10,
+                                    min: 0,
+                                    max: 100,
+                                    type: 'number',
+                                    'aria-labelledby': 'input-slider',
+                                }}
+                            />
+                        </Grid>
+                    </Grid>
+                </Box>
+            </div>
+            <div className="m-2">
+                <Box sx={{ width: 200 }}>
+                    <span className="text-lg ml-1">Typing: </span>
+                    <Grid container spacing={2} alignItems="center">
+                        <Grid item>
+                            <VolumeUp />
+                        </Grid>
+                        <Grid item xs>
+                            <Slider
+                                value={typeof typingVolume === 'number' ? typingVolume : 0}
+                                onChange={handleTypingSliderChange}
+                                onChangeCommitted={(e) => {
+                                    const target = e.target;
+                                    if (target === undefined) return;
+                                    const value = (target as HTMLElement).querySelector('input')?.value;
+                                    if (value === undefined) return;
+                                    typeSound(Number(value) / 100);
+                                }}
+                                aria-labelledby="input-slider"
+                            />
+                        </Grid>
+                        <Grid item>
+                            <Input
+                                value={typingVolume}
+                                size="small"
+                                onChange={handleTypingInputChange}
+                                onBlur={handleTypingBlur}
                                 inputProps={{
                                     step: 10,
                                     min: 0,
