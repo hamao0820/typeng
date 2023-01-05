@@ -22,9 +22,9 @@ const Home: NextPage = () => {
                 <div className="flex">
                     <ModeCard title="練習モード" explanation="訳と単語が同時に表示されます" href="practice" />
                     <ModeCard
-                        title="チャレンジモード"
+                        title="確認モード"
                         explanation="訳のみが表示されます. 間違えた時に単語が表示されます"
-                        href="/"
+                        href="/test"
                     />
                 </div>
             </div>

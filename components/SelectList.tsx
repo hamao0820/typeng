@@ -12,10 +12,12 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import UnfoldLess from '@mui/icons-material/UnfoldLess';
 import { sliceByNumber } from '../pages/practice/[rank]/[id]';
+import path from 'path';
 
 type Props = {
     rank: number;
     wordsNum: number;
+    mode: string;
 };
 
 type OpenStatesType = {
@@ -23,7 +25,7 @@ type OpenStatesType = {
     open: boolean;
 };
 
-const SelectList: React.FC<Props> = ({ rank, wordsNum }) => {
+const SelectList: React.FC<Props> = ({ rank, wordsNum, mode }) => {
     const [openStates, setOpenStates] = React.useState<OpenStatesType[]>(
         sliceByNumber(
             [...Array(wordsNum)].map((_, i) => i + 1),
@@ -123,7 +125,12 @@ const SelectList: React.FC<Props> = ({ rank, wordsNum }) => {
                                         '::-webkit-scrollbar': { display: 'none' },
                                     }}
                                 >
-                                    <Link href={{ pathname: `practice/${rank}/${block}`, query: { stage: 'all' } }}>
+                                    <Link
+                                        href={{
+                                            pathname: path.join(mode, String(rank), String(block)),
+                                            query: { stage: 'all' },
+                                        }}
+                                    >
                                         <ListItemButton sx={{ pl: 4 }}>
                                             <ListItemIcon>
                                                 <span className="text-xl font-bold">{1}</span>
@@ -144,7 +151,7 @@ const SelectList: React.FC<Props> = ({ rank, wordsNum }) => {
                                             <React.Fragment key={`${block}-${i}`}>
                                                 <Link
                                                     href={{
-                                                        pathname: `practice/${rank}/${i}`,
+                                                        pathname: path.join(mode, String(rank), String(i)),
                                                         query: { stage: String(i) },
                                                     }}
                                                 >

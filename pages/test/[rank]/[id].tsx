@@ -120,7 +120,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async (context): Promis
     };
 };
 
-const Practice: NextPage<PageProps> = ({ allWords }) => {
+const Test: NextPage<PageProps> = ({ allWords }) => {
     const [word, setWord] = useState<Word>();
     const [typed, setTyped] = useState<string>('');
     const [unTyped, setUnTyped] = useState<string>('');
@@ -133,12 +133,14 @@ const Practice: NextPage<PageProps> = ({ allWords }) => {
     const [words, setWords] = useState<Word[]>(stage === 'all' ? allWords : sliceByNumber(allWords, 10)[Number(stage)]);
     const contentRef = useRef<HTMLSpanElement>(null);
     const [isOver, setIsOver] = useState<boolean>(false);
+    const [missed, setMissed] = useState<boolean>(false);
 
     useEffect(() => {
         if (word === undefined) {
             return;
         }
         pronounce(word.en, pronounceVolume / 100);
+        setMissed(false);
         setUnTyped(word.en);
         setTyped('');
         const content = contentRef.current;
@@ -168,6 +170,7 @@ const Practice: NextPage<PageProps> = ({ allWords }) => {
                     duration: 300,
                     direction: 'alternate',
                 });
+                setMissed(true);
             }
         },
         [unTyped, typingVolume, soundEffectVolume]
@@ -181,7 +184,7 @@ const Practice: NextPage<PageProps> = ({ allWords }) => {
         if (words === undefined) {
             const words_ = stage === 'all' ? allWords : sliceByNumber(allWords, 10)[Number(stage)];
             if (stage !== undefined && words_ === undefined) {
-                router.push('/practice');
+                router.push('/test');
                 return;
             }
             if (words_ === undefined) return;
@@ -203,7 +206,7 @@ const Practice: NextPage<PageProps> = ({ allWords }) => {
 
     return (
         <div className="h-screen w-screen overflow-hidden" ref={ref}>
-            <Header text="選択画面に戻る" href="/practice" />
+            <Header text="選択画面に戻る" href="/test" />
             <div className="h-4/5 relative w-full">
                 <div className="flex h-fit justify-start absolute top-1/3 left-60 w-full">
                     <div
@@ -221,11 +224,13 @@ const Practice: NextPage<PageProps> = ({ allWords }) => {
                                 {word?.ja}
                             </span>
                         </div>
-
                         {word !== undefined && isOver && <Marquee content={word.ja} />}
                         <div className="whitespace-nowrap">
                             <span className="text-8xl font-bold whitespace-nowrap">{typed.replaceAll(' ', '␣')}</span>
-                            <span className="text-8xl font-bold text-gray-300 whitespace-nowrap">
+                            <span
+                                className="text-8xl font-bold text-gray-300 whitespace-nowrap"
+                                style={missed ? {} : { display: 'none' }}
+                            >
                                 {unTyped.replaceAll(' ', '␣')}
                             </span>
                         </div>
@@ -244,4 +249,4 @@ const Practice: NextPage<PageProps> = ({ allWords }) => {
     );
 };
 
-export default Practice;
+export default Test;
