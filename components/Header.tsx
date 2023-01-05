@@ -10,14 +10,14 @@ type Props = {
 
 const Header: React.FC<Props> = ({ text, href }) => {
     return (
-        <div className="w-full flex justify-between">
+        <div className="w-full flex justify-between items-center">
             <div className="w-fit">
                 <Link href={href}>
                     <div className="flex items-center m-2">
                         <div className="p-2 bg-blue-300 w-fit rounded-md">
                             <ArrowBackIcon style={{ width: '3rem', height: '3rem' }} />
                         </div>
-                        <span className="text-lg font-bold">{text}</span>
+                        <span className="text-xl font-bold ml-5">{text}</span>
                     </div>
                 </Link>
             </div>
