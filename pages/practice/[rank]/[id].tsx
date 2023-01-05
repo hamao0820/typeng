@@ -7,6 +7,7 @@ import { pronounceVolumeContext } from '../../../Contexts/PronounceProvider';
 import { soundEffectVolumeContext } from '../../../Contexts/SoundEffectProvider';
 import Header from '../../../components/Header';
 import { typingVolumeContext } from '../../../Contexts/TypingVolumeProvider';
+import Marquee from '../../../components/Marquee';
 
 type Word = {
     id: number;
@@ -130,6 +131,8 @@ const Word: NextPage<PageProps> = ({ allWords }) => {
     const router = useRouter();
     const { stage } = router.query as { stage: string };
     const [words, setWords] = useState<Word[]>(stage === 'all' ? allWords : sliceByNumber(allWords, 10)[Number(stage)]);
+    const contentRef = useRef<HTMLSpanElement>(null);
+    const [isOver, setIsOver] = useState<boolean>(false);
 
     useEffect(() => {
         if (word === undefined) {
@@ -138,6 +141,13 @@ const Word: NextPage<PageProps> = ({ allWords }) => {
         pronounce(word.en, pronounceVolume / 100);
         setUnTyped(word.en);
         setTyped('');
+        const content = contentRef.current;
+        if (content === null) return;
+        if (800 <= content.clientWidth) {
+            setIsOver(true);
+        } else {
+            setIsOver(false);
+        }
     }, [word]);
 
     const handleKeyDown = useCallback(
@@ -194,8 +204,8 @@ const Word: NextPage<PageProps> = ({ allWords }) => {
     return (
         <div className="h-screen w-screen overflow-hidden" ref={ref}>
             <Header text="選択画面に戻る" href="/practice" />
-            <div className="h-4/5 relative">
-                <div className="flex h-fit w-1/4 justify-start absolute top-1/3 left-60">
+            <div className="h-4/5 relative w-full">
+                <div className="flex h-fit justify-start absolute top-1/3 left-60 w-full">
                     <div
                         className="w-fit h-fit flex items-center justify-center p-2 bg-green-500 rounded-md"
                         onClick={() => {
@@ -205,18 +215,28 @@ const Word: NextPage<PageProps> = ({ allWords }) => {
                     >
                         <VolumeUpIcon style={{ width: '13rem', height: '13rem' }} />
                     </div>
-                    <div className="flex flex-col justify-between ml-5">
-                        <div className="">
-                            <span className=" text-7xl font-bold whitespace-nowrap h-fit max-w-4xl overflow-hidden text-ellipsis inline-block">
+                    <div className="flex flex-col justify-between ml-5" style={{ width: '800px' }}>
+                        <div className={isOver ? 'hidden' : ''}>
+                            <span className="text-7xl font-bold whitespace-nowrap h-fit max-w-4xl overflow-hidden text-ellipsis inline-block">
                                 {word?.ja}
                             </span>
                         </div>
+
+                        {word !== undefined && isOver && <Marquee content={word.ja} />}
                         <div className="whitespace-nowrap">
                             <span className="text-8xl font-bold whitespace-nowrap">{typed}</span>
                             <span className="text-8xl font-bold text-gray-300 whitespace-nowrap">{unTyped}</span>
                         </div>
                     </div>
                 </div>
+            </div>
+            <div className="invisible">
+                <span
+                    className="text-7xl font-bold whitespace-nowrap h-fit max-w-4xl overflow-hidden text-ellipsis inline-block"
+                    ref={contentRef}
+                >
+                    {word?.ja}
+                </span>
             </div>
         </div>
     );
