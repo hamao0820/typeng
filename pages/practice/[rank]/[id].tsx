@@ -1,12 +1,12 @@
+import fs from 'fs';
 import type { GetStaticPaths, GetStaticProps, GetStaticPropsResult, NextPage } from 'next';
+import { useRouter } from 'next/router';
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import { pronounceVolumeContext } from '../../../Contexts/PronounceProvider';
 import { soundEffectVolumeContext } from '../../../Contexts/SoundEffectProvider';
 import Header from '../../../components/Header';
-import fs from 'fs';
 import { typingVolumeContext } from '../../../Contexts/TypingVolumeProvider';
-import { useRouter } from 'next/router';
 
 type Word = {
     id: number;
@@ -195,7 +195,7 @@ const Word: NextPage<PageProps> = ({ allWords }) => {
         <div className="h-screen w-screen overflow-hidden" ref={ref}>
             <Header text="選択画面に戻る" href="/practice" />
             <div className="h-4/5 relative">
-                <div className="flex h-fit w-1/4 justify-start absolute top-1/3 left-1/4">
+                <div className="flex h-fit w-1/4 justify-start absolute top-1/3 left-60">
                     <div
                         className="w-fit h-fit flex items-center justify-center p-2 bg-green-500 rounded-md"
                         onClick={() => {
@@ -203,11 +203,11 @@ const Word: NextPage<PageProps> = ({ allWords }) => {
                             pronounce(word.en, pronounceVolume);
                         }}
                     >
-                        <VolumeUpIcon style={{ width: '10rem', height: '10rem' }} />
+                        <VolumeUpIcon style={{ width: '13rem', height: '13rem' }} />
                     </div>
                     <div className="flex flex-col justify-between ml-5">
                         <div className="">
-                            <span className="text-5xl font-bold whitespace-nowrap h-fit max-w-2xl overflow-hidden text-ellipsis inline-block">
+                            <span className=" text-7xl font-bold whitespace-nowrap h-fit max-w-4xl overflow-hidden text-ellipsis inline-block">
                                 {word?.ja}
                             </span>
                         </div>
