@@ -1,13 +1,17 @@
 import React from 'react';
+import Link from 'next/link';
 import ListSubheader from '@mui/material/ListSubheader';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import Link from 'next/link';
-import { Collapse, Divider } from '@mui/material';
+import Button from '@mui/material/Button';
+import Collapse from '@mui/material/Collapse';
+import Divider from '@mui/material/Divider';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import UnfoldLess from '@mui/icons-material/UnfoldLess';
 import { sliceByNumber } from '../pages/practice/[rank]/[id]';
-import { ExpandLess, ExpandMore } from '@mui/icons-material';
 
 type Props = {
     rank: number;
@@ -44,6 +48,14 @@ const SelectList: React.FC<Props> = ({ rank, wordsNum }) => {
         100
     );
 
+    const handleCollapseAll = () => {
+        setOpenStates((prevStates) => {
+            return prevStates.map((state) => {
+                return { ...state, open: false };
+            });
+        });
+    };
+
     return (
         <div className="m-2 w-screen">
             <List
@@ -57,7 +69,22 @@ const SelectList: React.FC<Props> = ({ rank, wordsNum }) => {
                 component="nav"
                 subheader={
                     <ListSubheader component="div" id="nested-list-subheader">
-                        <span className="text-2xl font-bold">Rank {rank}</span>
+                        <div className="flex justify-between items-center">
+                            <span className="text-2xl font-bold">Rank {rank}</span>
+                            <Button
+                                sx={{
+                                    border: '2px solid rgb(147, 197, 253)',
+                                    minWidth: '32px',
+                                    width: '32px',
+                                    height: '32px',
+                                    padding: 0,
+                                    margin: '1px',
+                                }}
+                                onClick={handleCollapseAll}
+                            >
+                                <UnfoldLess />
+                            </Button>
+                        </div>
                     </ListSubheader>
                 }
             >
@@ -87,8 +114,16 @@ const SelectList: React.FC<Props> = ({ rank, wordsNum }) => {
                                 {openStates[block].open ? <ExpandLess /> : <ExpandMore />}
                             </ListItemButton>
                             <Collapse in={openStates[block].open} timeout="auto" unmountOnExit>
-                                <List component="div" disablePadding>
-                                    <Link href={{ pathname: `practice/${rank}/${block}`, query: { stage: "all" } }}>
+                                <List
+                                    component="div"
+                                    disablePadding
+                                    sx={{
+                                        height: '60vh',
+                                        overflow: 'auto',
+                                        '::-webkit-scrollbar': { display: 'none' },
+                                    }}
+                                >
+                                    <Link href={{ pathname: `practice/${rank}/${block}`, query: { stage: 'all' } }}>
                                         <ListItemButton sx={{ pl: 4 }}>
                                             <ListItemIcon>
                                                 <span className="text-xl font-bold">{1}</span>
@@ -110,7 +145,7 @@ const SelectList: React.FC<Props> = ({ rank, wordsNum }) => {
                                                 <Link
                                                     href={{
                                                         pathname: `practice/${rank}/${i}`,
-                                                        query: { stage: String(i)},
+                                                        query: { stage: String(i) },
                                                     }}
                                                 >
                                                     <ListItemButton sx={{ pl: 4 }}>
