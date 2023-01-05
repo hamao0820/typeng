@@ -156,7 +156,7 @@ const Word: NextPage<PageProps> = ({ allWords }) => {
             if (unTyped.startsWith(key)) {
                 typeSound(typingVolume / 100);
                 setUnTyped((prev) => prev.slice(1));
-                setTyped((prev) => prev + (key === ' ' ? '_' : key));
+                setTyped((prev) => prev + key);
             } else {
                 if (unTyped[0].toUpperCase() === unTyped[0] && e.shiftKey) {
                     return;
@@ -224,8 +224,10 @@ const Word: NextPage<PageProps> = ({ allWords }) => {
 
                         {word !== undefined && isOver && <Marquee content={word.ja} />}
                         <div className="whitespace-nowrap">
-                            <span className="text-8xl font-bold whitespace-nowrap">{typed}</span>
-                            <span className="text-8xl font-bold text-gray-300 whitespace-nowrap">{unTyped}</span>
+                            <span className="text-8xl font-bold whitespace-nowrap">{typed.replaceAll(' ', '␣')}</span>
+                            <span className="text-8xl font-bold text-gray-300 whitespace-nowrap">
+                                {unTyped.replaceAll(' ', '␣')}
+                            </span>
                         </div>
                     </div>
                 </div>
