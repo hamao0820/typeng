@@ -26,6 +26,7 @@ const Home: NextPage = () => {
                         explanation="訳のみが表示されます. 間違えた時に単語が表示されます"
                         href="/test"
                     />
+                    <ModeCard title="チャレンジモード" explanation="単語のみ" href="challenge" />
                 </div>
             </div>
         </div>
