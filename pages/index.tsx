@@ -33,14 +33,14 @@ const Home: NextPage = () => {
                     />
                     <ModeCard title="チャレンジモード" explanation="意味 のみ" href="challenge" />
                     <ModeCard
-                        title="テストモード"
+                        title="採点モード"
                         explanation={
                             <>
                                 意味 のみ <br />
                                 時間と正確性を競います
                             </>
                         }
-                        href="/"
+                        href="/scoring"
                     />
                 </div>
             </div>
