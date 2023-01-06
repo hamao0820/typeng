@@ -224,8 +224,9 @@ const Scoring: NextPage<PageProps> = ({ allWords }) => {
 
     return (
         <>
-            <CountDown ready={ready} setReady={setReady} />
+            {!ready && <CountDown ready={ready} setReady={setReady} />}
             <div className="h-screen w-screen overflow-hidden" ref={ref}>
+            {!ready && <CountDown ready={ready} setReady={setReady} />}
                 <Header text="選択画面に戻る" href="/scoring" />
                 <div className="h-4/5 relative w-full">
                     <div className="flex h-fit justify-start absolute top-1/3 left-60 w-full">
