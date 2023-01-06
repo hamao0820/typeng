@@ -1,19 +1,64 @@
 import Link from 'next/link';
-import React from 'react';
+import React, { ReactNode } from 'react';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Typography from '@mui/material/Typography';
+import CardActionArea from '@mui/material/CardActionArea';
 
 type Props = {
     title: string;
-    explanation: string;
+    explanation: ReactNode;
     href: string;
 };
 
 const ModeCard: React.FC<Props> = ({ title, explanation, href }) => {
     return (
         <Link href={href}>
-            <div className="w-80 h-40 border-2 border-solid border-blue-400 rounded-md flex flex-col items-center justify-evenly m-3 p-2 cursor-pointer bg-gray-50 hover:bg-blue-50">
-                <div className="text-3xl font-bold">{title}</div>
-                <div className="text-ml font-bold">{explanation}</div>
-            </div>
+            <Card
+                sx={{
+                    width: 320,
+                    height: 160,
+                    borderWidth: '2px',
+                    borderStyle: 'solid',
+                    borderColor: 'rgb(96 165 250)',
+                    margin: '12px',
+                }}
+                raised={true}
+            >
+                <CardActionArea>
+                    <CardContent
+                        sx={{
+                            width: 320,
+                            height: 160,
+                            display: 'flex',
+                            flexDirection: 'column',
+                        }}
+                    >
+                        <Typography
+                            gutterBottom
+                            component="div"
+                            sx={{ fontSize: 30, lineHeight: '36px', fontWeight: 700 }}
+                            align="center"
+                        >
+                            {title}
+                        </Typography>
+                        <Typography
+                            align="center"
+                            sx={{
+                                fontSize: '16px',
+                                lineHeight: '24px',
+                                fontWeight: 700,
+                                flex: 1,
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                            }}
+                        >
+                            {explanation}
+                        </Typography>
+                    </CardContent>
+                </CardActionArea>
+            </Card>
         </Link>
     );
 };

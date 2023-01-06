@@ -17,16 +17,31 @@ const Home: NextPage = () => {
                     <SettingButton />
                 </div>
             </div>
-            <div className="flex flex-col justify-center items-center h-3/5">
+            <div className="flex flex-col justify-center items-center h-4/5">
                 <div className="text-2xl font-bold">モード選択{' : '}</div>
-                <div className="flex">
-                    <ModeCard title="練習モード" explanation="訳と単語が同時に表示されます" href="practice" />
+                <div className="flex flex-wrap w-1/2 justify-center mt-2">
+                    <ModeCard title="練習モード" explanation="意味 と 単語" href="practice" />
                     <ModeCard
                         title="確認モード"
-                        explanation="訳のみが表示されます. 間違えた時に単語が表示されます"
+                        explanation={
+                            <>
+                                意味 のみ <br />
+                                間違えた時に単語が表示されます
+                            </>
+                        }
                         href="/test"
                     />
-                    <ModeCard title="チャレンジモード" explanation="単語のみ" href="challenge" />
+                    <ModeCard title="チャレンジモード" explanation="意味 のみ" href="challenge" />
+                    <ModeCard
+                        title="テストモード"
+                        explanation={
+                            <>
+                                意味 のみ <br />
+                                時間と正確性を競います
+                            </>
+                        }
+                        href="/"
+                    />
                 </div>
             </div>
         </div>
