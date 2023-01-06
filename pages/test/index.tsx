@@ -3,7 +3,7 @@ import SelectList from '../../components/SelectList';
 import Header from '../../components/Header';
 import { pronounce } from '../practice/[rank]/[id]';
 
-const Test = () => {
+const TestHome = () => {
     useEffect(() => {
         // speechSynthesisAPIを初期化
         pronounce('', 0);
@@ -21,4 +21,4 @@ const Test = () => {
     );
 };
 
-export default Test;
+export default TestHome;
