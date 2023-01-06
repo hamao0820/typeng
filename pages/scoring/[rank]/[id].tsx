@@ -11,6 +11,7 @@ import { typingVolumeContext } from '../../../Contexts/TypingVolumeProvider';
 import Marquee from '../../../components/Marquee';
 import { Button } from '@mui/material';
 import CountDown from '../../../components/CountDown';
+import Result from '../../../components/Result';
 
 type Word = {
     id: number;
@@ -139,6 +140,9 @@ const Scoring: NextPage<PageProps> = ({ allWords }) => {
     const [show, setShow] = useState<boolean>(false);
     const [missCount, setMissCount] = useState<number>(0);
     const [ready, setReady] = useState<boolean>(false);
+    const [index, setIndex] = useState<number>(0);
+    const [showResult, setShowResult] = useState<boolean>(false);
+    const [missCountSum, setMissCountSum] = useState<number>(0);
 
     useEffect(() => {
         if (!ready) return;
@@ -159,18 +163,19 @@ const Scoring: NextPage<PageProps> = ({ allWords }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [word, ready]);
 
-    useEffect(() => {
-        if (!ready) return;
-        if (word === undefined) return;
-        const timer = setInterval(() => {
-            pronounce(word.en, pronounceVolume / 100);
-        }, 3000);
-        return () => clearInterval(timer);
-    }, [pronounceVolume, ready, word]);
+    // useEffect(() => {
+    //     if (!ready) return;
+    //     if (word === undefined) return;
+    //     const timer = setInterval(() => {
+    //         pronounce(word.en, pronounceVolume / 100);
+    //     }, 3000);
+    //     return () => clearInterval(timer);
+    // }, [pronounceVolume, ready, word]);
 
     const handleKeyDown = useCallback(
         (e: React.KeyboardEvent<HTMLDivElement> | KeyboardEvent) => {
             const key = e.key;
+            if (unTyped === '') return;
             if (unTyped.startsWith(key)) {
                 typeSound(typingVolume / 100);
                 setMissCount(0);
@@ -183,6 +188,7 @@ const Scoring: NextPage<PageProps> = ({ allWords }) => {
                 const body = ref.current;
                 if (body === null) return;
                 setMissCount((prev) => prev + 1);
+                setMissCountSum((prev) => prev + 1);
                 sound('sine', 0.1, soundEffectVolume / 100);
                 body.animate([{ backgroundColor: 'rgba(200, 0, 0, 0.1)' }, { backgroundColor: '' }], {
                     duration: 300,
@@ -209,26 +215,34 @@ const Scoring: NextPage<PageProps> = ({ allWords }) => {
             setWords(stage === 'all' ? allWords : words_);
             return;
         }
-        if (unTyped === '') {
-            setWord((prev) => {
-                const index = Math.floor(Math.random() * words.length);
-                let next = words[index];
-                while (prev?.id === next.id) {
-                    const index = Math.floor(Math.random() * words.length);
-                    next = words[index];
-                }
-                return next;
-            });
+        if (word !== undefined && unTyped === '') {
+            setIndex((prev) => prev + 1);
+        } else {
+            setIndex(0);
         }
     }, [allWords, router, stage, typed, unTyped, words]);
 
+    useEffect(() => {
+        console.log(index);
+        if (index >= words.length) {
+            setShowResult(true);
+            return;
+        }
+        setWord(words[index]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [allWords, index, stage, words]);
+
     return (
         <>
-            {!ready && <CountDown ready={ready} setReady={setReady} />}
             <div className="h-screen w-screen overflow-hidden" ref={ref}>
-            {!ready && <CountDown ready={ready} setReady={setReady} />}
+                {!ready && <CountDown ready={ready} setReady={setReady} />}
                 <Header text="選択画面に戻る" href="/scoring" />
                 <div className="h-4/5 relative w-full">
+                    {words && (
+                        <div className="absolute top-0 right-0">
+                            問題番号: {index + 1} / {words.length}
+                        </div>
+                    )}
                     <div className="flex h-fit justify-start absolute top-1/3 left-60 w-full">
                         <div className="w-fit h-fit flex items-center justify-center p-2 bg-green-500 rounded-md">
                             <VolumeUpIcon
@@ -293,6 +307,7 @@ const Scoring: NextPage<PageProps> = ({ allWords }) => {
                     </span>
                 </div>
             </div>
+            {showResult && <Result missCount={missCountSum} words={words} />}
         </>
     );
 };
