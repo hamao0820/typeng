@@ -6,7 +6,7 @@ type Props = {
 };
 
 const CountDown: React.FC<Props> = ({ ready, setReady }) => {
-    const [countTime, setCountTime] = useState<number>(2);
+    const [countTime, setCountTime] = useState<number>(3);
     const [counting, setCounting] = useState<boolean>(false);
     useEffect(() => {
         window.onkeydown = (e: React.KeyboardEvent<HTMLDivElement> | KeyboardEvent) => {
@@ -17,23 +17,22 @@ const CountDown: React.FC<Props> = ({ ready, setReady }) => {
     }, []);
 
     useEffect(() => {
+        if (countTime === 0) {
+            setCounting(false);
+            setReady(true);
+            return;
+        }
         const timer = setInterval(() => {
             setCountTime((count) => {
                 if (!counting) {
                     clearInterval(timer);
                     return count;
                 }
-                if (count === 0) {
-                    clearInterval(timer);
-                    setCounting(false);
-                    setReady(true);
-                    return 0;
-                }
                 return count - 1;
             });
         }, 1000);
         return () => clearInterval(timer);
-    }, [countTime, counting, ready, setReady]);
+    }, [countTime, counting, setReady]);
     return (
         <>
             (
@@ -43,7 +42,7 @@ const CountDown: React.FC<Props> = ({ ready, setReady }) => {
                     e.stopPropagation();
                 }}
             >
-                <div className="text-9xl">{countTime + 1}</div>
+                <div className="text-9xl">{countTime}</div>
                 <div className={counting ? 'text-3xl invisible' : 'text-3xl'}>スペースキーで開始</div>
             </div>
             )
