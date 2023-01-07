@@ -124,6 +124,14 @@ export const getStaticProps: GetStaticProps<PageProps> = async (context): Promis
     };
 };
 
+const shuffle = <T,>([...arr]: T[]): T[] => {
+    for (let i = arr.length - 1; i >= 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+};
+
 const Scoring: NextPage<PageProps> = ({ allWords }) => {
     const [word, setWord] = useState<Word>();
     const [typed, setTyped] = useState<string>('');
@@ -134,7 +142,7 @@ const Scoring: NextPage<PageProps> = ({ allWords }) => {
     const typingVolume = useContext(typingVolumeContext);
     const router = useRouter();
     const { stage } = router.query as { stage: string };
-    const [words, setWords] = useState<Word[]>(stage === 'all' ? allWords : sliceByNumber(allWords, 10)[Number(stage)]);
+    const [words, setWords] = useState<Word[]>([]);
     const contentRef = useRef<HTMLSpanElement>(null);
     const [isOver, setIsOver] = useState<boolean>(false);
     const [show, setShow] = useState<boolean>(false);
@@ -145,10 +153,15 @@ const Scoring: NextPage<PageProps> = ({ allWords }) => {
     const [missCountSum, setMissCountSum] = useState<number>(0);
 
     useEffect(() => {
+        if (words.length > 0) return;
+        const words_ = stage === 'all' ? allWords : sliceByNumber(allWords, 10)[Number(stage)];
+        if (words_ === undefined) return;
+        setWords(shuffle(words_));
+    }, [allWords, stage, words]);
+
+    useEffect(() => {
         if (!ready) return;
-        if (word === undefined) {
-            return;
-        }
+        if (word === undefined) return;
         pronounce(word.en, pronounceVolume / 100);
         setShow(false);
         setUnTyped(word.en);
@@ -162,15 +175,6 @@ const Scoring: NextPage<PageProps> = ({ allWords }) => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [word, ready]);
-
-    // useEffect(() => {
-    //     if (!ready) return;
-    //     if (word === undefined) return;
-    //     const timer = setInterval(() => {
-    //         pronounce(word.en, pronounceVolume / 100);
-    //     }, 3000);
-    //     return () => clearInterval(timer);
-    // }, [pronounceVolume, ready, word]);
 
     const handleKeyDown = useCallback(
         (e: React.KeyboardEvent<HTMLDivElement> | KeyboardEvent) => {
@@ -205,32 +209,27 @@ const Scoring: NextPage<PageProps> = ({ allWords }) => {
     }, [handleKeyDown, ready]);
 
     useEffect(() => {
-        if (words === undefined) {
-            const words_ = stage === 'all' ? allWords : sliceByNumber(allWords, 10)[Number(stage)];
-            if (stage !== undefined && words_ === undefined) {
-                router.push('/scoring');
-                return;
-            }
-            if (words_ === undefined) return;
-            setWords(stage === 'all' ? allWords : words_);
+        if (stage !== undefined && words === undefined) {
+            router.push('/scoring');
             return;
         }
-        if (word !== undefined && unTyped === '') {
-            setIndex((prev) => prev + 1);
-        } else {
-            setIndex(0);
-        }
-    }, [allWords, router, stage, typed, unTyped, words]);
+    }, [router, stage, words]);
 
     useEffect(() => {
-        console.log(index);
+        if (words === undefined || words.length === 0) return;
         if (index >= words.length) {
             setShowResult(true);
             return;
         }
         setWord(words[index]);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [allWords, index, stage, words]);
+    }, [index, words]);
+
+    useEffect(() => {
+        if (word === undefined || typed === '') return;
+        if (word.en === typed) {
+            setIndex((prevIndex) => prevIndex + 1);
+        }
+    }, [word, typed]);
 
     return (
         <>
