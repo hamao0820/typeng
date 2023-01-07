@@ -1,4 +1,4 @@
-import fs, { read } from 'fs';
+import fs from 'fs';
 import type { GetStaticPaths, GetStaticProps, GetStaticPropsResult, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';

@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React from 'react';
 import { ResultType } from '../pages/scoring/[rank]/[id]';
 import { useRouter } from 'next/router';
 import Button from '@mui/material/Button';
