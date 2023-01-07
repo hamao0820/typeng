@@ -1,4 +1,4 @@
-import fs from 'fs';
+import fs, { read } from 'fs';
 import type { GetStaticPaths, GetStaticProps, GetStaticPropsResult, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
@@ -156,6 +156,7 @@ const Scoring: NextPage<PageProps> = ({ allWords }) => {
     const [index, setIndex] = useState<number>(0);
     const [showResult, setShowResult] = useState<boolean>(false);
     const [missCountSum, setMissCountSum] = useState<number>(0);
+    const [measure, setMeasure] = useState<PerformanceEntryList>([]);
 
     useEffect(() => {
         if (words.length > 0) return;
@@ -181,6 +182,11 @@ const Scoring: NextPage<PageProps> = ({ allWords }) => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [word, ready]);
+
+    useEffect(() => {
+        if (!ready) return;
+        performance.mark('start');
+    }, [ready]);
 
     const handleKeyDown = useCallback(
         (e: React.KeyboardEvent<HTMLDivElement> | KeyboardEvent) => {
@@ -223,6 +229,10 @@ const Scoring: NextPage<PageProps> = ({ allWords }) => {
     useEffect(() => {
         if (words === undefined || words.length === 0) return;
         if (index >= words.length) {
+            performance.mark('end');
+            performance.measure('measure', 'start', 'end');
+            setMeasure(performance.getEntriesByName('measure'));
+            document.onkeydown = () => {};
             setShowResult(true);
             return;
         }
@@ -312,7 +322,7 @@ const Scoring: NextPage<PageProps> = ({ allWords }) => {
                     </span>
                 </div>
             </div>
-            {showResult && <Result missCount={missCountSum} results={results} />}
+            {showResult && <Result missCount={missCountSum} results={results} measure={measure} />}
         </>
     );
 };

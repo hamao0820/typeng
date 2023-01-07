@@ -4,21 +4,15 @@ import { useRouter } from 'next/router';
 import Button from '@mui/material/Button';
 import Header from './Header';
 
-type Word = {
-    id: number;
-    en: string;
-    ja: string;
-};
-
 type Props = {
     missCount: number;
     results: ResultType[];
+    measure: PerformanceEntryList;
 };
 
-const Result: React.FC<Props> = ({ missCount, results }) => {
+const Result: React.FC<Props> = ({ missCount, results, measure }) => {
     const allWordCount = results.map<number>((result) => result.en.length).reduce((p, c) => p + c);
     const correctTypeRate = Math.round(((allWordCount - missCount) / allWordCount) * 100);
-    const correctAnswerRate = results.filter((result) => result.correct).length;
     const router = useRouter();
     return (
         <div className="h-screen w-screen absolute top-0 left-0 bg-white z-50 flex flex-col items-center overflow-hidden">
@@ -56,7 +50,17 @@ const Result: React.FC<Props> = ({ missCount, results }) => {
                         </div>
                     </div>
                     <div className="flex items-end justify-between border-b-2 border-solid border-gray-300 p-3">
-                        <div className="text-lg font-bold">ミスタイプ数</div>
+                        <div className="text-lg font-bold">タイム</div>
+                        <div className="text-5xl font-bold">{Math.round(measure[0].duration) / 1000} 秒</div>
+                    </div>
+                    <div className="flex items-end justify-between border-b-2 border-solid border-gray-300 p-3">
+                        <div className="text-lg font-bold">入力速度(文字/秒)</div>
+                        <div className="text-5xl font-bold">
+                            {Math.round((allWordCount / measure[0].duration) * 1000 * 100) / 100}
+                        </div>
+                    </div>
+                    <div className="flex items-end justify-between border-b-2 border-solid border-gray-300 p-3">
+                        <div className="text-lg font-bold">ミスタッチ</div>
                         <div className="text-5xl font-bold">{missCount}</div>
                     </div>
                     <div className="flex items-end justify-between border-b-2 border-solid border-gray-300 p-3">
