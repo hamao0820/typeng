@@ -19,6 +19,10 @@ type Word = {
     ja: string;
 };
 
+export type ResultType = Word & {
+    correct: boolean;
+};
+
 type PageProps = {
     allWords: Word[];
 };
@@ -143,6 +147,7 @@ const Scoring: NextPage<PageProps> = ({ allWords }) => {
     const router = useRouter();
     const { stage } = router.query as { stage: string };
     const [words, setWords] = useState<Word[]>([]);
+    const [results, setResults] = useState<ResultType[]>([]);
     const contentRef = useRef<HTMLSpanElement>(null);
     const [isOver, setIsOver] = useState<boolean>(false);
     const [show, setShow] = useState<boolean>(false);
@@ -166,6 +171,7 @@ const Scoring: NextPage<PageProps> = ({ allWords }) => {
         setShow(false);
         setUnTyped(word.en);
         setTyped('');
+        setMissCount(0);
         const content = contentRef.current;
         if (content === null) return;
         if (800 <= content.clientWidth) {
@@ -182,7 +188,6 @@ const Scoring: NextPage<PageProps> = ({ allWords }) => {
             if (unTyped === '') return;
             if (unTyped.startsWith(key)) {
                 typeSound(typingVolume / 100);
-                setMissCount(0);
                 setUnTyped((prev) => prev.slice(1));
                 setTyped((prev) => prev + key);
             } else {
@@ -227,9 +232,10 @@ const Scoring: NextPage<PageProps> = ({ allWords }) => {
     useEffect(() => {
         if (word === undefined || typed === '') return;
         if (word.en === typed) {
+            setResults((prev) => [...prev, { ...word, correct: missCount === 0 }]);
             setIndex((prevIndex) => prevIndex + 1);
         }
-    }, [word, typed]);
+    }, [word, typed, missCount]);
 
     return (
         <>
@@ -306,7 +312,7 @@ const Scoring: NextPage<PageProps> = ({ allWords }) => {
                     </span>
                 </div>
             </div>
-            {showResult && <Result missCount={missCountSum} words={words} />}
+            {showResult && <Result missCount={missCountSum} results={results} />}
         </>
     );
 };
