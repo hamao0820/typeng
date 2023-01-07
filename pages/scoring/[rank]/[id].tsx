@@ -238,8 +238,8 @@ const Scoring: NextPage<PageProps> = ({ allWords }) => {
                 <Header text="選択画面に戻る" href="/scoring" />
                 <div className="h-4/5 relative w-full">
                     {words && (
-                        <div className="absolute top-0 right-0">
-                            問題番号: {index + 1} / {words.length}
+                        <div className="absolute top-5 right-10 text-3xl">
+                            {index + 1} / {words.length}
                         </div>
                     )}
                     <div className="flex h-fit justify-start absolute top-1/3 left-60 w-full">
