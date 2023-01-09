@@ -1,13 +1,8 @@
 import React from 'react';
-import Box from '@mui/material/Box';
-import InputLabel from '@mui/material/InputLabel';
-import FormControl from '@mui/material/FormControl';
-import NativeSelect from '@mui/material/NativeSelect';
-import { useRouter } from 'next/router';
-import path from 'path';
 import BackButton from './BackButton';
 import SettingButton from './SettingButton';
 import ModeSelect from './ModeSelect';
+import StageSelect from './StageSelect';
 
 type Props = {
     text: string;
@@ -23,11 +18,11 @@ export type PathParam = {
 };
 
 const WorkHeader: React.FC<Props> = ({ text, href, param }) => {
-    const router = useRouter();
     return (
         <div className="w-full flex justify-between items-center">
             <BackButton href={href} text={text} />
             <div className="flex items-center">
+                <StageSelect param={param} />
                 <ModeSelect param={param} />
                 <div
                     className="flex justify-center items-center m-2 p-2 relative"

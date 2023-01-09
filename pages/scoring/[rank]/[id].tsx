@@ -12,7 +12,7 @@ import { Button } from '@mui/material';
 import CountDown from '../../../components/CountDown';
 import Result from '../../../components/Result';
 import WorkHeader from '../../../components/WorkHeader';
-import { pronounce, sliceByNumber, sound, typeSound } from '../../practice/[rank]/[id]';
+import { pronounce, shuffle, sliceByNumber, sound, typeSound } from '../../practice/[rank]/[id]';
 
 type Word = {
     id: number;
@@ -89,14 +89,6 @@ export const getStaticProps: GetStaticProps<PageProps> = async (context): Promis
             allWords: sliceByNumber(allWords, 100)[Number(id)],
         },
     };
-};
-
-const shuffle = <T,>([...arr]: T[]): T[] => {
-    for (let i = arr.length - 1; i >= 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [arr[i], arr[j]] = [arr[j], arr[i]];
-    }
-    return arr;
 };
 
 const Scoring: NextPage<PageProps> = ({ allWords }) => {

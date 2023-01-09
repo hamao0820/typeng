@@ -10,7 +10,7 @@ import { typingVolumeContext } from '../../../Contexts/TypingVolumeProvider';
 import Marquee from '../../../components/Marquee';
 import { Button } from '@mui/material';
 import WorkHeader from '../../../components/WorkHeader';
-import { pronounce, sliceByNumber, sound, typeSound } from '../../practice/[rank]/[id]';
+import { pronounce, shuffle, sliceByNumber, sound, typeSound } from '../../practice/[rank]/[id]';
 
 type Word = {
     id: number;
@@ -155,19 +155,10 @@ const Challenge: NextPage<PageProps> = ({ allWords }) => {
     useEffect(() => {
         document.onkeydown = handleKeyDown;
     }, [handleKeyDown]);
-
+    
     useEffect(() => {
-        if (words === undefined) {
-            const words_ = stage === 'all' ? allWords : sliceByNumber(allWords, 10)[Number(stage)];
-            if (stage !== undefined && words_ === undefined) {
-                router.push('/challenge');
-                return;
-            }
-            if (words_ === undefined) return;
-            setWords(stage === 'all' ? allWords : words_);
-            return;
-        }
-        if (unTyped === '') {
+        if (words === undefined || words.length === 0) return;
+        if (word === undefined || word.en === typed) {
             setWord((prev) => {
                 const index = Math.floor(Math.random() * words.length);
                 let next = words[index];
@@ -178,7 +169,33 @@ const Challenge: NextPage<PageProps> = ({ allWords }) => {
                 return next;
             });
         }
-    }, [allWords, router, stage, typed, unTyped, words]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [typed]);
+
+    useEffect(() => {
+        if (words === undefined || words.length === 0) return;
+
+        setWord((prev) => {
+            const index = Math.floor(Math.random() * words.length);
+            let next = words[index];
+            while (prev?.id === next.id) {
+                const index = Math.floor(Math.random() * words.length);
+                next = words[index];
+            }
+            return next;
+        });
+    }, [words]);
+
+    useEffect(() => {
+        if (stage === 'all') {
+            setWords(allWords);
+            return;
+        }
+        const words_ = sliceByNumber(allWords, 10)[Number(stage)];
+        if (words_ === undefined) return;
+        if (words.length <= 10 && words_.map((word_) => word_.id).includes(words[0].id)) return;
+        setWords(shuffle(words_));
+    }, [allWords, stage, words]);
 
     return (
         <div className="h-screen w-screen overflow-hidden" ref={ref}>
