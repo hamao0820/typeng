@@ -6,12 +6,12 @@ import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import LightbulbIcon from '@mui/icons-material/Lightbulb';
 import { pronounceVolumeContext } from '../../../Contexts/PronounceProvider';
 import { soundEffectVolumeContext } from '../../../Contexts/SoundEffectProvider';
-import Header from '../../../components/Header';
 import { typingVolumeContext } from '../../../Contexts/TypingVolumeProvider';
 import Marquee from '../../../components/Marquee';
 import { Button } from '@mui/material';
 import CountDown from '../../../components/CountDown';
 import Result from '../../../components/Result';
+import WorkHeader from '../../../components/WorkHeader';
 
 type Word = {
     id: number;
@@ -251,7 +251,11 @@ const Scoring: NextPage<PageProps> = ({ allWords }) => {
         <>
             <div className="h-screen w-screen overflow-hidden" ref={ref}>
                 {!ready && <CountDown ready={ready} setReady={setReady} />}
-                <Header text="選択画面に戻る" href="/scoring" />
+                <WorkHeader
+                    text="選択画面に戻る"
+                    href="/scoring"
+                    param={{ mode: 'practice', ...(router.query as any) }}
+                />
                 <div className="h-4/5 relative w-full">
                     {words && (
                         <div className="absolute top-5 right-10 text-3xl">

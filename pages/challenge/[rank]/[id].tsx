@@ -6,10 +6,10 @@ import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import LightbulbIcon from '@mui/icons-material/Lightbulb';
 import { pronounceVolumeContext } from '../../../Contexts/PronounceProvider';
 import { soundEffectVolumeContext } from '../../../Contexts/SoundEffectProvider';
-import Header from '../../../components/Header';
 import { typingVolumeContext } from '../../../Contexts/TypingVolumeProvider';
 import Marquee from '../../../components/Marquee';
 import { Button } from '@mui/material';
+import WorkHeader from '../../../components/WorkHeader';
 
 type Word = {
     id: number;
@@ -219,7 +219,11 @@ const Challenge: NextPage<PageProps> = ({ allWords }) => {
 
     return (
         <div className="h-screen w-screen overflow-hidden" ref={ref}>
-            <Header text="選択画面に戻る" href="/challenge" />
+            <WorkHeader
+                text="選択画面に戻る"
+                href="/challenge"
+                param={{ mode: 'practice', ...(router.query as any) }}
+            />
             <div className="h-4/5 relative w-full">
                 <div className="flex h-fit justify-start absolute top-1/3 left-60 w-full">
                     <div className="w-fit h-fit flex items-center justify-center p-2 bg-green-500 rounded-md">
