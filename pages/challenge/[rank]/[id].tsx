@@ -10,6 +10,7 @@ import { typingVolumeContext } from '../../../Contexts/TypingVolumeProvider';
 import Marquee from '../../../components/Marquee';
 import { Button } from '@mui/material';
 import WorkHeader from '../../../components/WorkHeader';
+import { pronounce, sliceByNumber, sound, typeSound } from '../../practice/[rank]/[id]';
 
 type Word = {
     id: number;
@@ -24,44 +25,6 @@ type PageProps = {
 type PathParams = {
     rank: '1' | '2' | '3' | '4';
     id: '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10';
-};
-
-export const sliceByNumber = <T,>(array: T[], number: number): T[][] => {
-    const length = Math.ceil(array.length / number);
-    const newArr: T[][] = [];
-    for (let i = 0; i < length; i++) {
-        newArr.push(array.slice(number * i, number * (i + 1)));
-    }
-    return newArr;
-};
-
-export const pronounce = (word: string, volume: number) => {
-    const synthesis = window.speechSynthesis;
-    const utterance = new SpeechSynthesisUtterance(word);
-    const voice = window.speechSynthesis.getVoices().find((voice) => voice.voiceURI === 'Google US English');
-    if (voice !== undefined) {
-        utterance.voice = voice;
-    }
-    utterance.volume = volume;
-    synthesis.speak(utterance);
-};
-
-export const sound = (type: OscillatorType, sec: number, volume: number) => {
-    const ctx = new AudioContext();
-    const gain = ctx.createGain();
-    const osc = ctx.createOscillator();
-    osc.type = type;
-    gain.gain.value = volume;
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-    osc.start();
-    osc.stop(sec);
-};
-
-export const typeSound = async (volume: number): Promise<void> => {
-    const audio = new Audio('/typing.mp3');
-    audio.volume = volume;
-    audio.play();
 };
 
 export const getStaticPaths: GetStaticPaths<PathParams> = async () => {
