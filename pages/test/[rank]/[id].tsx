@@ -206,7 +206,7 @@ const Test: NextPage<PageProps> = ({ allWords }) => {
 
     return (
         <div className="h-screen w-screen overflow-hidden" ref={ref}>
-            <WorkHeader text="選択画面に戻る" href="/test" param={{ mode: 'practice', ...(router.query as any) }} />
+            <WorkHeader text="選択画面に戻る" href="/test" param={{ mode: 'test', ...(router.query as any) }} />
             <div className="h-4/5 relative w-full">
                 <div className="flex h-fit justify-start absolute top-1/3 left-60 w-full">
                     <div

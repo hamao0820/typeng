@@ -222,7 +222,7 @@ const Challenge: NextPage<PageProps> = ({ allWords }) => {
             <WorkHeader
                 text="選択画面に戻る"
                 href="/challenge"
-                param={{ mode: 'practice', ...(router.query as any) }}
+                param={{ mode: 'challenge', ...(router.query as any) }}
             />
             <div className="h-4/5 relative w-full">
                 <div className="flex h-fit justify-start absolute top-1/3 left-60 w-full">

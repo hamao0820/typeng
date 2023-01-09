@@ -250,11 +250,11 @@ const Scoring: NextPage<PageProps> = ({ allWords }) => {
     return (
         <>
             <div className="h-screen w-screen overflow-hidden" ref={ref}>
-                {!ready && <CountDown ready={ready} setReady={setReady} />}
+                {!ready && <CountDown setReady={setReady} />}
                 <WorkHeader
                     text="選択画面に戻る"
                     href="/scoring"
-                    param={{ mode: 'practice', ...(router.query as any) }}
+                    param={{ mode: 'scoring', ...(router.query as any) }}
                 />
                 <div className="h-4/5 relative w-full">
                     {words && (
