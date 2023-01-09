@@ -151,7 +151,7 @@ const SelectList: React.FC<Props> = ({ rank, wordsNum, mode }) => {
                                             <React.Fragment key={`${block}-${i}`}>
                                                 <Link
                                                     href={{
-                                                        pathname: path.join(mode, String(rank), String(i)),
+                                                        pathname: path.join(mode, String(rank), String(block)),
                                                         query: { stage: String(i) },
                                                     }}
                                                 >
