@@ -114,9 +114,25 @@ const Scoring: NextPage<PageProps> = ({ allWords }) => {
     const [measure, setMeasure] = useState<PerformanceEntryList>([]);
 
     useEffect(() => {
-        if (words.length > 0) return;
-        const words_ = stage === 'all' ? allWords : sliceByNumber(allWords, 10)[Number(stage)];
+        // if (words.length > 0) return;
+        // const words_ = stage === 'all' ? allWords : sliceByNumber(allWords, 10)[Number(stage)];
+        // if (words_ === undefined) return;
+        // setWords(shuffle(words_));
+
+        if (stage === 'all') {
+            setWords(allWords);
+            setReady(false);
+            return;
+        }
+        const words_ = sliceByNumber(allWords, 10)[Number(stage)];
         if (words_ === undefined) return;
+        if (words === undefined || words.length === 0) {
+            setReady(false);
+            setWords(shuffle(words_));
+            return;
+        }
+        if (words.length <= 10 && words_.map((word_) => word_.id).includes(words[0].id)) return;
+        setReady(false);
         setWords(shuffle(words_));
     }, [allWords, stage, words]);
 
