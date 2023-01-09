@@ -155,7 +155,7 @@ const Challenge: NextPage<PageProps> = ({ allWords }) => {
     useEffect(() => {
         document.onkeydown = handleKeyDown;
     }, [handleKeyDown]);
-    
+
     useEffect(() => {
         if (words === undefined || words.length === 0) return;
         if (word === undefined || word.en === typed) {
@@ -193,6 +193,10 @@ const Challenge: NextPage<PageProps> = ({ allWords }) => {
         }
         const words_ = sliceByNumber(allWords, 10)[Number(stage)];
         if (words_ === undefined) return;
+        if (words === undefined || words.length === 0) {
+            setWords(shuffle(words_));
+            return;
+        }
         if (words.length <= 10 && words_.map((word_) => word_.id).includes(words[0].id)) return;
         setWords(shuffle(words_));
     }, [allWords, stage, words]);
