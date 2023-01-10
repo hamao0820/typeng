@@ -20,24 +20,36 @@ const Home: NextPage = () => {
             <div className="flex flex-col justify-center items-center h-4/5">
                 <div className="text-2xl font-bold">モード選択{' : '}</div>
                 <div className="flex flex-wrap w-1/2 justify-center mt-2">
-                    <ModeCard title="練習モード" explanation="意味 と 単語" href="practice" />
+                    <ModeCard title="練習モード" explanation="意味と単語が表示されます" href="practice" />
                     <ModeCard
                         title="確認モード"
                         explanation={
                             <>
-                                意味 のみ <br />
-                                間違えた時に単語が表示されます
+                                意味のみ表示されます
+                                <br />
+                                間違えるとすぐに単語が表示されます
                             </>
                         }
                         href="/test"
                     />
-                    <ModeCard title="チャレンジモード" explanation="意味 のみ" href="challenge" />
+                    <ModeCard
+                        title="チャレンジモード"
+                        explanation={
+                            <>
+                                意味のみ表示されます
+                                <br />
+                                間違えても単語は表示されません
+                            </>
+                        }
+                        href="challenge"
+                    />
                     <ModeCard
                         title="採点モード"
                         explanation={
                             <>
-                                意味 のみ <br />
-                                時間と正確性を競います
+                                難易度はチャレンジモードと同じです
+                                <br />
+                                時間とタイプミスをカウントします
                             </>
                         }
                         href="/scoring"
