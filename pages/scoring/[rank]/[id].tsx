@@ -36,13 +36,21 @@ type PathParams = {
 };
 
 export const getServerSideProps: GetServerSideProps<PageProps> = async (context) => {
+    // const { rank, id } = context.params as PathParams;
+    // const dataDir = path.join(process.cwd(), 'data');
+    // const allWords = JSON.parse(fs.readFileSync(path.join(dataDir, `rank${rank}.json`), 'utf-8')) as Word[];
+    // const { stage } = context.query as { stage: string };
+    // return {
+    //     props: {
+    //         allWords: sliceByNumber(allWords, 100)[Number(id)],
+    //         stage,
+    //     },
+    // };
     const { rank, id } = context.params as PathParams;
-    const dataDir = path.join(process.cwd(), 'data');
-    const allWords = JSON.parse(fs.readFileSync(path.join(dataDir, `rank${rank}.json`), 'utf-8')) as Word[];
     const { stage } = context.query as { stage: string };
     return {
         props: {
-            allWords: sliceByNumber(allWords, 100)[Number(id)],
+            allWords: [],
             stage,
         },
     };
