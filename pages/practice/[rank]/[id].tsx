@@ -41,6 +41,11 @@ export const pronounce = (word: string, volume: number) => {
     const voice = window.speechSynthesis.getVoices().find((voice) => voice.voiceURI === 'Google US English');
     if (voice !== undefined) {
         utterance.voice = voice;
+    } else {
+        const voice = window.speechSynthesis.getVoices().find((voice) => voice.lang === 'en-US');
+        if (voice !== undefined) {
+            utterance.voice = voice;
+        }
     }
     utterance.volume = volume;
     synthesis.speak(utterance);
