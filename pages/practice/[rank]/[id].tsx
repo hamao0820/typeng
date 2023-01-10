@@ -8,11 +8,7 @@ import { typingVolumeContext } from '../../../Contexts/TypingVolumeProvider';
 import Marquee from '../../../components/Marquee';
 import WorkHeader from '../../../components/WorkHeader';
 import path from 'path';
-import fs from "fs"
-// import rank1 from '../../../public/rank1.json';
-// import rank2 from '../../../public/rank2.json';
-// import rank3 from '../../../public/rank3.json';
-// import rank4 from '../../../public/rank4.json';
+import fs from 'fs';
 
 type Word = {
     id: number;
@@ -84,11 +80,16 @@ export const shuffle = <T,>([...arr]: T[]): T[] => {
 
 export const getServerSideProps: GetServerSideProps<PageProps> = async (context) => {
     const { rank, id } = context.params as PathParams;
-    // const allWords = [rank1, rank2, rank3, rank4][Number(rank) - 1];
-    const dataDir = path.join(process.cwd(), "data")
-    const allWords = JSON.parse(fs.readFileSync(path.join(dataDir, `rank${rank}.json`), "utf-8")) as Word[]
+    const dataDir = path.join(process.cwd(), 'data');
+    console.log(dataDir)
+    let allWords: Word[];
+    try {
+        allWords = JSON.parse(fs.readFileSync(path.join(dataDir, `rank${rank}.json`), 'utf-8')) as Word[];
+    } catch (error) {
+        allWords = [];
+    }
+    // const allWords = JSON.parse(fs.readFileSync(path.join(dataDir, `rank${rank}.json`), 'utf-8')) as Word[];
     const { stage } = context.query as { stage: string };
-    console.log(allWords)
     return {
         props: {
             allWords: sliceByNumber(allWords, 100)[Number(id)],
@@ -185,6 +186,10 @@ const Practice: NextPage<PageProps> = ({ allWords, stage }) => {
     }, [words]);
 
     useEffect(() => {
+        if (allWords.length === 0) {
+            console.log('データ取得に失敗しましt');
+            return;
+        }
         if (stage === 'all') {
             setWords(allWords);
             return;
