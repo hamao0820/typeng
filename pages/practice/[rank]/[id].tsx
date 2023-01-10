@@ -150,7 +150,6 @@ const Practice: NextPage<PageProps> = ({ allWords }) => {
     const contentRef = useRef<HTMLSpanElement>(null);
     const [isOver, setIsOver] = useState<boolean>(false);
 
-    console.log(stage);
     useEffect(() => {
         if (word === undefined) {
             return;
@@ -226,10 +225,6 @@ const Practice: NextPage<PageProps> = ({ allWords }) => {
     }, [words]);
 
     useEffect(() => {
-        if (allWords.length === 0) {
-            console.log('データ取得に失敗しましt');
-            return;
-        }
         if (stage === 'all') {
             setWords(allWords);
             return;
