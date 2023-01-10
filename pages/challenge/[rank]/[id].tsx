@@ -10,10 +10,8 @@ import Marquee from '../../../components/Marquee';
 import { Button } from '@mui/material';
 import WorkHeader from '../../../components/WorkHeader';
 import { pronounce, shuffle, sliceByNumber, sound, typeSound } from '../../practice/[rank]/[id]';
-import rank1 from '../../../public/rank1.json';
-import rank2 from '../../../public/rank2.json';
-import rank3 from '../../../public/rank3.json';
-import rank4 from '../../../public/rank4.json';
+import path from 'path';
+import fs from 'fs';
 
 type Word = {
     id: number;
@@ -33,7 +31,8 @@ type PathParams = {
 
 export const getServerSideProps: GetServerSideProps<PageProps> = async (context) => {
     const { rank, id } = context.params as PathParams;
-    const allWords = [rank1, rank2, rank3, rank4][Number(rank) - 1];
+    const dataDir = path.join(process.cwd(), 'data');
+    const allWords = JSON.parse(fs.readFileSync(path.join(dataDir, `rank${rank}.json`), 'utf-8')) as Word[];
     const { stage } = context.query as { stage: string };
     return {
         props: {
