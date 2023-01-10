@@ -36,6 +36,7 @@ export const sliceByNumber = <T,>(array: T[], number: number): T[][] => {
 
 export const pronounce = (word: string, volume: number) => {
     const synthesis = window.speechSynthesis;
+    synthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(word);
     const voice = window.speechSynthesis.getVoices().find((voice) => voice.voiceURI === 'Google US English');
     if (voice !== undefined) {
