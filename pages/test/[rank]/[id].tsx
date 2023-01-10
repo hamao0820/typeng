@@ -67,6 +67,7 @@ const Test: NextPage<PageProps> = ({ allWords, stage }) => {
         } else {
             setIsOver(false);
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [word]);
 
     const handleKeyDown = useCallback(
