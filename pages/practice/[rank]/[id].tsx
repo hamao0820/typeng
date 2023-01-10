@@ -79,9 +79,9 @@ export const shuffle = <T,>([...arr]: T[]): T[] => {
 };
 
 export const getServerSideProps: GetServerSideProps<PageProps> = async (context) => {
-    const { rank, id } = context.params as PathParams;
-    const dataDir = path.join(process.cwd(), 'data');
-    console.log(dataDir);
+    // const { rank, id } = context.params as PathParams;
+    // const dataDir = path.join(process.cwd(), 'data');
+    // console.log(dataDir);
     // let allWords: Word[];
     // try {
     //     allWords = JSON.parse(fs.readFileSync(path.join(dataDir, `rank${rank}.json`), 'utf-8')) as Word[];
