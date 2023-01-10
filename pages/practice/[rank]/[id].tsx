@@ -1,4 +1,3 @@
-import fs from 'fs';
 import type { GetServerSideProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
@@ -8,6 +7,10 @@ import { soundEffectVolumeContext } from '../../../Contexts/SoundEffectProvider'
 import { typingVolumeContext } from '../../../Contexts/TypingVolumeProvider';
 import Marquee from '../../../components/Marquee';
 import WorkHeader from '../../../components/WorkHeader';
+import rank1 from '../../../data/rank1.json';
+import rank2 from '../../../data/rank2.json';
+import rank3 from '../../../data/rank3.json';
+import rank4 from '../../../data/rank4.json';
 
 type Word = {
     id: number;
@@ -69,9 +72,17 @@ export const typeSound = async (volume: number): Promise<void> => {
     audio.play();
 };
 
+export const shuffle = <T,>([...arr]: T[]): T[] => {
+    for (let i = arr.length - 1; i >= 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+};
+
 export const getServerSideProps: GetServerSideProps<PageProps> = async (context) => {
     const { rank, id } = context.params as PathParams;
-    const allWords = JSON.parse(fs.readFileSync(`data/rank${rank}.json`, 'utf-8')) as Word[];
+    const allWords = [rank1, rank2, rank3, rank4][Number(rank) - 1];
     const { stage } = context.query as { stage: string };
     return {
         props: {
@@ -79,14 +90,6 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (context)
             stage,
         },
     };
-};
-
-export const shuffle = <T,>([...arr]: T[]): T[] => {
-    for (let i = arr.length - 1; i >= 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [arr[i], arr[j]] = [arr[j], arr[i]];
-    }
-    return arr;
 };
 
 const Practice: NextPage<PageProps> = ({ allWords, stage }) => {
@@ -116,7 +119,7 @@ const Practice: NextPage<PageProps> = ({ allWords, stage }) => {
         } else {
             setIsOver(false);
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [word]);
 
     const handleKeyDown = useCallback(

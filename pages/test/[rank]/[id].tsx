@@ -1,4 +1,3 @@
-import fs from 'fs';
 import type { GetServerSideProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
@@ -9,6 +8,10 @@ import { typingVolumeContext } from '../../../Contexts/TypingVolumeProvider';
 import Marquee from '../../../components/Marquee';
 import WorkHeader from '../../../components/WorkHeader';
 import { pronounce, shuffle, sliceByNumber, sound, typeSound } from '../../practice/[rank]/[id]';
+import rank1 from '../../../data/rank1.json';
+import rank2 from '../../../data/rank2.json';
+import rank3 from '../../../data/rank3.json';
+import rank4 from '../../../data/rank4.json';
 
 type Word = {
     id: number;
@@ -28,7 +31,7 @@ type PathParams = {
 
 export const getServerSideProps: GetServerSideProps<PageProps> = async (context) => {
     const { rank, id } = context.params as PathParams;
-    const allWords = JSON.parse(fs.readFileSync(`data/rank${rank}.json`, 'utf-8')) as Word[];
+    const allWords = [rank1, rank2, rank3, rank4][Number(rank) - 1];
     const { stage } = context.query as { stage: string };
     return {
         props: {
