@@ -12,10 +12,10 @@ import CountDown from '../../../components/CountDown';
 import Result from '../../../components/Result';
 import WorkHeader from '../../../components/WorkHeader';
 import { pronounce, shuffle, sliceByNumber, sound, typeSound } from '../../practice/[rank]/[id]';
-import rank1 from '../../../data/rank1.json';
-import rank2 from '../../../data/rank2.json';
-import rank3 from '../../../data/rank3.json';
-import rank4 from '../../../data/rank4.json';
+import rank1 from '../../../public/rank1.json';
+import rank2 from '../../../public/rank2.json';
+import rank3 from '../../../public/rank3.json';
+import rank4 from '../../../public/rank4.json';
 
 type Word = {
     id: number;
