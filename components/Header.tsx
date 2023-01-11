@@ -29,6 +29,9 @@ const Header: React.FC<Props> = ({ text, href, mode }) => {
                             <NativeSelect
                                 defaultValue={mode}
                                 onChange={(e) => {
+                                    {
+                                        /* TODO: /を先頭につけて絶対パスにする */
+                                    }
                                     router.push(path.join(e.currentTarget.value));
                                 }}
                             >

@@ -94,6 +94,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async (context) => {
     };
 };
 
+// FIXME: 同じ単語で3回間違えるとhintが出続ける
 const Scoring: NextPage<PageProps> = ({ allWords }) => {
     const [word, setWord] = useState<Word>();
     const [typed, setTyped] = useState<string>('');

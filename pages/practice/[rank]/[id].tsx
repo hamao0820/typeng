@@ -78,6 +78,8 @@ export const shuffle = <T,>([...arr]: T[]): T[] => {
     return arr;
 };
 
+// TODO: 単語をランダムではなくwordsからひとつづつ抜き出して一周するとsetWordsをするようにする
+// TODO: practice, test, challengeの処理をカスタムフックにまとめる(例: useWord)
 export const getStaticPaths: GetStaticPaths<PathParams> = async () => {
     return {
         paths: [

@@ -4,6 +4,7 @@ import Logo from '../components/Logo';
 import SettingButton from '../components/SettingButton';
 import Head from 'next/head';
 
+// TODO: icoを用意
 const Home: NextPage = () => {
     return (
         <div className="flex flex-col h-screen relative">

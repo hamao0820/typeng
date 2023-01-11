@@ -16,7 +16,11 @@ const Result: React.FC<Props> = ({ missCount, results, measure }) => {
     const router = useRouter();
     return (
         <div className="h-screen w-screen absolute top-0 left-0 bg-white z-50 flex flex-col items-center overflow-hidden">
-            <Header text="ステージ選択に戻る" href="/scoring" mode='scoring'/>
+            {/*
+                TODO: WorkHeaderに変更
+                FIXME: 終わった後モードを変更するとバグる
+            */}
+            <Header text="ステージ選択に戻る" href="/scoring" mode="scoring" />
             <div className="h-4/5 w-5/6 flex flex-1">
                 <div className="h-full flex-1 m-1 overflow-hidden">
                     <div className="text-center text-xl font-bold">単語</div>
