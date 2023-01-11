@@ -116,8 +116,9 @@ const Scoring: NextPage<PageProps> = ({ allWords }) => {
     const [measure, setMeasure] = useState<PerformanceEntryList>([]);
 
     useEffect(() => {
+        if (words.length > 10) return;
         if (stage === 'all') {
-            setWords(allWords);
+            setWords(shuffle(allWords));
             setReady(false);
             return;
         }
