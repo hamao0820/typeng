@@ -12,6 +12,7 @@ import WorkHeader from '../../../components/WorkHeader';
 import { pronounce, shuffle, sliceByNumber, sound, typeSound } from '../../practice/[rank]/[id]';
 import path from 'path';
 import fs from 'fs';
+import Head from 'next/head';
 
 type Word = {
     id: number;
@@ -205,6 +206,9 @@ const Challenge: NextPage<PageProps> = ({ allWords }) => {
 
     return (
         <div className="h-screen w-screen overflow-hidden" ref={ref}>
+            <Head>
+                <title>challenge</title>
+            </Head>
             <WorkHeader
                 text="選択画面に戻る"
                 href="/challenge"

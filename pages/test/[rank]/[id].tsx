@@ -10,6 +10,7 @@ import WorkHeader from '../../../components/WorkHeader';
 import { pronounce, shuffle, sliceByNumber, sound, typeSound } from '../../practice/[rank]/[id]';
 import path from 'path';
 import fs from 'fs';
+import Head from 'next/head';
 
 type Word = {
     id: number;
@@ -193,6 +194,9 @@ const Test: NextPage<PageProps> = ({ allWords }) => {
 
     return (
         <div className="h-screen w-screen overflow-hidden" ref={ref}>
+            <Head>
+                <title>test</title>
+            </Head>
             <WorkHeader text="選択画面に戻る" href="/test" param={{ mode: 'test', ...(router.query as any) }} />
             <div className="h-4/5 relative w-full">
                 <div className="flex h-fit justify-start absolute top-1/3 left-60 w-full">

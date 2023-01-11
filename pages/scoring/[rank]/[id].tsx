@@ -14,6 +14,7 @@ import WorkHeader from '../../../components/WorkHeader';
 import { pronounce, shuffle, sliceByNumber, sound, typeSound } from '../../practice/[rank]/[id]';
 import path from 'path';
 import fs from 'fs';
+import Head from 'next/head';
 
 type Word = {
     id: number;
@@ -218,6 +219,9 @@ const Scoring: NextPage<PageProps> = ({ allWords }) => {
 
     return (
         <>
+            <Head>
+                <title>scoring</title>
+            </Head>
             <div className="h-screen w-screen overflow-hidden" ref={ref}>
                 {!ready && <CountDown setReady={setReady} />}
                 <WorkHeader

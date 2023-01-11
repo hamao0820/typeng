@@ -9,6 +9,7 @@ import Marquee from '../../../components/Marquee';
 import WorkHeader from '../../../components/WorkHeader';
 import path from 'path';
 import fs from 'fs';
+import Head from 'next/head';
 
 type Word = {
     id: number;
@@ -241,6 +242,9 @@ const Practice: NextPage<PageProps> = ({ allWords }) => {
 
     return (
         <div className="h-screen w-screen overflow-hidden" ref={ref}>
+            <Head>
+                <title>practice</title>
+            </Head>
             <WorkHeader text="選択画面に戻る" href="/practice" param={{ mode: 'practice', ...(router.query as any) }} />
             <div className="h-4/5 relative w-full">
                 <div className="flex h-fit justify-start absolute top-1/3 left-60 w-full">
