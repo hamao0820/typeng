@@ -2,10 +2,14 @@ import type { NextPage } from 'next';
 import ModeCard from '../components/ModeCard';
 import Logo from '../components/Logo';
 import SettingButton from '../components/SettingButton';
+import Head from 'next/head';
 
 const Home: NextPage = () => {
     return (
         <div className="flex flex-col h-screen relative">
+            <Head>
+                <title>Typeng</title>
+            </Head>
             <div className="flex justify-center items-center h-1/5">
                 <Logo />
                 <div
