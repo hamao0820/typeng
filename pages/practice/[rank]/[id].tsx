@@ -101,7 +101,6 @@ export const shuffle = <T,>([...arr]: T[]): T[] => {
     return arr;
 };
 
-// TODO: 単語をランダムではなくwordsからひとつづつ抜き出して一周するとsetWordsをするようにする
 export const getStaticPaths: GetStaticPaths<PathParams> = async () => {
     return {
         paths: [
@@ -227,6 +226,7 @@ const Practice: NextPage<PageProps> = ({ allWords }) => {
             </Head>
             <WorkHeader text="選択画面に戻る" href="/practice" param={{ mode: 'practice', ...(router.query as any) }} />
             <div className="h-4/5 relative w-full">
+                {word && <div className="absolute top-5 right-10 text-3xl">id: {word.id + 1}</div>}
                 <div className="flex h-fit justify-start absolute top-1/3 left-60 w-full">
                     <div
                         className="w-fit h-fit flex items-center justify-center p-2 bg-green-500 rounded-md"
