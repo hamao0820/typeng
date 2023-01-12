@@ -9,10 +9,11 @@ import { typingVolumeContext } from '../../../Contexts/TypingVolumeProvider';
 import Marquee from '../../../components/Marquee';
 import { Button } from '@mui/material';
 import WorkHeader from '../../../components/WorkHeader';
-import { pronounce, shuffle, sliceByNumber, sound, typeSound } from '../../practice/[rank]/[id]';
+import { pronounce, sliceByNumber, sound, typeSound } from '../../practice/[rank]/[id]';
 import path from 'path';
 import fs from 'fs';
 import Head from 'next/head';
+import useWord from '../../../hooks/useWord';
 
 type Word = {
     id: number;
@@ -89,20 +90,16 @@ export const getStaticProps: GetStaticProps<PageProps> = async (context) => {
 };
 
 const Challenge: NextPage<PageProps> = ({ allWords }) => {
-    const [word, setWord] = useState<Word>();
-    const [typed, setTyped] = useState<string>('');
-    const [unTyped, setUnTyped] = useState<string>('');
+    const router = useRouter();
+    const stage = router.asPath.split('stage=')[1];
+    const { word, typed, unTyped, missCount, handleWord } = useWord(allWords, stage);
     const ref = useRef<HTMLDivElement>(null);
     const pronounceVolume = useContext(pronounceVolumeContext);
     const soundEffectVolume = useContext(soundEffectVolumeContext);
     const typingVolume = useContext(typingVolumeContext);
-    const router = useRouter();
-    const stage = router.asPath.split('stage=')[1];
-    const [words, setWords] = useState<Word[]>(stage === 'all' ? allWords : sliceByNumber(allWords, 10)[Number(stage)]);
     const contentRef = useRef<HTMLSpanElement>(null);
     const [isOver, setIsOver] = useState<boolean>(false);
     const [show, setShow] = useState<boolean>(false);
-    const [missCount, setMissCount] = useState<number>(0);
 
     useEffect(() => {
         if (word === undefined) {
@@ -110,8 +107,6 @@ const Challenge: NextPage<PageProps> = ({ allWords }) => {
         }
         pronounce(word.en, pronounceVolume / 100);
         setShow(false);
-        setUnTyped(word.en);
-        setTyped('');
         const content = contentRef.current;
         if (content === null) return;
         if (800 <= content.clientWidth) {
@@ -130,21 +125,17 @@ const Challenge: NextPage<PageProps> = ({ allWords }) => {
         return () => clearInterval(timer);
     }, [pronounceVolume, word]);
 
-    const handleKeyDown = useCallback(
+    const handleEffect = useCallback(
         (e: React.KeyboardEvent<HTMLDivElement> | KeyboardEvent) => {
             const key = e.key;
             if (unTyped.startsWith(key)) {
                 typeSound(typingVolume / 100);
-                setMissCount(0);
-                setUnTyped((prev) => prev.slice(1));
-                setTyped((prev) => prev + key);
             } else {
                 if (unTyped[0].toUpperCase() === unTyped[0] && e.shiftKey) {
                     return;
                 }
                 const body = ref.current;
                 if (body === null) return;
-                setMissCount((prev) => prev + 1);
                 sound('sine', 0.1, soundEffectVolume / 100);
                 body.animate([{ backgroundColor: 'rgba(200, 0, 0, 0.1)' }, { backgroundColor: '' }], {
                     duration: 300,
@@ -155,54 +146,17 @@ const Challenge: NextPage<PageProps> = ({ allWords }) => {
         [unTyped, typingVolume, soundEffectVolume]
     );
 
+    const handleKeyDown = useCallback(
+        (e: React.KeyboardEvent<HTMLDivElement> | KeyboardEvent) => {
+            handleWord(e);
+            handleEffect(e);
+        },
+        [handleWord, handleEffect]
+    );
+
     useEffect(() => {
         document.onkeydown = handleKeyDown;
     }, [handleKeyDown]);
-
-    useEffect(() => {
-        if (words === undefined || words.length === 0) return;
-        if (word === undefined || word.en === typed) {
-            setWord((prev) => {
-                const index = Math.floor(Math.random() * words.length);
-                let next = words[index];
-                while (prev?.id === next.id) {
-                    const index = Math.floor(Math.random() * words.length);
-                    next = words[index];
-                }
-                return next;
-            });
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [typed]);
-
-    useEffect(() => {
-        if (words === undefined || words.length === 0) return;
-
-        setWord((prev) => {
-            const index = Math.floor(Math.random() * words.length);
-            let next = words[index];
-            while (prev?.id === next.id) {
-                const index = Math.floor(Math.random() * words.length);
-                next = words[index];
-            }
-            return next;
-        });
-    }, [words]);
-
-    useEffect(() => {
-        if (stage === 'all') {
-            setWords(allWords);
-            return;
-        }
-        const words_ = sliceByNumber(allWords, 10)[Number(stage)];
-        if (words_ === undefined) return;
-        if (words === undefined || words.length === 0) {
-            setWords(shuffle(words_));
-            return;
-        }
-        if (words.length <= 10 && words_.map((word_) => word_.id).includes(words[0].id)) return;
-        setWords(shuffle(words_));
-    }, [allWords, stage, words]);
 
     return (
         <div className="h-screen w-screen overflow-hidden" ref={ref}>

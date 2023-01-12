@@ -7,10 +7,11 @@ import { soundEffectVolumeContext } from '../../../Contexts/SoundEffectProvider'
 import { typingVolumeContext } from '../../../Contexts/TypingVolumeProvider';
 import Marquee from '../../../components/Marquee';
 import WorkHeader from '../../../components/WorkHeader';
-import { pronounce, shuffle, sliceByNumber, sound, typeSound } from '../../practice/[rank]/[id]';
+import { pronounce, sliceByNumber, sound, typeSound } from '../../practice/[rank]/[id]';
 import path from 'path';
 import fs from 'fs';
 import Head from 'next/head';
+import useWord from '../../../hooks/useWord';
 
 type Word = {
     id: number;
@@ -87,28 +88,21 @@ export const getStaticProps: GetStaticProps<PageProps> = async (context) => {
 };
 
 const Test: NextPage<PageProps> = ({ allWords }) => {
-    const [word, setWord] = useState<Word>();
-    const [typed, setTyped] = useState<string>('');
-    const [unTyped, setUnTyped] = useState<string>('');
+    const router = useRouter();
+    const stage = router.asPath.split('stage=')[1];
+    const { word, typed, unTyped, missed, handleWord } = useWord(allWords, stage);
     const ref = useRef<HTMLDivElement>(null);
     const pronounceVolume = useContext(pronounceVolumeContext);
     const soundEffectVolume = useContext(soundEffectVolumeContext);
     const typingVolume = useContext(typingVolumeContext);
-    const router = useRouter();
-    const stage = router.asPath.split('stage=')[1];
-    const [words, setWords] = useState<Word[]>(stage === 'all' ? allWords : sliceByNumber(allWords, 10)[Number(stage)]);
     const contentRef = useRef<HTMLSpanElement>(null);
     const [isOver, setIsOver] = useState<boolean>(false);
-    const [missed, setMissed] = useState<boolean>(false);
 
     useEffect(() => {
         if (word === undefined) {
             return;
         }
         pronounce(word.en, pronounceVolume / 100);
-        setMissed(false);
-        setUnTyped(word.en);
-        setTyped('');
         const content = contentRef.current;
         if (content === null) return;
         if (800 <= content.clientWidth) {
@@ -119,13 +113,11 @@ const Test: NextPage<PageProps> = ({ allWords }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [word]);
 
-    const handleKeyDown = useCallback(
+    const handleEffect = useCallback(
         (e: React.KeyboardEvent<HTMLDivElement> | KeyboardEvent) => {
             const key = e.key;
             if (unTyped.startsWith(key)) {
                 typeSound(typingVolume / 100);
-                setUnTyped((prev) => prev.slice(1));
-                setTyped((prev) => prev + key);
             } else {
                 if (unTyped[0].toUpperCase() === unTyped[0] && e.shiftKey) {
                     return;
@@ -137,60 +129,22 @@ const Test: NextPage<PageProps> = ({ allWords }) => {
                     duration: 300,
                     direction: 'alternate',
                 });
-                setMissed(true);
             }
         },
         [unTyped, typingVolume, soundEffectVolume]
     );
 
+    const handleKeyDown = useCallback(
+        (e: React.KeyboardEvent<HTMLDivElement> | KeyboardEvent) => {
+            handleWord(e);
+            handleEffect(e);
+        },
+        [handleWord, handleEffect]
+    );
+
     useEffect(() => {
         document.onkeydown = handleKeyDown;
     }, [handleKeyDown]);
-
-    useEffect(() => {
-        if (words === undefined || words.length === 0) return;
-        if (word === undefined || word.en === typed) {
-            setWord((prev) => {
-                const index = Math.floor(Math.random() * words.length);
-                let next = words[index];
-                while (prev?.id === next.id) {
-                    const index = Math.floor(Math.random() * words.length);
-                    next = words[index];
-                }
-                return next;
-            });
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [typed]);
-
-    useEffect(() => {
-        if (words === undefined || words.length === 0) return;
-
-        setWord((prev) => {
-            const index = Math.floor(Math.random() * words.length);
-            let next = words[index];
-            while (prev?.id === next.id) {
-                const index = Math.floor(Math.random() * words.length);
-                next = words[index];
-            }
-            return next;
-        });
-    }, [words]);
-
-    useEffect(() => {
-        if (stage === 'all') {
-            setWords(allWords);
-            return;
-        }
-        const words_ = sliceByNumber(allWords, 10)[Number(stage)];
-        if (words_ === undefined) return;
-        if (words === undefined || words.length === 0) {
-            setWords(shuffle(words_));
-            return;
-        }
-        if (words.length <= 10 && words_.map((word_) => word_.id).includes(words[0].id)) return;
-        setWords(shuffle(words_));
-    }, [allWords, stage, words]);
 
     return (
         <div className="h-screen w-screen overflow-hidden" ref={ref}>
