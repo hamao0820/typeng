@@ -29,10 +29,7 @@ const Header: React.FC<Props> = ({ text, href, mode }) => {
                             <NativeSelect
                                 defaultValue={mode}
                                 onChange={(e) => {
-                                    {
-                                        /* TODO: /を先頭につけて絶対パスにする */
-                                    }
-                                    router.push(path.join(e.currentTarget.value));
+                                    router.push(`/${e.currentTarget.value}`);
                                 }}
                             >
                                 <option value="practice">練習モード</option>
