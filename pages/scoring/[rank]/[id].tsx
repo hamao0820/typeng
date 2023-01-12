@@ -94,7 +94,6 @@ export const getStaticProps: GetStaticProps<PageProps> = async (context) => {
     };
 };
 
-// FIXME: 同じ単語で3回間違えるとhintが出続ける
 const Scoring: NextPage<PageProps> = ({ allWords }) => {
     const [word, setWord] = useState<Word>();
     const [typed, setTyped] = useState<string>('');
@@ -111,6 +110,7 @@ const Scoring: NextPage<PageProps> = ({ allWords }) => {
     const [isOver, setIsOver] = useState<boolean>(false);
     const [show, setShow] = useState<boolean>(false);
     const [missCount, setMissCount] = useState<number>(0);
+    const [miss, setMiss] = useState<boolean>(false);
     const [ready, setReady] = useState<boolean>(false);
     const [index, setIndex] = useState<number>(0);
     const [showResult, setShowResult] = useState<boolean>(false);
@@ -144,6 +144,7 @@ const Scoring: NextPage<PageProps> = ({ allWords }) => {
         setUnTyped(word.en);
         setTyped('');
         setMissCount(0);
+        setMiss(false)
         const content = contentRef.current;
         if (content === null) return;
         if (800 <= content.clientWidth) {
@@ -165,6 +166,7 @@ const Scoring: NextPage<PageProps> = ({ allWords }) => {
             if (unTyped === '') return;
             if (unTyped.startsWith(key)) {
                 typeSound(typingVolume / 100);
+                setMissCount(0);
                 setUnTyped((prev) => prev.slice(1));
                 setTyped((prev) => prev + key);
             } else {
@@ -173,6 +175,7 @@ const Scoring: NextPage<PageProps> = ({ allWords }) => {
                 }
                 const body = ref.current;
                 if (body === null) return;
+                setMiss(true)
                 setMissCount((prev) => prev + 1);
                 setMissCountSum((prev) => prev + 1);
                 sound('sine', 0.1, soundEffectVolume / 100);
@@ -213,10 +216,10 @@ const Scoring: NextPage<PageProps> = ({ allWords }) => {
     useEffect(() => {
         if (word === undefined || typed === '') return;
         if (word.en === typed) {
-            setResults((prev) => [...prev, { ...word, correct: missCount === 0 }]);
+            setResults((prev) => [...prev, { ...word, correct: !miss }]);
             setIndex((prevIndex) => prevIndex + 1);
         }
-    }, [word, typed, missCount]);
+    }, [word, typed, miss]);
 
     return (
         <>
