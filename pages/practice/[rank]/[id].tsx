@@ -35,20 +35,42 @@ export const sliceByNumber = <T,>(array: T[], number: number): T[][] => {
     return newArr;
 };
 
-export const pronounce = (word: string, volume: number) => {
+export const pronounce = async (word: string, volume: number) => {
     const synthesis = window.speechSynthesis;
     synthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(word);
-    const voice = window.speechSynthesis.getVoices().find((voice) => voice.voiceURI === 'Google US English');
+    utterance.volume = volume;
+    utterance.onerror = (e) => {
+        console.table(e);
+    };
+    const voices = synthesis.getVoices();
+    if (voices.length === 0) {
+        await new Promise<void>((resolve) => {
+            synthesis.onvoiceschanged = () => {
+                const voice = synthesis.getVoices().find((voice) => voice.voiceURI === 'Google US English');
+                if (voice !== undefined) {
+                    utterance.voice = voice;
+                } else {
+                    const voice = synthesis.getVoices().find((voice) => voice.lang === 'en-US');
+                    if (voice !== undefined) {
+                        utterance.voice = voice;
+                    }
+                }
+                synthesis.speak(utterance);
+                resolve();
+            };
+        });
+        return;
+    }
+    const voice = synthesis.getVoices().find((voice) => voice.voiceURI === 'Google US English');
     if (voice !== undefined) {
         utterance.voice = voice;
     } else {
-        const voice = window.speechSynthesis.getVoices().find((voice) => voice.lang === 'en-US');
+        const voice = synthesis.getVoices().find((voice) => voice.lang === 'en-US');
         if (voice !== undefined) {
             utterance.voice = voice;
         }
     }
-    utterance.volume = volume;
     synthesis.speak(utterance);
 };
 

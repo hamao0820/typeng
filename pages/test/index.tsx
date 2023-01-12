@@ -1,14 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import SelectList from '../../components/SelectList';
 import Header from '../../components/Header';
-import { pronounce } from '../practice/[rank]/[id]';
 import Head from 'next/head';
 
 const TestHome = () => {
-    useEffect(() => {
-        // speechSynthesisAPIを初期化
-        pronounce('', 0);
-    }, []);
     return (
         <div className="h-screen w-screen overflow-hidden">
             <Head>
