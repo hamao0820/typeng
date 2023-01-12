@@ -25,6 +25,8 @@ type OpenStatesType = {
     open: boolean;
 };
 
+// TODO: 単語一覧の表示
+// https://mui.com/material-ui/react-dialog/#scrolling-long-content
 const SelectList: React.FC<Props> = ({ rank, wordsNum, mode }) => {
     const [openStates, setOpenStates] = React.useState<OpenStatesType[]>(
         sliceByNumber(
