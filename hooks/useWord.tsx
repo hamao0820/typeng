@@ -8,6 +8,7 @@ const useWord = (allWords: Word[], stage: string) => {
     const [unTyped, setUnTyped] = useState<string>('');
     const [missed, setMissed] = useState<boolean>(false);
     const [missCount, setMissCount] = useState<number>(0);
+    const [indices, setIndices] = useState<number[]>([]);
 
     useEffect(() => {
         if (word === undefined) {
@@ -21,6 +22,7 @@ const useWord = (allWords: Word[], stage: string) => {
     const handleWord = useCallback(
         (e: React.KeyboardEvent<HTMLDivElement> | KeyboardEvent) => {
             const key = e.key;
+            if (unTyped === undefined) return;
             if (unTyped.startsWith(key)) {
                 setMissCount(0);
                 setUnTyped((prev) => prev.slice(1));
@@ -39,32 +41,30 @@ const useWord = (allWords: Word[], stage: string) => {
     useEffect(() => {
         if (words === undefined || words.length === 0) return;
         if (word === undefined || word.en === typed) {
-            setWord((prev) => {
-                const index = Math.floor(Math.random() * words.length);
-                let next = words[index];
-                while (prev?.id === next.id) {
-                    const index = Math.floor(Math.random() * words.length);
-                    next = words[index];
-                }
-                return next;
-            });
+            setIndices((prev) => prev.slice(1));
+            return;
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [typed]);
+    }, [typed, word, words]);
 
     useEffect(() => {
-        if (words === undefined || words.length === 0) return;
-
-        setWord((prev) => {
-            const index = Math.floor(Math.random() * words.length);
-            let next = words[index];
-            while (prev?.id === next.id) {
-                const index = Math.floor(Math.random() * words.length);
-                next = words[index];
+        if (words === undefined || words.length === 0) {
+            return;
+        }
+        if (indices.length === 0) {
+            const serialIndices = [...Array(words.length)].map((_, i) => i);
+            if (word === undefined) {
+                setIndices(shuffle(serialIndices));
+                return;
             }
-            return next;
-        });
-    }, [words]);
+            let indices_ = shuffle(serialIndices);
+            while (indices_[0] === words.indexOf(word)) {
+                indices_ = shuffle(serialIndices);
+            }
+            setIndices(indices_);
+            return;
+        }
+        setWord(words[indices[0]]);
+    }, [indices, word, words]);
 
     useEffect(() => {
         if (stage === 'all') {
