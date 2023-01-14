@@ -110,11 +110,7 @@
     { "id": 104, "en": "loathe", "ja": "ひどく嫌う" },
     { "id": 105, "en": "contrite", "ja": "悔い改めた, 悔恨の" },
     { "id": 106, "en": "transient", "ja": "一時の, 短期の, (滞在などが)短い" },
-    {
-        "id": 107,
-        "en": "retrospective",
-        "ja": "回顧的な,  過去を振り返ってみること, 追想にふける, 昔の事を思いしのぶこと"
-    },
+    { "id": 107, "en": "retrospective", "ja": "回顧的な,  過去を振り返ってみること" },
     { "id": 108, "en": "entail", "ja": "伴う, 必要とする" },
     { "id": 109, "en": "deter", "ja": "抑制する, 怖がらせて~させない" },
     { "id": 110, "en": "snare", "ja": "罠で捕らえる, 罠" },
@@ -137,7 +133,7 @@
     { "id": 127, "en": "imbalance", "ja": "不均衡" },
     { "id": 128, "en": "repressive", "ja": "抑圧的な" },
     { "id": 129, "en": "thinker", "ja": "思想家, 思索家" },
-    { "id": 130, "en": "affidavit", "ja": "宣誓供述書" },
+    { "id": 130, "en": "affidavit", "ja": "宣誓, 供述書" },
     { "id": 131, "en": "hindmost", "ja": "最後部の" },
     { "id": 132, "en": "subterranean", "ja": "地下の, 地中の, 隠れた" },
     { "id": 133, "en": "caprice", "ja": "気まぐれ, 移り気" },
