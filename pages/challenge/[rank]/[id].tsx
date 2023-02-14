@@ -7,7 +7,7 @@ import { pronounceVolumeContext } from '../../../Contexts/PronounceProvider';
 import { soundEffectVolumeContext } from '../../../Contexts/SoundEffectProvider';
 import { typingVolumeContext } from '../../../Contexts/TypingVolumeProvider';
 import Marquee from '../../../components/Marquee';
-import { Button } from '@mui/material';
+import Button from '@mui/material/Button';
 import WorkHeader from '../../../components/WorkHeader';
 import { pronounce, sliceByNumber, sound, typeSound } from '../../practice/[rank]/[id]';
 import path from 'path';

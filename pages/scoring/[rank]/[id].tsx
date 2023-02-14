@@ -7,7 +7,7 @@ import { pronounceVolumeContext } from '../../../Contexts/PronounceProvider';
 import { soundEffectVolumeContext } from '../../../Contexts/SoundEffectProvider';
 import { typingVolumeContext } from '../../../Contexts/TypingVolumeProvider';
 import Marquee from '../../../components/Marquee';
-import { Button } from '@mui/material';
+import Button from '@mui/material/Button';
 import CountDown from '../../../components/CountDown';
 import Result from '../../../components/Result';
 import WorkHeader from '../../../components/WorkHeader';
