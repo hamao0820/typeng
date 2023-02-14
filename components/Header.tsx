@@ -14,11 +14,13 @@ type Props = {
     mode: Mode;
 };
 
+// TODO: リストを全て閉じるボタンをまとめる
 const Header: React.FC<Props> = ({ text, href, mode }) => {
     const router = useRouter();
     return (
         <div className="w-full flex justify-between items-center">
             <BackButton href={href} text={text} />
+            <div>リストを右クリックすると単語一覧が表示されます</div>
             <div className="flex items-center">
                 <div>
                     <Box sx={{ minWidth: 120 }}>

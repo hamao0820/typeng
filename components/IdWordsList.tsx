@@ -4,7 +4,7 @@ import { Id, Rank, Word } from '../types';
 
 type Props = {
     rank: Rank;
-    id: Id;
+    id: Id | '';
     isOpen: boolean;
     close: () => void;
 };
@@ -12,6 +12,7 @@ type Props = {
 const IdWordsList: React.FC<Props> = ({ rank, id, isOpen, close }) => {
     const [words, setWords] = useState<Word[]>([]);
     useEffect(() => {
+        if (id === '') return;
         (async () => {
             const res = await fetch(`api/${rank}/${id}`);
             const words = (await res.json()) as Word[];

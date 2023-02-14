@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import ListSubheader from '@mui/material/ListSubheader';
 import List from '@mui/material/List';
@@ -42,6 +42,8 @@ const SelectList: React.FC<Props> = ({ rank, wordsNum, mode }) => {
     const [isRankWordsListModalOpen, setIsRankWordsListModalOpen] = useState<boolean>(false);
     const [isIdWordsListModalOpen, setIsIdWordsListModalOpen] = useState<boolean>(false);
     const [isStageWordsListModalOpen, setIsStageWordsListModalOpen] = useState<boolean>(false);
+    const [activeId, setActiveId] = useState<Id>('0');
+    const [activeIdAndStage, setActiveIdAndStage] = useState<{ id: Id; stage: Stage }>({ id: '0', stage: 'all' });
 
     const handleClick = (id: number) => {
         setOpenStates((prev) =>
@@ -67,18 +69,6 @@ const SelectList: React.FC<Props> = ({ rank, wordsNum, mode }) => {
         });
     };
 
-    const [activeId, setActiveId] = useState<Id | ''>('');
-    useEffect(() => {
-        if (activeId === '') return;
-        setIsIdWordsListModalOpen(true);
-    }, [activeId]);
-
-    const [activeIdAndStage, setActiveIdAndStage] = useState<{ id: Id | ''; stage: Stage | '' }>({ id: '', stage: '' });
-    useEffect(() => {
-        if (activeIdAndStage.id === '' || activeIdAndStage.stage === '') return;
-        setIsStageWordsListModalOpen(true);
-    }, [activeIdAndStage]);
-
     return (
         <div className="m-2 w-screen">
             <RankWordsList
@@ -90,7 +80,7 @@ const SelectList: React.FC<Props> = ({ rank, wordsNum, mode }) => {
             />
             <IdWordsList
                 rank={rank}
-                id={activeId === '' ? '0' : activeId}
+                id={activeId}
                 isOpen={isIdWordsListModalOpen}
                 close={() => {
                     setIsIdWordsListModalOpen(false);
@@ -98,8 +88,8 @@ const SelectList: React.FC<Props> = ({ rank, wordsNum, mode }) => {
             />
             <StageWordsList
                 rank={rank}
-                id={activeIdAndStage.id === '' ? '0' : activeIdAndStage.id}
-                stage={activeIdAndStage.stage === '' ? 'all' : activeIdAndStage.stage}
+                id={activeIdAndStage.id}
+                stage={activeIdAndStage.stage}
                 isOpen={isStageWordsListModalOpen}
                 close={() => {
                     setIsStageWordsListModalOpen(false);
@@ -166,6 +156,7 @@ const SelectList: React.FC<Props> = ({ rank, wordsNum, mode }) => {
                                 onContextMenu={(e) => {
                                     e.preventDefault();
                                     setActiveId(String(id) as Id);
+                                    setIsIdWordsListModalOpen(true);
                                 }}
                             >
                                 <ListItemIcon>
@@ -201,6 +192,7 @@ const SelectList: React.FC<Props> = ({ rank, wordsNum, mode }) => {
                                                     id: String(id) as Id,
                                                     stage: 'all',
                                                 });
+                                                setIsStageWordsListModalOpen(true);
                                             }}
                                         >
                                             <ListItemIcon>
@@ -234,6 +226,7 @@ const SelectList: React.FC<Props> = ({ rank, wordsNum, mode }) => {
                                                                 id: String(id) as Id,
                                                                 stage: String(i) as Stage,
                                                             });
+                                                            setIsStageWordsListModalOpen(true);
                                                         }}
                                                     >
                                                         <ListItemIcon>
