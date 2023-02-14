@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import ListSubheader from '@mui/material/ListSubheader';
 import List from '@mui/material/List';
@@ -11,9 +11,11 @@ import Divider from '@mui/material/Divider';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import UnfoldLess from '@mui/icons-material/UnfoldLess';
+import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
 import path from 'path';
-import type { Mode } from '../types';
+import type { Mode, Rank } from '../types';
 import { sliceByNumber } from '../utils';
+import RankWordsList from './RankWordsList';
 
 type Props = {
     rank: number;
@@ -37,6 +39,11 @@ const SelectList: React.FC<Props> = ({ rank, wordsNum, mode }) => {
             return { block, open: false };
         })
     );
+    const [isRankWordsListModalOpen, setIsRankWordsListModalOpen] = useState<boolean>(false);
+    // const [isPopoverOpen, setIsPopoverOpen] = useState<boolean>(false);
+    const closeRankWordListModal = () => {
+        setIsRankWordsListModalOpen(false);
+    };
     const handleClick = (block: number) => {
         setOpenStates((prev) =>
             prev.map((state, i) => {
@@ -63,6 +70,11 @@ const SelectList: React.FC<Props> = ({ rank, wordsNum, mode }) => {
 
     return (
         <div className="m-2 w-screen">
+            <RankWordsList
+                rank={String(rank) as Rank}
+                isOpen={isRankWordsListModalOpen}
+                close={closeRankWordListModal}
+            ></RankWordsList>
             <List
                 sx={{
                     width: '100%',
@@ -75,7 +87,20 @@ const SelectList: React.FC<Props> = ({ rank, wordsNum, mode }) => {
                 subheader={
                     <ListSubheader component="div" id="nested-list-subheader">
                         <div className="flex justify-between items-center">
-                            <span className="text-2xl font-bold">Rank {rank}</span>
+                            <span className="text-2xl font-bold flex-1">Rank {rank}</span>
+                            <Button
+                                sx={{
+                                    border: '2px solid rgb(147, 197, 253)',
+                                    minWidth: '32px',
+                                    width: '32px',
+                                    height: '32px',
+                                    padding: 0,
+                                    margin: '1px',
+                                }}
+                                onClick={() => setIsRankWordsListModalOpen(true)}
+                            >
+                                <FormatListNumberedIcon></FormatListNumberedIcon>
+                            </Button>
                             <Button
                                 sx={{
                                     border: '2px solid rgb(147, 197, 253)',

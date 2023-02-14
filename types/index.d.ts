@@ -7,6 +7,7 @@ export type Word = {
 export type Mode = 'practice' | 'test' | 'challenge' | 'scoring';
 export type Rank = '1' | '2' | '3' | '4';
 export type Id = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10';
+export type Stage = 'all' | '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10';
 
 export type PageProps = { allWords: Word[] };
 export type PathParams = {
@@ -22,5 +23,5 @@ export type PathParam = {
     mode: Mode;
     rank: Rank;
     id: Id;
-    stage: '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10';
+    stage: Stage
 };
