@@ -11,9 +11,9 @@ import Divider from '@mui/material/Divider';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import UnfoldLess from '@mui/icons-material/UnfoldLess';
-import { sliceByNumber } from '../pages/practice/[rank]/[id]';
 import path from 'path';
 import type { Mode } from '../types';
+import { sliceByNumber } from '../utils';
 
 type Props = {
     rank: number;

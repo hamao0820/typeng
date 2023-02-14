@@ -5,8 +5,8 @@ import FormControl from '@mui/material/FormControl';
 import NativeSelect from '@mui/material/NativeSelect';
 import path from 'path';
 import { useRouter } from 'next/router';
-import { sliceByNumber } from '../pages/practice/[rank]/[id]';
 import type { PathParam } from '../types';
+import { sliceByNumber } from '../utils';
 
 type Props = {
     param: PathParam;

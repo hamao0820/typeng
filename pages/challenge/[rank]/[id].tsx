@@ -9,7 +9,7 @@ import { typingVolumeContext } from '../../../Contexts/TypingVolumeProvider';
 import Marquee from '../../../components/Marquee';
 import Button from '@mui/material/Button';
 import WorkHeader from '../../../components/WorkHeader';
-import { pronounce, sound, typeSound } from '../../practice/[rank]/[id]';
+import { pronounce, sound, typeSound } from '../../../utils';
 import Head from 'next/head';
 import useWord from '../../../hooks/useWord';
 import getAllWords from '../../../middleware/getAllWords';

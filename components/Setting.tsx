@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { pronounce, sound, typeSound } from '../pages/practice/[rank]/[id]';
+import { pronounce, sound, typeSound } from '../utils';
 import { pronounceVolumeContext, setPronounceVolumeContext } from '../Contexts/PronounceProvider';
 import { setSoundEffectVolumeContext, soundEffectVolumeContext } from '../Contexts/SoundEffectProvider';
 import { setTypingVolumeContext, typingVolumeContext } from '../Contexts/TypingVolumeProvider';

@@ -1,7 +1,7 @@
 import path from 'path';
 import fs from 'fs';
-import { sliceByNumber } from '../pages/practice/[rank]/[id]';
 import { Id, Rank, Word } from '../types';
+import { sliceByNumber } from '../utils';
 
 const getAllWords = (rank: Rank, id: Id): Word[] => {
     const dataDir = path.join(process.cwd(), 'public');

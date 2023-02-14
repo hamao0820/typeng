@@ -11,7 +11,7 @@ import Button from '@mui/material/Button';
 import CountDown from '../../../components/CountDown';
 import Result from '../../../components/Result';
 import WorkHeader from '../../../components/WorkHeader';
-import { pronounce, shuffle, sliceByNumber, sound, typeSound } from '../../practice/[rank]/[id]';
+import { pronounce, shuffle, sliceByNumber, sound, typeSound } from '../../../utils';
 import Head from 'next/head';
 import getAllWords from '../../../middleware/getAllWords';
 import type { PageProps, PathParams, ResultType, Word } from '../../../types';
