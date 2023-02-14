@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Word, shuffle, sliceByNumber } from '../pages/practice/[rank]/[id]';
+import { shuffle, sliceByNumber } from '../pages/practice/[rank]/[id]';
+import { Word } from '../types';
 
 const useWord = (allWords: Word[], stage: string) => {
     const [word, setWord] = useState<Word>();
