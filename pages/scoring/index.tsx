@@ -11,10 +11,10 @@ const ScoringHome = () => {
             </Head>
             <Header text="モード選択に戻る" href="/" mode="scoring" />
             <div className="flex justify-center">
-                <SelectList rank={1} wordsNum={956} mode={'scoring'} />
-                <SelectList rank={2} wordsNum={882} mode={'scoring'} />
-                <SelectList rank={3} wordsNum={1024} mode={'scoring'} />
-                <SelectList rank={4} wordsNum={938} mode={'scoring'} />
+                <SelectList rank={'1'} wordsNum={956} mode={'scoring'} />
+                <SelectList rank={'2'} wordsNum={882} mode={'scoring'} />
+                <SelectList rank={'3'} wordsNum={1024} mode={'scoring'} />
+                <SelectList rank={'4'} wordsNum={938} mode={'scoring'} />
             </div>
         </div>
     );
