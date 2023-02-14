@@ -103,8 +103,12 @@ export const shuffle = <T,>([...arr]: T[]): T[] => {
 
 export const getServerSideProps: GetServerSideProps<PageProps> = async (context) => {
     const { rank, id } = context.params as PathParams;
+    console.log(process.cwd());
     const dataDir = path.join(process.cwd(), 'public');
+    console.log(fs.readdirSync(process.cwd()));
+    console.log('fetch start');
     const allWords = JSON.parse(fs.readFileSync(path.join(dataDir, `rank${rank}.json`), 'utf-8')) as Word[];
+    console.log('fetch done');
     return {
         props: {
             allWords: sliceByNumber(allWords, 100)[Number(id)],
