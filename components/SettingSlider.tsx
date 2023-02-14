@@ -1,7 +1,6 @@
 import React from 'react';
 import Box from '@mui/system/Box';
 import VolumeUp from '@mui/icons-material/VolumeUp';
-// import { Grid, Input, Slider } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import Input from '@mui/material/Input';
 import Slider from '@mui/material/Slider';

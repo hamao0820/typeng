@@ -14,25 +14,7 @@ import WorkHeader from '../../../components/WorkHeader';
 import { pronounce, shuffle, sliceByNumber, sound, typeSound } from '../../practice/[rank]/[id]';
 import Head from 'next/head';
 import getAllWords from '../../../middleware/getAllWords';
-
-type Word = {
-    id: number;
-    en: string;
-    ja: string;
-};
-
-export type ResultType = Word & {
-    correct: boolean;
-};
-
-type PageProps = {
-    allWords: Word[];
-};
-
-type PathParams = {
-    rank: '1' | '2' | '3' | '4';
-    id: '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10';
-};
+import type { PageProps, PathParams, ResultType, Word } from '../../../types';
 
 export const getServerSideProps: GetServerSideProps<PageProps> = async (context) => {
     const { rank, id } = context.params as PathParams;

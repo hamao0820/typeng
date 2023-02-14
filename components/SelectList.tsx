@@ -13,11 +13,12 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 import UnfoldLess from '@mui/icons-material/UnfoldLess';
 import { sliceByNumber } from '../pages/practice/[rank]/[id]';
 import path from 'path';
+import type { Mode } from '../types';
 
 type Props = {
     rank: number;
     wordsNum: number;
-    mode: string;
+    mode: Mode;
 };
 
 type OpenStatesType = {

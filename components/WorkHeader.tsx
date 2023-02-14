@@ -3,18 +3,12 @@ import BackButton from './BackButton';
 import SettingButton from './SettingButton';
 import ModeSelect from './ModeSelect';
 import StageSelect from './StageSelect';
+import type { PathParam } from '../types';
 
 type Props = {
     text: string;
     href: string;
     param: PathParam;
-};
-
-export type PathParam = {
-    mode: string;
-    rank: string;
-    id: string;
-    stage: string;
 };
 
 const WorkHeader: React.FC<Props> = ({ text, href, param }) => {

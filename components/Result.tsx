@@ -1,9 +1,8 @@
 import React from 'react';
-import { ResultType } from '../pages/scoring/[rank]/[id]';
 import { useRouter } from 'next/router';
 import Button from '@mui/material/Button';
-import Header from './Header';
 import WorkHeader from './WorkHeader';
+import type { ResultType } from '../types';
 
 type Props = {
     missCount: number;

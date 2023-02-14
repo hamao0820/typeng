@@ -4,15 +4,15 @@ import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import NativeSelect from '@mui/material/NativeSelect';
 import path from 'path';
-import { PathParam } from './WorkHeader';
 import { useRouter } from 'next/router';
+import type { PathParam } from '../types';
 
 type Props = {
     param: PathParam;
 };
 
 const ModeSelect: React.FC<Props> = ({ param }) => {
-    const router = useRouter()
+    const router = useRouter();
     return (
         <div>
             <Box sx={{ minWidth: 120 }}>

@@ -10,21 +10,7 @@ import WorkHeader from '../../../components/WorkHeader';
 import Head from 'next/head';
 import useWord from '../../../hooks/useWord';
 import getAllWords from '../../../middleware/getAllWords';
-
-export type Word = {
-    id: number;
-    en: string;
-    ja: string;
-};
-
-type PageProps = {
-    allWords: Word[];
-};
-
-type PathParams = {
-    rank: '1' | '2' | '3' | '4';
-    id: '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10';
-};
+import type { PageProps, PathParams } from '../../../types';
 
 export const sliceByNumber = <T,>(array: T[], number: number): T[][] => {
     const length = Math.ceil(array.length / number);

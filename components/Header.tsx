@@ -4,14 +4,14 @@ import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import NativeSelect from '@mui/material/NativeSelect';
 import { useRouter } from 'next/router';
-import path from 'path';
 import BackButton from './BackButton';
 import SettingButton from './SettingButton';
+import type { Mode } from '../types';
 
 type Props = {
     text: string;
     href: string;
-    mode: string;
+    mode: Mode;
 };
 
 const Header: React.FC<Props> = ({ text, href, mode }) => {

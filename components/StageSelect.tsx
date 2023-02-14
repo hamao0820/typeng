@@ -4,9 +4,9 @@ import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import NativeSelect from '@mui/material/NativeSelect';
 import path from 'path';
-import { PathParam } from './WorkHeader';
 import { useRouter } from 'next/router';
 import { sliceByNumber } from '../pages/practice/[rank]/[id]';
+import type { PathParam } from '../types';
 
 type Props = {
     param: PathParam;
