@@ -107,7 +107,8 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (context)
     const dataDir = path.join(process.cwd(), 'public');
     console.log(fs.readdirSync(process.cwd()));
     console.log('fetch start');
-    const allWords = JSON.parse(fs.readFileSync(path.join(dataDir, `rank${rank}.json`), 'utf-8')) as Word[];
+    // const allWords = JSON.parse(fs.readFileSync(path.join(dataDir, `rank${rank}.json`), 'utf-8')) as Word[];
+    const allWords = [] as Word[]
     console.log('fetch done');
     return {
         props: {
