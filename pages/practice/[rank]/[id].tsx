@@ -7,10 +7,9 @@ import { soundEffectVolumeContext } from '../../../Contexts/SoundEffectProvider'
 import { typingVolumeContext } from '../../../Contexts/TypingVolumeProvider';
 import Marquee from '../../../components/Marquee';
 import WorkHeader from '../../../components/WorkHeader';
-import path from 'path';
-import fs from 'fs';
 import Head from 'next/head';
 import useWord from '../../../hooks/useWord';
+import getAllWords from '../../../middleware/getAllWords';
 
 export type Word = {
     id: number;
@@ -103,18 +102,8 @@ export const shuffle = <T,>([...arr]: T[]): T[] => {
 
 export const getServerSideProps: GetServerSideProps<PageProps> = async (context) => {
     const { rank, id } = context.params as PathParams;
-    console.log(process.cwd());
-    const dataDir = path.join(process.cwd(), 'public');
-    console.log(fs.readdirSync(process.cwd()));
-    console.log('fetch start');
-    const allWords = JSON.parse(fs.readFileSync(path.join(dataDir, `rank${rank}.json`), 'utf-8')) as Word[];
-    // const allWords = [] as Word[]
-    console.log('fetch done');
-    return {
-        props: {
-            allWords: sliceByNumber(allWords, 100)[Number(id)],
-        },
-    };
+    const allWords = getAllWords(rank, id);
+    return { props: { allWords } };
 };
 
 const Practice: NextPage<PageProps> = ({ allWords }) => {

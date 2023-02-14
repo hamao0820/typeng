@@ -7,11 +7,10 @@ import { soundEffectVolumeContext } from '../../../Contexts/SoundEffectProvider'
 import { typingVolumeContext } from '../../../Contexts/TypingVolumeProvider';
 import Marquee from '../../../components/Marquee';
 import WorkHeader from '../../../components/WorkHeader';
-import { pronounce, sliceByNumber, sound, typeSound } from '../../practice/[rank]/[id]';
-import path from 'path';
-import fs from 'fs';
+import { pronounce, sound, typeSound } from '../../practice/[rank]/[id]';
 import Head from 'next/head';
 import useWord from '../../../hooks/useWord';
+import getAllWords from '../../../middleware/getAllWords';
 
 type Word = {
     id: number;
@@ -30,13 +29,8 @@ type PathParams = {
 
 export const getServerSideProps: GetServerSideProps<PageProps> = async (context) => {
     const { rank, id } = context.params as PathParams;
-    const dataDir = path.join(process.cwd(), 'public');
-    const allWords = JSON.parse(fs.readFileSync(path.join(dataDir, `rank${rank}.json`), 'utf-8')) as Word[];
-    return {
-        props: {
-            allWords: sliceByNumber(allWords, 100)[Number(id)],
-        },
-    };
+    const allWords = getAllWords(rank, id);
+    return { props: { allWords } };
 };
 
 const Test: NextPage<PageProps> = ({ allWords }) => {

@@ -12,9 +12,8 @@ import CountDown from '../../../components/CountDown';
 import Result from '../../../components/Result';
 import WorkHeader from '../../../components/WorkHeader';
 import { pronounce, shuffle, sliceByNumber, sound, typeSound } from '../../practice/[rank]/[id]';
-import path from 'path';
-import fs from 'fs';
 import Head from 'next/head';
+import getAllWords from '../../../middleware/getAllWords';
 
 type Word = {
     id: number;
@@ -37,13 +36,8 @@ type PathParams = {
 
 export const getServerSideProps: GetServerSideProps<PageProps> = async (context) => {
     const { rank, id } = context.params as PathParams;
-    const dataDir = path.join(process.cwd(), 'public');
-    const allWords = JSON.parse(fs.readFileSync(path.join(dataDir, `rank${rank}.json`), 'utf-8')) as Word[];
-    return {
-        props: {
-            allWords: sliceByNumber(allWords, 100)[Number(id)],
-        },
-    };
+    const allWords = getAllWords(rank, id);
+    return { props: { allWords } };
 };
 
 const Scoring: NextPage<PageProps> = ({ allWords }) => {
