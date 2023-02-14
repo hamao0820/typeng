@@ -1,4 +1,4 @@
-import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
+import type { GetServerSideProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
@@ -28,55 +28,7 @@ type PathParams = {
     id: '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10';
 };
 
-export const getStaticPaths: GetStaticPaths<PathParams> = async () => {
-    return {
-        paths: [
-            { params: { rank: '1', id: '0' } },
-            { params: { rank: '1', id: '1' } },
-            { params: { rank: '1', id: '2' } },
-            { params: { rank: '1', id: '3' } },
-            { params: { rank: '1', id: '4' } },
-            { params: { rank: '1', id: '5' } },
-            { params: { rank: '1', id: '6' } },
-            { params: { rank: '1', id: '7' } },
-            { params: { rank: '1', id: '8' } },
-            { params: { rank: '1', id: '9' } },
-            { params: { rank: '2', id: '0' } },
-            { params: { rank: '2', id: '1' } },
-            { params: { rank: '2', id: '2' } },
-            { params: { rank: '2', id: '3' } },
-            { params: { rank: '2', id: '4' } },
-            { params: { rank: '2', id: '5' } },
-            { params: { rank: '2', id: '6' } },
-            { params: { rank: '2', id: '7' } },
-            { params: { rank: '2', id: '8' } },
-            { params: { rank: '3', id: '0' } },
-            { params: { rank: '3', id: '1' } },
-            { params: { rank: '3', id: '2' } },
-            { params: { rank: '3', id: '3' } },
-            { params: { rank: '3', id: '4' } },
-            { params: { rank: '3', id: '5' } },
-            { params: { rank: '3', id: '6' } },
-            { params: { rank: '3', id: '7' } },
-            { params: { rank: '3', id: '8' } },
-            { params: { rank: '3', id: '9' } },
-            { params: { rank: '3', id: '10' } },
-            { params: { rank: '4', id: '0' } },
-            { params: { rank: '4', id: '1' } },
-            { params: { rank: '4', id: '2' } },
-            { params: { rank: '4', id: '3' } },
-            { params: { rank: '4', id: '4' } },
-            { params: { rank: '4', id: '5' } },
-            { params: { rank: '4', id: '6' } },
-            { params: { rank: '4', id: '7' } },
-            { params: { rank: '4', id: '8' } },
-            { params: { rank: '4', id: '9' } },
-        ],
-        fallback: false,
-    };
-};
-
-export const getStaticProps: GetStaticProps<PageProps> = async (context) => {
+export const getServerSideProps: GetServerSideProps<PageProps> = async (context) => {
     const { rank, id } = context.params as PathParams;
     const dataDir = path.join(process.cwd(), 'data');
     const allWords = JSON.parse(fs.readFileSync(path.join(dataDir, `rank${rank}.json`), 'utf-8')) as Word[];
