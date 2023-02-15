@@ -71,3 +71,5 @@ export const shuffle = <T>([...arr]: T[]): T[] => {
     }
     return arr;
 };
+
+export const wordsCounts = [956, 882, 1024, 938];
