@@ -23,5 +23,10 @@ export type PathParam = {
     mode: Mode;
     rank: Rank;
     id: Id;
-    stage: Stage
+    stage: Stage;
+};
+
+export type ListOpenState = {
+    id: Id;
+    open: boolean;
 };

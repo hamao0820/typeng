@@ -10,10 +10,9 @@ import Collapse from '@mui/material/Collapse';
 import Divider from '@mui/material/Divider';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
-import UnfoldLess from '@mui/icons-material/UnfoldLess';
 import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
 import path from 'path';
-import { Id, Mode, Rank, Stage } from '../types';
+import { Id, ListOpenState, Mode, Rank, Stage } from '../types';
 import { sliceByNumber } from '../utils';
 import RankWordsList from './RankWordsList';
 import IdWordsList from './IdWordsList';
@@ -23,51 +22,21 @@ type Props = {
     rank: Rank;
     wordsNum: number;
     mode: Mode;
+    openStates: ListOpenState[];
+    handleClick: (id: Id) => void;
 };
 
-type OpenStatesType = {
-    id: Id;
-    open: boolean;
-};
-
-const SelectList: React.FC<Props> = ({ rank, wordsNum, mode }) => {
-    const [openStates, setOpenStates] = React.useState<OpenStatesType[]>(
-        sliceByNumber(
-            [...Array(wordsNum)].map((_, i) => i + 1),
-            100
-        ).map<OpenStatesType>((_, id) => {
-            return { id: String(id) as Id, open: false };
-        })
-    );
+const SelectList: React.FC<Props> = ({ rank, wordsNum, mode, openStates, handleClick }) => {
     const [isRankWordsListModalOpen, setIsRankWordsListModalOpen] = useState<boolean>(false);
     const [isIdWordsListModalOpen, setIsIdWordsListModalOpen] = useState<boolean>(false);
     const [isStageWordsListModalOpen, setIsStageWordsListModalOpen] = useState<boolean>(false);
     const [activeId, setActiveId] = useState<Id>('0');
     const [activeIdAndStage, setActiveIdAndStage] = useState<{ id: Id; stage: Stage }>({ id: '0', stage: 'all' });
 
-    const handleClick = (id: number) => {
-        setOpenStates((prev) =>
-            prev.map((state, i) => {
-                if (i !== id) {
-                    return state;
-                } else {
-                    return { ...state, open: !state.open };
-                }
-            })
-        );
-    };
     const wordIndicesArr = sliceByNumber(
         [...Array(wordsNum)].map((_, i) => i + 1),
         100
     );
-
-    const handleCollapseAll = () => {
-        setOpenStates((prevStates) => {
-            return prevStates.map((state) => {
-                return { ...state, open: false };
-            });
-        });
-    };
 
     return (
         <div className="m-2 w-screen">
@@ -121,33 +90,22 @@ const SelectList: React.FC<Props> = ({ rank, wordsNum, mode }) => {
                             >
                                 <FormatListNumberedIcon></FormatListNumberedIcon>
                             </Button>
-                            <Button
-                                sx={{
-                                    border: '2px solid rgb(147, 197, 253)',
-                                    minWidth: '32px',
-                                    width: '32px',
-                                    height: '32px',
-                                    padding: 0,
-                                    margin: '1px',
-                                }}
-                                onClick={handleCollapseAll}
-                            >
-                                <UnfoldLess />
-                            </Button>
                         </div>
                     </ListSubheader>
                 }
             >
                 <Divider />
                 {wordIndicesArr.map((wordIndices, id) => {
+                    const openState = openStates.find((state) => state.id === String(id));
+                    if (openState === undefined) return;
                     return (
                         <React.Fragment key={id}>
                             <ListItemButton
                                 onClick={() => {
-                                    handleClick(id);
+                                    handleClick(String(id) as Id);
                                 }}
                                 sx={
-                                    openStates[id].open
+                                    openState.open
                                         ? {
                                               bgcolor: 'rgba(0, 0, 0, 0.2)',
                                           }
@@ -166,9 +124,9 @@ const SelectList: React.FC<Props> = ({ rank, wordsNum, mode }) => {
                                     primary={`${wordIndices[0]}~${wordIndices.slice(-1)[0]}`}
                                     primaryTypographyProps={{ fontSize: '1.3rem', fontWeight: 500, margin: '3px' }}
                                 />
-                                {openStates[id].open ? <ExpandLess /> : <ExpandMore />}
+                                {openState.open ? <ExpandLess /> : <ExpandMore />}
                             </ListItemButton>
-                            <Collapse in={openStates[id].open} timeout="auto" unmountOnExit>
+                            <Collapse in={openState.open} timeout="auto" unmountOnExit>
                                 <List
                                     component="div"
                                     disablePadding
