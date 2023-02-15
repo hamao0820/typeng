@@ -134,6 +134,7 @@ const SelectList: React.FC<Props> = ({ rank, wordsNum, mode, openStates, handleC
                                         height: '60vh',
                                         overflow: 'auto',
                                         '::-webkit-scrollbar': { display: 'none' },
+                                        backgroundColor: 'rgba(0, 0, 0, 0.05)',
                                     }}
                                 >
                                     <Link
