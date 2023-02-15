@@ -1,27 +1,10 @@
-import { useState } from 'react';
-import { sliceByNumber } from '../utils';
+import { useContext } from 'react';
 import { Id, ListOpenState, Rank } from '../types';
+import { openStatesContext, setOpenStatesContext } from '../Contexts/ListOpenStatesProvider';
 
-type RankListOpenState = {
-    rank: Rank;
-    openStates: ListOpenState[];
-};
-
-const useListOpenStates = (wordsCounts: number[]) => {
-    const [openStates, setOpenStates] = useState<RankListOpenState[]>(
-        wordsCounts.map((wordsCount, i) => {
-            const rank = String(i + 1) as Rank;
-            return {
-                rank: rank,
-                openStates: sliceByNumber(
-                    [...Array(wordsCount)].map((_, i) => i + 1),
-                    100
-                ).map<ListOpenState>((_, id) => {
-                    return { id: String(id) as Id, open: false };
-                }),
-            };
-        })
-    );
+const useListOpenStates = () => {
+    const openStates = useContext(openStatesContext);
+    const setOpenStates = useContext(setOpenStatesContext);
 
     const handleClick = (rank: Rank, id: Id) => {
         setOpenStates((prev) => {
