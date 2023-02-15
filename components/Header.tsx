@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import NativeSelect from '@mui/material/NativeSelect';
+import UnfoldLess from '@mui/icons-material/UnfoldLess';
 import { useRouter } from 'next/router';
 import BackButton from './BackButton';
 import SettingButton from './SettingButton';
@@ -12,16 +13,19 @@ type Props = {
     text: string;
     href: string;
     mode: Mode;
+    collapseAll: () => void;
 };
 
-// TODO: リストを全て閉じるボタンをまとめる
-const Header: React.FC<Props> = ({ text, href, mode }) => {
+const Header: React.FC<Props> = ({ text, href, mode, collapseAll }) => {
     const router = useRouter();
     return (
         <div className="w-full flex justify-between items-center">
             <BackButton href={href} text={text} />
             <div>リストを右クリックすると単語一覧が表示されます</div>
             <div className="flex items-center">
+                <div className="cursor-pointer border-2 border-solid border-blue-200 rounded-md mr-2" onClick={collapseAll}>
+                    <UnfoldLess style={{ width: '3rem', height: '3rem' }} />
+                </div>
                 <div>
                     <Box sx={{ minWidth: 120 }}>
                         <FormControl fullWidth>
