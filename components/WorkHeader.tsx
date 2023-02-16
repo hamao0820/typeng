@@ -4,6 +4,7 @@ import SettingButton from './SettingButton';
 import ModeSelect from './ModeSelect';
 import StageSelect from './StageSelect';
 import type { PathParam } from '../types';
+import IdSelect from './IdSelect';
 
 type Props = {
     text: string;
@@ -16,6 +17,7 @@ const WorkHeader: React.FC<Props> = ({ text, href, param }) => {
         <div className="w-full flex justify-between items-center">
             <BackButton href={href} text={text} />
             <div className="flex items-center">
+                <IdSelect param={param} />
                 <StageSelect param={param} />
                 <ModeSelect param={param} />
                 <div
