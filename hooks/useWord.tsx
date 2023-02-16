@@ -8,7 +8,7 @@ const useWord = (allWords: Word[], stage: string) => {
     const [typed, setTyped] = useState<string>('');
     const [unTyped, setUnTyped] = useState<string>('');
     const [missed, setMissed] = useState<boolean>(false);
-    const [missCount, setMissCount] = useState<number>(0);
+    const [missCount, setMissCount] = useState<number>(0); // challenge
     const [indices, setIndices] = useState<number[]>([]);
 
     useEffect(() => {
@@ -68,6 +68,7 @@ const useWord = (allWords: Word[], stage: string) => {
     }, [indices, word, words]);
 
     useEffect(() => {
+        setMissCount(0)
         if (stage === 'all') {
             setWords(allWords);
             return;
