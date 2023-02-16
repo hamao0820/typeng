@@ -30,3 +30,5 @@ export type ListOpenState = {
     id: Id;
     open: boolean;
 };
+
+export type Loading = 'hold' | 'loading' | 'done';
