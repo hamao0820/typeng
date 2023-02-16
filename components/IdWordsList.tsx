@@ -1,6 +1,9 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment } from 'react';
 import Modal from './Modal';
-import { Id, Rank, Word } from '../types';
+import { Id, Rank } from '../types';
+import useGetWords from '../hooks/useGetWords';
+import path from 'path';
+import Spinner from './Spinner';
 
 type Props = {
     rank: Rank;
@@ -10,18 +13,12 @@ type Props = {
 };
 
 const IdWordsList: React.FC<Props> = ({ rank, id, isOpen, close }) => {
-    const [words, setWords] = useState<Word[]>([]);
-    useEffect(() => {
-        if (id === '') return;
-        (async () => {
-            const res = await fetch(`api/${rank}/${id}`);
-            const words = (await res.json()) as Word[];
-            setWords(words);
-        })();
-    }, [rank, id]);
+    const skipCondition = id === '';
+    const { words, isLoading } = useGetWords(isOpen, path.join('api', rank, id), skipCondition, 150);
     return (
         <div>
-            <Modal isOpen={isOpen} close={close}>
+            <Spinner isLoading={isLoading} />
+            <Modal isOpen={isLoading === 'done' && isOpen} close={close}>
                 <div className="h-full overflow-y-scroll">
                     {words.map((word, i) => {
                         return (
