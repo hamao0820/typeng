@@ -15,7 +15,7 @@ const StageSelection: FC<Props> = ({ mode }) => {
     return (
         <div className="h-screen w-screen overflow-hidden">
             <Head>
-                <title>practice</title>
+                <title>{mode}</title>
             </Head>
             <Header text="モード選択に戻る" href="/" mode={mode} collapseAll={collapseAll} />
             <div className="flex justify-center">
