@@ -10,6 +10,7 @@ const Home: NextPage = () => {
         <div className="flex flex-col h-screen relative">
             <Head>
                 <title>Typeng</title>
+                <link rel="icon" href="favicons/favicon.ico" />
             </Head>
             <div className="flex justify-center items-center h-1/5">
                 <Logo />

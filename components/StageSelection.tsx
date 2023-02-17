@@ -16,6 +16,7 @@ const StageSelection: FC<Props> = ({ mode }) => {
         <div className="h-screen w-screen overflow-hidden">
             <Head>
                 <title>{mode}</title>
+                <link rel="shortcut icon" href="favicons/favicon.ico" />
             </Head>
             <Header text="モード選択に戻る" href="/" mode={mode} collapseAll={collapseAll} />
             <div className="flex justify-center">
