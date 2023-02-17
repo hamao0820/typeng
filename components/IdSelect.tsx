@@ -36,9 +36,6 @@ const IdSelect: FC<Props> = ({ param }) => {
                                 pathname: `/${path.join(mode, rank, e.currentTarget.value)}`,
                                 query: { stage: '0' },
                             });
-                            if (param.mode === 'scoring') {
-                                router.reload();
-                            }
                         }}
                     >
                         {allIndices.map((indices, i) => (

@@ -8,9 +8,10 @@ type Props = {
     missCount: number;
     results: ResultType[];
     measure: PerformanceEntryList;
+    retry: ()=> void
 };
 
-const Result: React.FC<Props> = ({ missCount, results, measure }) => {
+const Result: React.FC<Props> = ({ missCount, results, measure, retry }) => {
     const allWordCount = results.map<number>((result) => result.en.length).reduce((p, c) => p + c);
     const correctTypeRate = Math.round(((allWordCount - missCount) / allWordCount) * 100);
     const router = useRouter();
@@ -74,7 +75,7 @@ const Result: React.FC<Props> = ({ missCount, results, measure }) => {
                     <div className="relative">
                         <Button
                             variant="outlined"
-                            onClick={() => router.reload()}
+                            onClick={retry}
                             sx={{ position: 'absolute', top: '20px', right: '0' }}
                         >
                             retry

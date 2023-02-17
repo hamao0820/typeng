@@ -14,7 +14,7 @@ import WorkHeader from '../../../components/WorkHeader';
 import { pronounce, shuffle, sliceByNumber, sound, typeSound } from '../../../utils';
 import Head from 'next/head';
 import getAllWords from '../../../middleware/getAllWords';
-import type { PageProps, PathParams, ResultType, Word } from '../../../types';
+import type { PageProps, PathParams, ResultType, Stage, Word } from '../../../types';
 
 export const getServerSideProps: GetServerSideProps<PageProps> = async (context) => {
     const { rank, id } = context.params as PathParams;
@@ -31,7 +31,7 @@ const Scoring: NextPage<PageProps> = ({ allWords }) => {
     const soundEffectVolume = useContext(soundEffectVolumeContext);
     const typingVolume = useContext(typingVolumeContext);
     const router = useRouter();
-    const stage = router.asPath.split('stage=')[1];
+    const stage = router.asPath.split('stage=')[1] as Stage;
     const [words, setWords] = useState<Word[]>([]);
     const [results, setResults] = useState<ResultType[]>([]);
     const contentRef = useRef<HTMLSpanElement>(null);
@@ -45,8 +45,19 @@ const Scoring: NextPage<PageProps> = ({ allWords }) => {
     const [missCountSum, setMissCountSum] = useState<number>(0);
     const [measure, setMeasure] = useState<PerformanceEntryList>([]);
 
+    const initState = useCallback(() => {
+        setResults([]);
+        setReady(false);
+        setIndex(0);
+        setShowResult(false);
+        setMissCountSum(0);
+        setMeasure([]);
+        document.removeEventListener('keydown', handleKeyDown);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     useEffect(() => {
-        if (words.length > 10) return;
+        initState();
         if (stage === 'all') {
             setWords(shuffle(allWords));
             setReady(false);
@@ -54,15 +65,10 @@ const Scoring: NextPage<PageProps> = ({ allWords }) => {
         }
         const words_ = sliceByNumber(allWords, 10)[Number(stage)];
         if (words_ === undefined) return;
-        if (words === undefined || words.length === 0) {
-            setReady(false);
-            setWords(shuffle(words_));
-            return;
-        }
-        if (words.length <= 10 && words_.map((word_) => word_.id).includes(words[0].id)) return;
         setReady(false);
         setWords(shuffle(words_));
-    }, [allWords, stage, words]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [allWords, stage]);
 
     useEffect(() => {
         if (!ready) return;
@@ -118,7 +124,10 @@ const Scoring: NextPage<PageProps> = ({ allWords }) => {
 
     useEffect(() => {
         if (!ready) return;
-        document.onkeydown = handleKeyDown;
+        document.addEventListener('keydown', handleKeyDown);
+        return () => {
+            document.removeEventListener('keydown', handleKeyDown);
+        };
     }, [handleKeyDown, ready]);
 
     useEffect(() => {
@@ -231,7 +240,7 @@ const Scoring: NextPage<PageProps> = ({ allWords }) => {
                     </span>
                 </div>
             </div>
-            {showResult && <Result missCount={missCountSum} results={results} measure={measure} />}
+            {showResult && <Result missCount={missCountSum} results={results} measure={measure} retry={initState} />}
         </>
     );
 };

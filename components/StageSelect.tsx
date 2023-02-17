@@ -36,9 +36,6 @@ const StageSelect: React.FC<Props> = ({ param }) => {
                                 pathname: `/${path.join(param.mode, param.rank, param.id)}`,
                                 query: { stage: e.currentTarget.value },
                             });
-                            if (param.mode === 'scoring') {
-                                router.reload();
-                            }
                         }}
                     >
                         <option value="all">{`${allIndices[0] + 1} ~ ${allIndices.slice(-1)[0] + 1}`}</option>
