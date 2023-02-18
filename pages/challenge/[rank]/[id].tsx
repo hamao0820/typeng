@@ -94,6 +94,7 @@ const Challenge: NextPage<PageProps> = ({ allWords }) => {
         <div className="h-screen w-screen overflow-hidden" ref={ref}>
             <Head>
                 <title>challenge</title>
+                <link rel="icon" href="favicons/favicon.ico" />
             </Head>
             <WorkHeader
                 text="選択画面に戻る"

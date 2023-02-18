@@ -82,6 +82,7 @@ const Practice: NextPage<PageProps> = ({ allWords }) => {
         <div className="h-screen w-screen overflow-hidden" ref={ref}>
             <Head>
                 <title>practice</title>
+                <link rel="icon" href="favicons/favicon.ico" />
             </Head>
             <WorkHeader text="選択画面に戻る" href="/practice" param={{ mode: 'practice', ...(router.query as any) }} />
             <div className="h-4/5 relative w-full">
