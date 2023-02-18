@@ -11,18 +11,23 @@ import Button from '@mui/material/Button';
 import CountDown from '../../../components/CountDown';
 import Result from '../../../components/Result';
 import WorkHeader from '../../../components/WorkHeader';
-import { pronounce, shuffle, sliceByNumber, sound, typeSound } from '../../../utils';
+import { pronounce, shuffle, sliceByNumber, sound, typeSound, stageLoadMap } from '../../../utils';
 import Head from 'next/head';
 import getAllWords from '../../../middleware/getAllWords';
-import type { PageProps, PathParams, ResultType, Stage, Word } from '../../../types';
+import type { PathParam, PathParams, ResultType, Stage, Word } from '../../../types';
+import path from 'path';
+
+type PageProps = { allWords: Word[]; pathParam: PathParam };
 
 export const getServerSideProps: GetServerSideProps<PageProps> = async (context) => {
     const { rank, id } = context.params as PathParams;
+    const { stage } = context.query as { stage: Stage };
+    const pathParam: PathParam = { mode: 'scoring', rank, id, stage };
     const allWords = getAllWords(rank, id);
-    return { props: { allWords } };
+    return { props: { allWords, pathParam } };
 };
 
-const Scoring: NextPage<PageProps> = ({ allWords }) => {
+const Scoring: NextPage<PageProps> = ({ allWords, pathParam }) => {
     const [word, setWord] = useState<Word>();
     const [typed, setTyped] = useState<string>('');
     const [unTyped, setUnTyped] = useState<string>('');
@@ -31,7 +36,7 @@ const Scoring: NextPage<PageProps> = ({ allWords }) => {
     const soundEffectVolume = useContext(soundEffectVolumeContext);
     const typingVolume = useContext(typingVolumeContext);
     const router = useRouter();
-    const stage = router.asPath.split('stage=')[1] as Stage;
+    const { stage } = pathParam;
     const [words, setWords] = useState<Word[]>([]);
     const [results, setResults] = useState<ResultType[]>([]);
     const contentRef = useRef<HTMLSpanElement>(null);
@@ -55,6 +60,22 @@ const Scoring: NextPage<PageProps> = ({ allWords }) => {
         document.removeEventListener('keydown', handleKeyDown);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    const next = useCallback(async () => {
+        const target = stageLoadMap.find(
+            (v) => v.stage.id === pathParam.id && v.stage.rank === pathParam.rank && v.stage.stage === pathParam.stage
+        );
+        if (!target) return;
+        const stageNo = target.stageNo;
+        const nextStage = stageLoadMap.find((v) => v.stageNo === stageNo + 1);
+        if (!nextStage) return;
+        const { rank, id, stage } = nextStage.stage;
+        if (stage === 'all') {
+            await router.push({ pathname: `/${path.join('scoring', rank, id)}`, query: { stage } });
+        } else {
+            await router.push({ pathname: `/${path.join('practice', rank, id)}`, query: { stage } });
+        }
+    }, [pathParam, router]);
 
     useEffect(() => {
         initState();
@@ -240,7 +261,9 @@ const Scoring: NextPage<PageProps> = ({ allWords }) => {
                     </span>
                 </div>
             </div>
-            {showResult && <Result missCount={missCountSum} results={results} measure={measure} retry={initState} />}
+            {showResult && (
+                <Result missCount={missCountSum} results={results} measure={measure} next={next} retry={initState} />
+            )}
         </>
     );
 };

@@ -1,3 +1,5 @@
+import { Id, Rank, Stage } from '../types';
+
 export const sliceByNumber = <T>(array: T[], number: number): T[][] => {
     const length = Math.ceil(array.length / number);
     const newArr: T[][] = [];
@@ -73,3 +75,26 @@ export const shuffle = <T>([...arr]: T[]): T[] => {
 };
 
 export const wordsCounts = [956, 882, 1024, 938];
+
+type StageLoadMap = { stageNo: number; stage: { rank: Rank; id: Id; stage: Stage } }[];
+export const stageLoadMap: StageLoadMap = wordsCounts
+    .map((count, rankNum) => {
+        const indices = new Array(count).map((_, i) => i);
+        const allIndices = sliceByNumber(indices, 100);
+        return allIndices
+            .map((indices) => sliceByNumber(indices, 10))
+            .map((v, idNum) => {
+                const rank = String(rankNum + 1) as Rank;
+                const id = String(idNum) as Id;
+                const stage = v.map((_, stageNum) => String(stageNum) as Stage);
+                return stage.map((stage) => {
+                    return { stage, rank, id };
+                });
+            })
+            .map((v) => [...v, { ...v[0], stage: 'all' as Stage }]);
+    })
+    .flat()
+    .flat()
+    .map((v, i) => {
+        return { stage: v, stageNo: i };
+    });

@@ -8,10 +8,11 @@ type Props = {
     missCount: number;
     results: ResultType[];
     measure: PerformanceEntryList;
-    retry: ()=> void
+    next: () => void;
+    retry: () => void;
 };
 
-const Result: React.FC<Props> = ({ missCount, results, measure, retry }) => {
+const Result: React.FC<Props> = ({ missCount, results, measure, next, retry }) => {
     const allWordCount = results.map<number>((result) => result.en.length).reduce((p, c) => p + c);
     const correctTypeRate = Math.round(((allWordCount - missCount) / allWordCount) * 100);
     const router = useRouter();
@@ -46,7 +47,7 @@ const Result: React.FC<Props> = ({ missCount, results, measure, retry }) => {
                         })}
                     </div>
                 </div>
-                <div className="flex-1 m-1">
+                <div className="flex-1 m-1 flex flex-col">
                     <div className="text-center text-xl font-bold">結果</div>
                     <div className="flex items-end justify-between border-b-2 border-solid border-gray-300 p-3">
                         <div className="text-lg font-bold">正答率</div>
@@ -72,13 +73,12 @@ const Result: React.FC<Props> = ({ missCount, results, measure, retry }) => {
                         <div className="text-lg font-bold">正確率</div>
                         <div className="text-5xl font-bold">{correctTypeRate} %</div>
                     </div>
-                    <div className="relative">
-                        <Button
-                            variant="outlined"
-                            onClick={retry}
-                            sx={{ position: 'absolute', top: '20px', right: '0' }}
-                        >
+                    <div className="flex justify-between">
+                        <Button variant="outlined" onClick={retry} sx={{ margin: '20px 5px' }}>
                             retry
+                        </Button>
+                        <Button variant="outlined" onClick={next} sx={{ margin: '20px 5px' }}>
+                            next
                         </Button>
                     </div>
                 </div>
