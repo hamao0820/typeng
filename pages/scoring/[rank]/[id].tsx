@@ -183,7 +183,6 @@ const Scoring: NextPage<PageProps> = ({ allWords, pathParam }) => {
         <>
             <Head>
                 <title>scoring</title>
-                <link rel="icon" href="favicons/favicon.ico" />
             </Head>
             <div className="h-screen w-screen overflow-hidden" ref={ref}>
                 {!ready && <CountDown setReady={setReady} />}
