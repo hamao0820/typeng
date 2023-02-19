@@ -10,18 +10,20 @@ import WorkHeader from '../../../components/WorkHeader';
 import Head from 'next/head';
 import useWord from '../../../hooks/useWord';
 import getAllWords from '../../../middleware/getAllWords';
-import type { PageProps, PathParams } from '../../../types';
+import type { PageProps, PathParam, PathParams, Stage } from '../../../types';
 import { pronounce, sound, typeSound } from '../../../utils';
 
 export const getServerSideProps: GetServerSideProps<PageProps> = async (context) => {
     const { rank, id } = context.params as PathParams;
+    const { stage } = context.query as { stage: Stage };
+    const pathParam: PathParam = { mode: 'practice', rank, id, stage };
     const allWords = getAllWords(rank, id);
-    return { props: { allWords } };
+    return { props: { allWords, pathParam } };
 };
 
-const Practice: NextPage<PageProps> = ({ allWords }) => {
+const Practice: NextPage<PageProps> = ({ allWords, pathParam }) => {
     const router = useRouter();
-    const stage = router.asPath.split('stage=')[1];
+    const { stage } = pathParam
     const { word, typed, unTyped, handleWord } = useWord(allWords, stage);
     const ref = useRef<HTMLDivElement>(null);
     const pronounceVolume = useContext(pronounceVolumeContext);

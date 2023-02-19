@@ -14,10 +14,8 @@ import WorkHeader from '../../../components/WorkHeader';
 import { pronounce, shuffle, sliceByNumber, sound, typeSound, stageLoadMap } from '../../../utils';
 import Head from 'next/head';
 import getAllWords from '../../../middleware/getAllWords';
-import type { PathParam, PathParams, ResultType, Stage, Word } from '../../../types';
+import type { PageProps, PathParam, PathParams, ResultType, Stage, Word } from '../../../types';
 import path from 'path';
-
-type PageProps = { allWords: Word[]; pathParam: PathParam };
 
 export const getServerSideProps: GetServerSideProps<PageProps> = async (context) => {
     const { rank, id } = context.params as PathParams;
