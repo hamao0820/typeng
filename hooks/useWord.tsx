@@ -4,12 +4,26 @@ import { shuffle, sliceByNumber } from '../utils';
 
 const useWord = (allWords: Word[], stage: Stage) => {
     const [word, setWord] = useState<Word>();
-    const [words, setWords] = useState<Word[]>(stage === 'all' ? allWords : sliceByNumber(allWords, 10)[Number(stage)]);
+    const [words, setWords] = useState<Word[]>([]);
     const [typed, setTyped] = useState<string>('');
     const [unTyped, setUnTyped] = useState<string>('');
     const [missed, setMissed] = useState<boolean>(false);
     const [missCount, setMissCount] = useState<number>(0); // challenge
     const [indices, setIndices] = useState<number[]>([]);
+
+    useEffect(() => {
+        setMissCount(0);
+        if (stage === 'all') {
+            setWords((preWords) => (preWords.length === 0 ? allWords : preWords));
+            return;
+        }
+        const words_ = sliceByNumber(allWords, 10)[Number(stage)];
+        if (words_ === undefined) return;
+        setWords((preWords) => (preWords.length === 0 ? shuffle(words_) : preWords));
+        return () => {
+            setWords([]);
+        };
+    }, [allWords, stage]);
 
     useEffect(() => {
         if (word === undefined) {
@@ -66,18 +80,6 @@ const useWord = (allWords: Word[], stage: Stage) => {
         }
         setWord(words[indices[0]]);
     }, [indices, word, words]);
-
-    useEffect(() => {
-        setMissCount(0);
-        if (stage === 'all') {
-            setWords(allWords);
-            return;
-        }
-        const words_ = sliceByNumber(allWords, 10)[Number(stage)];
-        if (words_ === undefined) return;
-        setWords(shuffle(words_));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [allWords, stage]);
 
     return { word, words, typed, unTyped, missed, missCount, handleWord };
 };
