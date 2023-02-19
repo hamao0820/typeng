@@ -15,11 +15,12 @@ const useWord = (allWords: Word[], stage: Stage) => {
         setMissCount(0);
         if (stage === 'all') {
             setWords((preWords) => (preWords.length === 0 ? allWords : preWords));
-            return;
+        } else {
+            const words_ = sliceByNumber(allWords, 10)[Number(stage)];
+            if (words_ !== undefined) {
+                setWords((preWords) => (preWords.length === 0 ? shuffle(words_) : preWords));
+            }
         }
-        const words_ = sliceByNumber(allWords, 10)[Number(stage)];
-        if (words_ === undefined) return;
-        setWords((preWords) => (preWords.length === 0 ? shuffle(words_) : preWords));
         return () => {
             setWords([]);
         };
