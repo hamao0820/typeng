@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useRouter } from 'next/router';
 import Button from '@mui/material/Button';
+import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import WorkHeader from './WorkHeader';
 import type { ResultType } from '../types';
+import { pronounce } from '../utils';
+import { pronounceVolumeContext } from '../Contexts/PronounceProvider';
 
 type Props = {
     missCount: number;
@@ -16,6 +19,7 @@ const Result: React.FC<Props> = ({ missCount, results, measure, next, retry }) =
     const allWordCount = results.map<number>((result) => result.en.length).reduce((p, c) => p + c);
     const correctTypeRate = Math.round(((allWordCount - missCount) / allWordCount) * 100);
     const router = useRouter();
+    const pronounceVolume = useContext(pronounceVolumeContext);
     return (
         <div className="h-screen w-screen absolute top-0 left-0 bg-white z-50 flex flex-col items-center overflow-hidden">
             <WorkHeader
@@ -30,16 +34,28 @@ const Result: React.FC<Props> = ({ missCount, results, measure, next, retry }) =
                         {results.map((result) => {
                             return (
                                 <React.Fragment key={result.id}>
-                                    <div className="border-b-2 border-solid border-gray-300 p-1 my-2">
-                                        <div className="text-sm whitespace-nowrap text-ellipsis overflow-hidden">
-                                            {result.ja}
-                                        </div>
+                                    <div className="flex border-b-2 border-solid border-gray-300 p-1 my-2 items-end">
                                         <div
-                                            className={
-                                                result.correct ? 'text-lg font-bold' : 'text-red-500 font-bold text-lg'
-                                            }
+                                            className="w-fit h-fit flex items-center justify-center p-1 bg-green-400 rounded-md"
+                                            onClick={() => {
+                                                pronounce(result.en, pronounceVolume);
+                                            }}
                                         >
-                                            {result.en}
+                                            <VolumeUpIcon style={{ width: '2.5rem', height: '2.5rem' }} />
+                                        </div>
+                                        <div className="mx-2">
+                                            <div className="text-sm whitespace-nowrap text-ellipsis overflow-hidden">
+                                                {result.ja}
+                                            </div>
+                                            <div
+                                                className={
+                                                    result.correct
+                                                        ? 'text-lg font-bold'
+                                                        : 'text-red-500 font-bold text-lg'
+                                                }
+                                            >
+                                                {result.en}
+                                            </div>
                                         </div>
                                     </div>
                                 </React.Fragment>
