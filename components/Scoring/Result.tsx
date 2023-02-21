@@ -2,10 +2,10 @@ import React, { useContext } from 'react';
 import { useRouter } from 'next/router';
 import Button from '@mui/material/Button';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
-import WorkHeader from './WorkHeader';
-import type { ResultType } from '../types';
-import { pronounce } from '../utils';
-import { pronounceVolumeContext } from '../Contexts/PronounceProvider';
+import WorkHeader from '../Worker/WorkHeader';
+import type { ResultType } from '../../types';
+import { pronounce } from '../../utils';
+import { pronounceVolumeContext } from '../../Contexts/PronounceProvider';
 
 type Props = {
     missCount: number;

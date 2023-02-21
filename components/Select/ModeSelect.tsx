@@ -5,7 +5,7 @@ import FormControl from '@mui/material/FormControl';
 import NativeSelect from '@mui/material/NativeSelect';
 import path from 'path';
 import { useRouter } from 'next/router';
-import type { PathParam } from '../types';
+import type { PathParam } from '../../types';
 
 type Props = {
     param: PathParam;

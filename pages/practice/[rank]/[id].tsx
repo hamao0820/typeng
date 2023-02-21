@@ -5,8 +5,8 @@ import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import { pronounceVolumeContext } from '../../../Contexts/PronounceProvider';
 import { soundEffectVolumeContext } from '../../../Contexts/SoundEffectProvider';
 import { typingVolumeContext } from '../../../Contexts/TypingVolumeProvider';
-import Marquee from '../../../components/Marquee';
-import WorkHeader from '../../../components/WorkHeader';
+import Marquee from '../../../components/Worker/Marquee';
+import WorkHeader from '../../../components/Worker/WorkHeader';
 import Head from 'next/head';
 import useWord from '../../../hooks/useWord';
 import getAllWords from '../../../middleware/getAllWords';
@@ -23,7 +23,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (context)
 
 const Practice: NextPage<PageProps> = ({ allWords, pathParam }) => {
     const router = useRouter();
-    const { stage } = pathParam
+    const { stage } = pathParam;
     const { word, typed, unTyped, handleWord } = useWord(allWords, stage);
     const ref = useRef<HTMLDivElement>(null);
     const pronounceVolume = useContext(pronounceVolumeContext);

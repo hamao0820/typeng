@@ -1,20 +1,22 @@
-import React, { Fragment } from 'react';
+import React, { FC, Fragment } from 'react';
+import { Id, Rank, Stage } from '../../types';
 import Modal from './Modal';
-import { Id, Rank } from '../types';
-import useGetWords from '../hooks/useGetWords';
 import path from 'path';
+import useGetWords from '../../hooks/useGetWords';
 import Spinner from './Spinner';
 
 type Props = {
     rank: Rank;
     id: Id | '';
+    stage: Stage | '';
     isOpen: boolean;
     close: () => void;
 };
 
-const IdWordsList: React.FC<Props> = ({ rank, id, isOpen, close }) => {
-    const skipCondition = id === '';
-    const { words, isLoading } = useGetWords(isOpen, path.join('api', rank, id), skipCondition, 150);
+const StageWordsList: FC<Props> = ({ rank, id, stage, isOpen, close }) => {
+    const skipCondition = id === '' || stage === '';
+    const { words, isLoading } = useGetWords(isOpen, path.join('api', rank, id, stage), skipCondition, 150);
+
     return (
         <div>
             <Spinner isLoading={isLoading} />
@@ -40,4 +42,4 @@ const IdWordsList: React.FC<Props> = ({ rank, id, isOpen, close }) => {
     );
 };
 
-export default IdWordsList;
+export default StageWordsList;

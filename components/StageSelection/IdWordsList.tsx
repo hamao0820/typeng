@@ -1,18 +1,20 @@
 import React, { Fragment } from 'react';
-import { Rank } from '../types';
 import Modal from './Modal';
-import Spinner from './Spinner';
-import useGetWords from '../hooks/useGetWords';
+import { Id, Rank } from '../../types';
+import useGetWords from '../../hooks/useGetWords';
 import path from 'path';
+import Spinner from './Spinner';
 
 type Props = {
     rank: Rank;
+    id: Id | '';
     isOpen: boolean;
     close: () => void;
 };
 
-const RankWordsList: React.FC<Props> = ({ rank, isOpen, close }) => {
-    const { words, isLoading } = useGetWords(isOpen, path.join('api', rank));
+const IdWordsList: React.FC<Props> = ({ rank, id, isOpen, close }) => {
+    const skipCondition = id === '';
+    const { words, isLoading } = useGetWords(isOpen, path.join('api', rank, id), skipCondition, 150);
     return (
         <div>
             <Spinner isLoading={isLoading} />
@@ -38,4 +40,4 @@ const RankWordsList: React.FC<Props> = ({ rank, isOpen, close }) => {
     );
 };
 
-export default RankWordsList;
+export default IdWordsList;

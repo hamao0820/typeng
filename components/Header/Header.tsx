@@ -6,8 +6,8 @@ import NativeSelect from '@mui/material/NativeSelect';
 import UnfoldLess from '@mui/icons-material/UnfoldLess';
 import { useRouter } from 'next/router';
 import BackButton from './BackButton';
-import SettingButton from './SettingButton';
-import type { Mode } from '../types';
+import SettingButton from '../Setting/SettingButton';
+import type { Mode } from '../../types';
 
 type Props = {
     text: string;
@@ -23,7 +23,10 @@ const Header: React.FC<Props> = ({ text, href, mode, collapseAll }) => {
             <BackButton href={href} text={text} />
             <div>リストを右クリックすると単語一覧が表示されます</div>
             <div className="flex items-center">
-                <div className="cursor-pointer border-2 border-solid border-blue-200 rounded-md mr-2" onClick={collapseAll}>
+                <div
+                    className="cursor-pointer border-2 border-solid border-blue-200 rounded-md mr-2"
+                    onClick={collapseAll}
+                >
                     <UnfoldLess style={{ width: '3rem', height: '3rem' }} />
                 </div>
                 <div>

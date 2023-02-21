@@ -1,5 +1,5 @@
 import React from 'react';
-import StageSelection from '../../components/StageSelection';
+import StageSelection from '../../components/StageSelection/StageSelection';
 
 const TestHome = () => {
     return <StageSelection mode="test" />;

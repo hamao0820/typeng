@@ -1,5 +1,5 @@
 import React, { FC, Fragment } from 'react';
-import { Loading } from '../types';
+import { Loading } from '../../types';
 
 type Props = {
     isLoading: Loading;

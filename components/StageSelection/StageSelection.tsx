@@ -1,10 +1,10 @@
 import Head from 'next/head';
 import React, { FC } from 'react';
-import Header from './Header';
-import useListOpenStates from '../hooks/useListOpenStates';
-import { Id, Mode, Rank } from '../types';
+import Header from '../Header/Header';
+import useListOpenStates from '../../hooks/useListOpenStates';
+import { Id, Mode, Rank } from '../../types';
 import SelectList from './SelectList';
-import { wordsCounts } from '../utils';
+import { wordsCounts } from '../../utils';
 
 type Props = {
     mode: Mode;

@@ -1,7 +1,7 @@
 import type { NextPage } from 'next';
-import ModeCard from '../components/ModeCard';
-import Logo from '../components/Logo';
-import SettingButton from '../components/SettingButton';
+import ModeCard from '../components/ModeSelection/ModeCard';
+import Logo from '../components/ModeSelection/Logo';
+import SettingButton from '../components/Setting/SettingButton';
 import Head from 'next/head';
 
 // TODO: icoを用意
