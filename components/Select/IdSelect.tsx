@@ -6,7 +6,7 @@ import NativeSelect from '@mui/material/NativeSelect';
 import path from 'path';
 import { useRouter } from 'next/router';
 import type { PathParam } from '../../types';
-import { sliceByNumber, wordsCounts } from '../../utils';
+import { rankIndicesObj, sliceByNumber } from '../../utils';
 
 type Props = {
     param: PathParam;
@@ -15,9 +15,10 @@ type Props = {
 const IdSelect: FC<Props> = ({ param }) => {
     const { mode, rank, id } = param;
     const router = useRouter();
-    const wordsCount = wordsCounts[Number(rank) - 1];
     const allIndices = sliceByNumber(
-        [...Array(wordsCount)].map((_, i) => i),
+        rankIndicesObj.find((v) => {
+            return v.rank === rank;
+        })!.indices,
         100
     );
 
@@ -40,7 +41,7 @@ const IdSelect: FC<Props> = ({ param }) => {
                     >
                         {allIndices.map((indices, i) => (
                             <option key={i} value={String(i)}>
-                                {`${indices[0] + 1} ~ ${indices.at(-1)! + 1}`}
+                                {`${indices[0]} ~ ${indices.at(-1)!}`}
                             </option>
                         ))}
                     </NativeSelect>

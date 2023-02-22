@@ -5,8 +5,8 @@ import FormControl from '@mui/material/FormControl';
 import NativeSelect from '@mui/material/NativeSelect';
 import path from 'path';
 import { useRouter } from 'next/router';
-import type { PathParam, Rank } from '../../types';
-import { wordsCounts } from '../../utils';
+import type { PathParam } from '../../types';
+import { allRanks } from '../../utils';
 
 type Props = {
     param: PathParam;
@@ -32,9 +32,9 @@ const RankSelect: FC<Props> = ({ param }) => {
                             });
                         }}
                     >
-                        {wordsCounts.map((_, i) => (
-                            <option key={i} value={String(i + 1) as Rank}>
-                                {i + 1}
+                        {allRanks.map((rank, i) => (
+                            <option key={i} value={rank}>
+                                {rank}
                             </option>
                         ))}
                     </NativeSelect>
