@@ -13,20 +13,19 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
 import path from 'path';
 import { Id, ListOpenState, Mode, Rank, Stage } from '../../types';
-import { sliceByNumber } from '../../utils';
+import { rankIndicesObj, sliceByNumber } from '../../utils';
 import RankWordsList from './RankWordsList';
 import IdWordsList from './IdWordsList';
 import StageWordsList from './StageWordsList';
 
 type Props = {
     rank: Rank;
-    wordsNum: number;
     mode: Mode;
     openStates: ListOpenState[];
     handleClick: (id: Id) => void;
 };
 
-const SelectList: React.FC<Props> = ({ rank, wordsNum, mode, openStates, handleClick }) => {
+const SelectList: React.FC<Props> = ({ rank, mode, openStates, handleClick }) => {
     const [isRankWordsListModalOpen, setIsRankWordsListModalOpen] = useState<boolean>(false);
     const [isIdWordsListModalOpen, setIsIdWordsListModalOpen] = useState<boolean>(false);
     const [isStageWordsListModalOpen, setIsStageWordsListModalOpen] = useState<boolean>(false);
@@ -34,7 +33,9 @@ const SelectList: React.FC<Props> = ({ rank, wordsNum, mode, openStates, handleC
     const [activeIdAndStage, setActiveIdAndStage] = useState<{ id: Id; stage: Stage }>({ id: '0', stage: 'all' });
 
     const wordIndicesArr = sliceByNumber(
-        [...Array(wordsNum)].map((_, i) => i + 1),
+        rankIndicesObj.find((v) => {
+            return v.rank === rank;
+        })!.indices,
         100
     );
 

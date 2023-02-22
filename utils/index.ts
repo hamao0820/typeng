@@ -74,7 +74,30 @@ export const shuffle = <T>([...arr]: T[]): T[] => {
     return arr;
 };
 
+type RankIndicesObj = { rank: Rank; indices: number[] };
 export const wordsCounts = [956, 882, 1024, 938];
+const createIntervalArr = (start: number, end: number) => {
+    if (start > end) throw Error;
+    return [...Array(end - start + 1)].map((_, i) => i + start);
+};
+export const rankIndicesObj: RankIndicesObj[] = [
+    {
+        rank: '1',
+        indices: createIntervalArr(1, 956),
+    },
+    {
+        rank: '2',
+        indices: createIntervalArr(957, 1838),
+    },
+    {
+        rank: '3',
+        indices: createIntervalArr(1839, 2862),
+    },
+    {
+        rank: '4',
+        indices: createIntervalArr(2863, 3800),
+    },
+];
 
 type StageLoadMap = { stageNo: number; stage: { rank: Rank; id: Id; stage: Stage } }[];
 export const stageLoadMap: StageLoadMap = wordsCounts
@@ -98,3 +121,5 @@ export const stageLoadMap: StageLoadMap = wordsCounts
     .map((v, i) => {
         return { stage: v, stageNo: i };
     });
+
+export const allRanks: Rank[] = ['1', '2', '3', '4'];
