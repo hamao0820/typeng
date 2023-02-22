@@ -1,6 +1,6 @@
 import React, { Dispatch, FC, ReactNode, SetStateAction, createContext, useState } from 'react';
 import { Id, ListOpenState, Rank } from '../types';
-import { sliceByNumber, wordsCounts } from '../utils';
+import { allRanks, sliceByNumber, wordsCounts } from '../utils';
 
 type Props = {
     children: ReactNode;
@@ -17,7 +17,7 @@ export const setOpenStatesContext = createContext<Dispatch<SetStateAction<RankLi
 const ListOpenStatesProvider: FC<Props> = ({ children }) => {
     const [openStates, setOpenStates] = useState<RankListOpenState[]>(
         wordsCounts.map((wordsCount, i) => {
-            const rank = String(i + 1) as Rank;
+            const rank = allRanks[i];
             return {
                 rank: rank,
                 openStates: sliceByNumber(

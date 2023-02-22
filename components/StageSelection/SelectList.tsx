@@ -42,7 +42,7 @@ const SelectList: React.FC<Props> = ({ rank, mode, openStates, handleClick }) =>
     return (
         <div className="m-2 w-screen">
             <RankWordsList
-                rank={String(rank) as Rank}
+                rank={rank}
                 isOpen={isRankWordsListModalOpen}
                 close={() => {
                     setIsRankWordsListModalOpen(false);
