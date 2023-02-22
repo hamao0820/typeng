@@ -24,7 +24,7 @@ const IdWordsList: React.FC<Props> = ({ rank, id, isOpen, close }) => {
                         return (
                             <Fragment key={i}>
                                 <div className={`flex mx-2 py-2 items-center ${i % 2 === 0 && 'bg-gray-200'}`}>
-                                    <div className="mr-4 ml-1">No.{Number(word.id) + 1}</div>
+                                    <div className="mr-4 ml-1">No.{word.id}</div>
                                     <div className="text-lg">{word.en}</div>
                                     <span className="ml-1 mr-2">:</span>
                                     <div className="text-lg whitespace-nowrap text-ellipsis overflow-x-hidden">

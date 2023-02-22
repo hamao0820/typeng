@@ -103,7 +103,7 @@ const Challenge: NextPage<PageProps> = ({ allWords, pathParam }) => {
                 param={{ mode: 'challenge', ...(router.query as any) }}
             />
             <div className="h-4/5 relative w-full">
-                {word && <div className="absolute top-5 right-10 text-3xl">id: {word.id + 1}</div>}
+                {word && <div className="absolute top-5 right-10 text-3xl">id: {word.id}</div>}
                 <div className="flex h-fit justify-start absolute top-1/3 left-60 w-full">
                     <div className="w-fit h-fit flex items-center justify-center p-2 bg-green-500 rounded-md">
                         <VolumeUpIcon
