@@ -4,7 +4,9 @@ import PronounceProvider from '../Contexts/PronounceProvider';
 import SoundEffectProvider from '../Contexts/SoundEffectProvider';
 import TypingVolumeProvider from '../Contexts/TypingVolumeProvider';
 import ListOpenStatesProvider from '../Contexts/ListOpenStatesProvider';
+import { initializeFirebaseApp } from '../lib/firebase/firebase';
 
+initializeFirebaseApp();
 function MyApp({ Component, pageProps }: AppProps) {
     return (
         <PronounceProvider>
