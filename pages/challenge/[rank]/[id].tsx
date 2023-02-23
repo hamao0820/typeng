@@ -14,6 +14,7 @@ import Head from 'next/head';
 import useWord from '../../../hooks/useWord';
 import getAllWords from '../../../middleware/getAllWords';
 import type { PageProps, PathParam, PathParams, Stage } from '../../../types';
+import FavoriteStar from '../../../components/Favorites/FavoriteStar';
 
 export const getServerSideProps: GetServerSideProps<PageProps> = async (context) => {
     const { rank, id } = context.params as PathParams;
@@ -103,7 +104,14 @@ const Challenge: NextPage<PageProps> = ({ allWords, pathParam }) => {
                 param={{ mode: 'challenge', ...(router.query as any) }}
             />
             <div className="h-4/5 relative w-full">
-                {word && <div className="absolute top-5 right-10 text-3xl">id: {word.id}</div>}
+                {word && (
+                    <div className="absolute top-5 right-12 flex justify-between items-center w-32">
+                        <div>
+                            <FavoriteStar word={word} />
+                        </div>
+                        <div className="text-3xl whitespace-nowrap">id: {word.id}</div>
+                    </div>
+                )}
                 <div className="flex h-fit justify-start absolute top-1/3 left-60 w-full">
                     <div className="w-fit h-fit flex items-center justify-center p-2 bg-green-500 rounded-md">
                         <VolumeUpIcon
