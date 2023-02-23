@@ -6,6 +6,7 @@ import WorkHeader from '../Worker/WorkHeader';
 import type { ResultType } from '../../types';
 import { pronounce } from '../../utils';
 import { pronounceVolumeContext } from '../../Contexts/PronounceProvider';
+import FavoriteStar from '../Favorites/FavoriteStar';
 
 type Props = {
     missCount: number;
@@ -55,6 +56,11 @@ const Result: React.FC<Props> = ({ missCount, results, measure, next, retry }) =
                                                 }
                                             >
                                                 {result.en}
+                                            </div>
+                                        </div>
+                                        <div className="flex-1 items-center">
+                                            <div className="justify-self-end">
+                                                <FavoriteStar word={{ id: result.id, ja: result.ja, en: result.en }} />
                                             </div>
                                         </div>
                                     </div>
