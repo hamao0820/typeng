@@ -10,6 +10,7 @@ import Collapse from '@mui/material/Collapse';
 import Divider from '@mui/material/Divider';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
+import StarIcon from '@mui/icons-material/Star';
 import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
 import path from 'path';
 import { Id, ListOpenState, Mode, Rank, Stage } from '../../types';
@@ -17,6 +18,8 @@ import { rankIndicesObj, sliceByNumber } from '../../utils';
 import RankWordsList from './RankWordsList';
 import IdWordsList from './IdWordsList';
 import StageWordsList from './StageWordsList';
+import FavoriteWordsList from './FavoriteWordsList';
+import { useAuthContext } from '../../Contexts/AuthProvider';
 
 type Props = {
     rank: Rank;
@@ -29,8 +32,10 @@ const SelectList: React.FC<Props> = ({ rank, mode, openStates, handleClick }) =>
     const [isRankWordsListModalOpen, setIsRankWordsListModalOpen] = useState<boolean>(false);
     const [isIdWordsListModalOpen, setIsIdWordsListModalOpen] = useState<boolean>(false);
     const [isStageWordsListModalOpen, setIsStageWordsListModalOpen] = useState<boolean>(false);
+    const [isFavoritesWordsListModalOpen, setIsFavoritesWordsListModalOpen] = useState<boolean>(false);
     const [activeId, setActiveId] = useState<Id>('0');
     const [activeIdAndStage, setActiveIdAndStage] = useState<{ id: Id; stage: Stage }>({ id: '0', stage: 'all' });
+    const { user } = useAuthContext();
 
     const wordIndicesArr = sliceByNumber(
         rankIndicesObj.find((v) => {
@@ -65,6 +70,13 @@ const SelectList: React.FC<Props> = ({ rank, mode, openStates, handleClick }) =>
                     setIsStageWordsListModalOpen(false);
                 }}
             />
+            {user && (
+                <FavoriteWordsList
+                    rank={rank}
+                    isOpen={isFavoritesWordsListModalOpen}
+                    close={() => setIsFavoritesWordsListModalOpen(false)}
+                />
+            )}
             <List
                 sx={{
                     width: '100%',
@@ -95,7 +107,26 @@ const SelectList: React.FC<Props> = ({ rank, mode, openStates, handleClick }) =>
                     </ListSubheader>
                 }
             >
-                <Divider />
+                {user && (
+                    <>
+                        <Divider />
+                        <ListItemButton
+                            onContextMenu={(e) => {
+                                e.preventDefault();
+                                setIsFavoritesWordsListModalOpen(true);
+                            }}
+                        >
+                            <ListItemIcon>
+                                <StarIcon />
+                            </ListItemIcon>
+                            <ListItemText
+                                primary={`苦手な単語`}
+                                primaryTypographyProps={{ fontSize: '1.3rem', fontWeight: 500, margin: '3px' }}
+                            />
+                        </ListItemButton>
+                        <Divider />
+                    </>
+                )}
                 {wordIndicesArr.map((wordIndices, id) => {
                     const openState = openStates.find((state) => state.id === String(id));
                     if (openState === undefined) return;

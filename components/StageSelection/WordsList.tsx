@@ -12,12 +12,14 @@ type Props = {
 };
 
 const WordsList: FC<Props> = ({ isLoading, isOpen, words, close }) => {
+    console.log('words', words);
     return (
         <div>
             <Spinner isLoading={isLoading} />
             <Modal isOpen={isOpen} close={close}>
                 <div className="h-full overflow-y-scroll">
                     {words.map((word, i) => {
+                        console.log(word);
                         return (
                             <Fragment key={i}>
                                 <div className={`flex mx-2 py-2 items-center ${i % 2 === 0 && 'bg-gray-200'}`}>
