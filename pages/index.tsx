@@ -21,7 +21,6 @@ const Home: NextPage = () => {
     const onSignOut = () => {
         setOpenSnack(true);
     };
-    console.table(user);
     return (
         <div className="flex flex-col h-screen">
             <Head>
