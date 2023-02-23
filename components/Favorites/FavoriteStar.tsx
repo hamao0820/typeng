@@ -22,7 +22,7 @@ const FavoriteStar: FC<Props> = ({ word }) => {
                             favorites.includes(word.id) ? removeFromFavorites(word) : addToFavorites(word);
                         }}
                     >
-                        {favorites.includes(word.id) ? <StarIcon /> : <StarBorderIcon />}
+                        {favorites.includes(word.id) ? <StarIcon style={{ color: '#1d4ed8' }} /> : <StarBorderIcon />}
                     </IconButton>
                 </div>
             )}
