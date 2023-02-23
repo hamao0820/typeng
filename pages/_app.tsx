@@ -6,6 +6,7 @@ import TypingVolumeProvider from '../Contexts/TypingVolumeProvider';
 import ListOpenStatesProvider from '../Contexts/ListOpenStatesProvider';
 import { initializeFirebaseApp } from '../lib/firebase/firebase';
 import AuthProvider from '../Contexts/AuthProvider';
+import FavoritesProvider from '../Contexts/FavoritesProvider';
 
 initializeFirebaseApp();
 function MyApp({ Component, pageProps }: AppProps) {
@@ -15,7 +16,9 @@ function MyApp({ Component, pageProps }: AppProps) {
                 <TypingVolumeProvider>
                     <ListOpenStatesProvider>
                         <AuthProvider>
-                            <Component {...pageProps} />
+                            <FavoritesProvider>
+                                <Component {...pageProps} />
+                            </FavoritesProvider>
                         </AuthProvider>
                     </ListOpenStatesProvider>
                 </TypingVolumeProvider>
