@@ -5,6 +5,7 @@ import SoundEffectProvider from '../Contexts/SoundEffectProvider';
 import TypingVolumeProvider from '../Contexts/TypingVolumeProvider';
 import ListOpenStatesProvider from '../Contexts/ListOpenStatesProvider';
 import { initializeFirebaseApp } from '../lib/firebase/firebase';
+import AuthProvider from '../Contexts/AuthProvider';
 
 initializeFirebaseApp();
 function MyApp({ Component, pageProps }: AppProps) {
@@ -13,7 +14,9 @@ function MyApp({ Component, pageProps }: AppProps) {
             <SoundEffectProvider>
                 <TypingVolumeProvider>
                     <ListOpenStatesProvider>
-                        <Component {...pageProps} />
+                        <AuthProvider>
+                            <Component {...pageProps} />
+                        </AuthProvider>
                     </ListOpenStatesProvider>
                 </TypingVolumeProvider>
             </SoundEffectProvider>
