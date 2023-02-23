@@ -2,11 +2,7 @@ import React, { FC, Fragment } from 'react';
 import { Loading, Word } from '../../types';
 import Modal from './Modal';
 import Spinner from './Spinner';
-import StarBorderIcon from '@mui/icons-material/StarBorder';
-import StarIcon from '@mui/icons-material/Star';
-import IconButton from '@mui/material/IconButton';
-import useFavorites from '../../hooks/useFavorites';
-import { useAuthContext } from '../../Contexts/AuthProvider';
+import FavoriteStar from '../Favorites/FavoriteStar';
 
 type Props = {
     isLoading: Loading;
@@ -16,8 +12,6 @@ type Props = {
 };
 
 const WordsList: FC<Props> = ({ isLoading, isOpen, words, close }) => {
-    const { addToFavorites, removeFromFavorites, favorites } = useFavorites();
-    const { user } = useAuthContext();
     return (
         <div>
             <Spinner isLoading={isLoading} />
@@ -33,21 +27,7 @@ const WordsList: FC<Props> = ({ isLoading, isOpen, words, close }) => {
                                     <div className="text-lg whitespace-nowrap text-ellipsis overflow-x-hidden">
                                         {word.ja}
                                     </div>
-                                    {user && (
-                                        <div className="flex items-center justify-end flex-1">
-                                            <IconButton
-                                                sx={{ marginRight: '10px' }}
-                                                aria-label="favorite"
-                                                onClick={() => {
-                                                    favorites.includes(word.id)
-                                                        ? removeFromFavorites(word)
-                                                        : addToFavorites(word);
-                                                }}
-                                            >
-                                                {favorites.includes(word.id) ? <StarIcon /> : <StarBorderIcon />}
-                                            </IconButton>
-                                        </div>
-                                    )}
+                                    <FavoriteStar word={word}></FavoriteStar>
                                 </div>
                             </Fragment>
                         );
