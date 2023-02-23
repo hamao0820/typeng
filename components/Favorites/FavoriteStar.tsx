@@ -14,7 +14,7 @@ const FavoriteStar: FC<Props> = ({ word }) => {
     return (
         <>
             {user && (
-                <div className="flex items-center justify-end flex-1">
+                <div className="flex items-center justify-end">
                     <IconButton
                         sx={{ marginRight: '10px' }}
                         aria-label="favorite"

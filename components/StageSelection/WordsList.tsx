@@ -27,7 +27,9 @@ const WordsList: FC<Props> = ({ isLoading, isOpen, words, close }) => {
                                     <div className="text-lg whitespace-nowrap text-ellipsis overflow-x-hidden">
                                         {word.ja}
                                     </div>
-                                    <FavoriteStar word={word}></FavoriteStar>
+                                    <div className="flex-1">
+                                        <FavoriteStar word={word}></FavoriteStar>
+                                    </div>
                                 </div>
                             </Fragment>
                         );
