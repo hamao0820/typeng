@@ -32,5 +32,3 @@ export type ListOpenState = {
 };
 
 export type Loading = 'hold' | 'loading' | 'done';
-
-export type Favorites = number[];

@@ -1,7 +1,7 @@
 import React, { FC, ReactNode, createContext, useContext, useEffect, useState } from 'react';
 import { getDatabase, ref, onValue } from '@firebase/database';
 import { FirebaseError } from 'firebase/app';
-import { Favorites } from '../types';
+import { Favorites } from '../types/favorite';
 import { useAuthContext } from './AuthProvider';
 import path from 'path';
 
