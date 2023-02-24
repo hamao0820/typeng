@@ -23,6 +23,7 @@ const useFavoriteWords = (words: Word[]) => {
     }, []);
 
     useEffect(() => {
+        console.log(favoriteWords);
         if (favoriteWords.length !== 0) {
             setIndices(createIndices(favoriteWords.length));
         }
