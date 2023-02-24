@@ -1,18 +1,18 @@
-import React, { FC, useCallback, useContext, useEffect, useRef, useState } from 'react';
-import { FavoritesPageProps } from '../../../types/favorite';
-import { GetServerSideProps } from 'next';
-import { PathParams } from '../../../types';
-import getRankWords from '../../../middleware/getRankWords';
-import useFavoriteWords from '../../../hooks/useFavoriteWords';
+import type { GetServerSideProps, NextPage } from 'next';
+import { useRouter } from 'next/router';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import { pronounceVolumeContext } from '../../../Contexts/PronounceProvider';
 import { soundEffectVolumeContext } from '../../../Contexts/SoundEffectProvider';
 import { typingVolumeContext } from '../../../Contexts/TypingVolumeProvider';
+import Marquee from '../../../components/Worker/Marquee';
 import { pronounce, sound, typeSound } from '../../../utils';
 import Head from 'next/head';
+import type { PathParams } from '../../../types';
 import FavoriteStar from '../../../components/Favorites/FavoriteStar';
-import VolumeUpIcon from '@mui/icons-material/VolumeUp';
-import Marquee from '../../../components/Worker/Marquee';
-import { useRouter } from 'next/router';
+import { FavoritesPageProps } from '../../../types/favorite';
+import getRankWords from '../../../middleware/getRankWords';
+import useFavoriteWords from '../../../hooks/useFavoriteWords';
 import FavoriteHeader from '../../../components/Favorites/FavoriteHeader';
 
 export const getServerSideProps: GetServerSideProps<FavoritesPageProps> = async (context) => {
@@ -21,19 +21,20 @@ export const getServerSideProps: GetServerSideProps<FavoritesPageProps> = async 
     return { props: { rankWords } };
 };
 
-const Favorites: FC<FavoritesPageProps> = ({ rankWords }) => {
+const Favorites: NextPage<FavoritesPageProps> = ({ rankWords }) => {
     const router = useRouter();
-    const { favoriteWords, word, typed, unTyped, handleWord } = useFavoriteWords(rankWords);
+    const { favoriteWords, word, typed, unTyped, missed, handleWord } = useFavoriteWords(rankWords);
+    const ref = useRef<HTMLDivElement>(null);
     const pronounceVolume = useContext(pronounceVolumeContext);
     const soundEffectVolume = useContext(soundEffectVolumeContext);
     const typingVolume = useContext(typingVolumeContext);
-    const [isOver, setIsOver] = useState<boolean>(false);
-    const ref = useRef<HTMLDivElement>(null);
     const contentRef = useRef<HTMLSpanElement>(null);
+    const [isOver, setIsOver] = useState<boolean>(false);
+
     useEffect(() => {
         return () => {
             if (favoriteWords.length === 1) {
-                router.push('/practice');
+                router.push('/test');
             }
         };
     }, [favoriteWords, router]);
@@ -73,6 +74,7 @@ const Favorites: FC<FavoritesPageProps> = ({ rankWords }) => {
         },
         [unTyped, typingVolume, soundEffectVolume]
     );
+
     const handleKeyDown = useCallback(
         (e: React.KeyboardEvent<HTMLDivElement> | KeyboardEvent) => {
             handleWord(e);
@@ -84,12 +86,13 @@ const Favorites: FC<FavoritesPageProps> = ({ rankWords }) => {
     useEffect(() => {
         document.onkeydown = handleKeyDown;
     }, [handleKeyDown]);
+
     return (
         <div className="h-screen w-screen overflow-hidden" ref={ref}>
             <Head>
-                <title>practice</title>
+                <title>test</title>
             </Head>
-            <FavoriteHeader text="選択画面に戻る" href="/practice" />
+            <FavoriteHeader text="選択画面に戻る" href="/test" />
             <div className="h-4/5 relative w-full">
                 {word && (
                     <div className="absolute top-5 right-12 flex justify-between items-center w-32">
@@ -115,11 +118,13 @@ const Favorites: FC<FavoritesPageProps> = ({ rankWords }) => {
                                 {word?.ja}
                             </span>
                         </div>
-
                         {word !== undefined && isOver && <Marquee content={word.ja} />}
                         <div className="whitespace-nowrap">
                             <span className="text-8xl font-bold whitespace-nowrap">{typed.replaceAll(' ', '␣')}</span>
-                            <span className="text-8xl font-bold text-gray-300 whitespace-nowrap">
+                            <span
+                                className="text-8xl font-bold text-gray-300 whitespace-nowrap"
+                                style={missed ? {} : { display: 'none' }}
+                            >
                                 {unTyped.replaceAll(' ', '␣')}
                             </span>
                         </div>
