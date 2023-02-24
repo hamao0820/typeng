@@ -12,7 +12,6 @@ type Props = {
 };
 
 const WordsList: FC<Props> = ({ isLoading, isOpen, words, close }) => {
-    console.log('words', words);
     return (
         <div>
             <Spinner isLoading={isLoading} />
