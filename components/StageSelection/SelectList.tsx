@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import Link from 'next/link';
 import ListSubheader from '@mui/material/ListSubheader';
 import List from '@mui/material/List';
@@ -20,6 +20,7 @@ import IdWordsList from './IdWordsList';
 import StageWordsList from './StageWordsList';
 import FavoriteWordsList from './FavoriteWordsList';
 import { useAuthContext } from '../../Contexts/AuthProvider';
+import { useFavoritesContext } from '../../Contexts/FavoritesProvider';
 
 type Props = {
     rank: Rank;
@@ -28,7 +29,6 @@ type Props = {
     handleClick: (id: Id) => void;
 };
 
-// TODO: リンクを追加
 const SelectList: React.FC<Props> = ({ rank, mode, openStates, handleClick }) => {
     const [isRankWordsListModalOpen, setIsRankWordsListModalOpen] = useState<boolean>(false);
     const [isIdWordsListModalOpen, setIsIdWordsListModalOpen] = useState<boolean>(false);
@@ -37,6 +37,12 @@ const SelectList: React.FC<Props> = ({ rank, mode, openStates, handleClick }) =>
     const [activeId, setActiveId] = useState<Id>('0');
     const [activeIdAndStage, setActiveIdAndStage] = useState<{ id: Id; stage: Stage }>({ id: '0', stage: 'all' });
     const { user } = useAuthContext();
+    const favorites = useFavoritesContext();
+    const hasFavorite = useMemo(
+        () =>
+            favorites.find((id) => rankIndicesObj.filter((v) => v.rank === rank)[0].indices.includes(id)) !== undefined,
+        [favorites, rank]
+    );
 
     const wordIndicesArr = sliceByNumber(
         rankIndicesObj.find((v) => {
@@ -111,20 +117,27 @@ const SelectList: React.FC<Props> = ({ rank, mode, openStates, handleClick }) =>
                 {user && (
                     <>
                         <Divider />
-                        <ListItemButton
-                            onContextMenu={(e) => {
-                                e.preventDefault();
-                                setIsFavoritesWordsListModalOpen(true);
+                        <Link
+                            href={{
+                                pathname: hasFavorite ? path.join(mode, rank, 'favorites') : mode,
                             }}
                         >
-                            <ListItemIcon>
-                                <StarIcon />
-                            </ListItemIcon>
-                            <ListItemText
-                                primary={`苦手な単語`}
-                                primaryTypographyProps={{ fontSize: '1.3rem', fontWeight: 500, margin: '3px' }}
-                            />
-                        </ListItemButton>
+                            <ListItemButton
+                                onContextMenu={(e) => {
+                                    e.preventDefault();
+                                    setIsFavoritesWordsListModalOpen(true);
+                                }}
+                                disabled={!hasFavorite}
+                            >
+                                <ListItemIcon>
+                                    <StarIcon />
+                                </ListItemIcon>
+                                <ListItemText
+                                    primary={`苦手な単語`}
+                                    primaryTypographyProps={{ fontSize: '1.3rem', fontWeight: 500, margin: '3px' }}
+                                />
+                            </ListItemButton>
+                        </Link>
                         <Divider />
                     </>
                 )}
