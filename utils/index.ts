@@ -123,3 +123,9 @@ export const stageLoadMap: StageLoadMap = wordsCounts
     });
 
 export const allRanks: Rank[] = ['1', '2', '3', '4'];
+
+export const createIndices = (num: number) => {
+    const serialIndices = [...Array(num)].map((_, i) => i);
+    const shuffledIndices = shuffle(serialIndices);
+    return shuffledIndices;
+};

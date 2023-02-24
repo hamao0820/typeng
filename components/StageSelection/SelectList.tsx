@@ -28,6 +28,7 @@ type Props = {
     handleClick: (id: Id) => void;
 };
 
+// TODO: リンクを追加
 const SelectList: React.FC<Props> = ({ rank, mode, openStates, handleClick }) => {
     const [isRankWordsListModalOpen, setIsRankWordsListModalOpen] = useState<boolean>(false);
     const [isIdWordsListModalOpen, setIsIdWordsListModalOpen] = useState<boolean>(false);
