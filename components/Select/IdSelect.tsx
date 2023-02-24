@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
@@ -7,6 +7,7 @@ import path from 'path';
 import { useRouter } from 'next/router';
 import type { PathParam } from '../../types';
 import { rankIndicesObj, sliceByNumber } from '../../utils';
+import { useFavoritesContext } from '../../Contexts/FavoritesProvider';
 
 type Props = {
     param: PathParam;
@@ -21,6 +22,12 @@ const IdSelect: FC<Props> = ({ param }) => {
         })!.indices,
         100
     );
+    const favorites = useFavoritesContext();
+    const hasFavorite = useMemo(
+        () =>
+            favorites.find((id) => rankIndicesObj.filter((v) => v.rank === rank)[0].indices.includes(id)) !== undefined,
+        [favorites, rank]
+    );
 
     return (
         <div>
@@ -33,12 +40,18 @@ const IdSelect: FC<Props> = ({ param }) => {
                         defaultValue={id}
                         value={id}
                         onChange={async (e) => {
+                            const id = e.currentTarget.value;
+                            if (id === 'favorites') {
+                                await router.push({ pathname: `/${path.join(mode, rank, id)}` });
+                                return;
+                            }
                             await router.push({
-                                pathname: `/${path.join(mode, rank, e.currentTarget.value)}`,
+                                pathname: `/${path.join(mode, rank, id)}`,
                                 query: { stage: '0' },
                             });
                         }}
                     >
+                        {hasFavorite && <option value="favorites">★</option>}
                         {allIndices.map((indices, i) => (
                             <option key={i} value={String(i)}>
                                 {`${indices[0]} ~ ${indices.at(-1)!}`}
