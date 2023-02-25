@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import ListSubheader from '@mui/material/ListSubheader';
 import List from '@mui/material/List';
@@ -20,7 +20,7 @@ import IdWordsList from './IdWordsList';
 import StageWordsList from './StageWordsList';
 import FavoriteWordsList from './FavoriteWordsList';
 import { useAuthContext } from '../../Contexts/AuthProvider';
-import { useFavoritesContext } from '../../Contexts/FavoritesProvider';
+import useHasFavorites from '../../hooks/useHasFavorites';
 
 type Props = {
     rank: Rank;
@@ -37,12 +37,7 @@ const SelectList: React.FC<Props> = ({ rank, mode, openStates, handleClick }) =>
     const [activeId, setActiveId] = useState<Id>('0');
     const [activeIdAndStage, setActiveIdAndStage] = useState<{ id: Id; stage: Stage }>({ id: '0', stage: 'all' });
     const { user } = useAuthContext();
-    const favorites = useFavoritesContext();
-    const hasFavorite = useMemo(
-        () =>
-            favorites.find((id) => rankIndicesObj.filter((v) => v.rank === rank)[0].indices.includes(id)) !== undefined,
-        [favorites, rank]
-    );
+    const hasFavorite = useHasFavorites(rank);
 
     const wordIndicesArr = sliceByNumber(
         rankIndicesObj.find((v) => {

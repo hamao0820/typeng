@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC } from 'react';
 import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
@@ -7,7 +7,7 @@ import path from 'path';
 import { useRouter } from 'next/router';
 import type { PathParam } from '../../types';
 import { rankIndicesObj, sliceByNumber } from '../../utils';
-import { useFavoritesContext } from '../../Contexts/FavoritesProvider';
+import useHasFavorites from '../../hooks/useHasFavorites';
 
 type Props = {
     param: PathParam;
@@ -22,12 +22,7 @@ const IdSelect: FC<Props> = ({ param }) => {
         })!.indices,
         100
     );
-    const favorites = useFavoritesContext();
-    const hasFavorite = useMemo(
-        () =>
-            favorites.find((id) => rankIndicesObj.filter((v) => v.rank === rank)[0].indices.includes(id)) !== undefined,
-        [favorites, rank]
-    );
+    const hasFavorite = useHasFavorites(rank);
 
     return (
         <div>
