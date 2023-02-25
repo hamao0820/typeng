@@ -1,5 +1,4 @@
 import type { GetServerSideProps, NextPage } from 'next';
-import { useRouter } from 'next/router';
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import LightbulbIcon from '@mui/icons-material/Lightbulb';
@@ -24,7 +23,6 @@ export const getServerSideProps: GetServerSideProps<FavoritesPageProps> = async 
 };
 
 const Favorites: NextPage<FavoritesPageProps> = ({ rankWords }) => {
-    const router = useRouter();
     const { word, typed, unTyped, missCount, handleWord } = useFavoriteWords(rankWords);
     const ref = useRef<HTMLDivElement>(null);
     const pronounceVolume = useContext(pronounceVolumeContext);
@@ -96,7 +94,7 @@ const Favorites: NextPage<FavoritesPageProps> = ({ rankWords }) => {
             <Head>
                 <title>challenge</title>
             </Head>
-            <FavoriteHeader text="選択画面に戻る" href="/challenge" />
+            <FavoriteHeader text="選択画面に戻る" href="/challenge" mode="challenge" />
             <div className="h-4/5 relative w-full">
                 {word && (
                     <div className="absolute top-5 right-12 flex justify-between items-center w-32">

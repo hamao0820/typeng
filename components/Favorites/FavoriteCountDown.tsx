@@ -5,7 +5,7 @@ type Props = {
     setReady: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const CountDown: React.FC<Props> = ({ setReady }) => {
+const FavoriteCountDown: React.FC<Props> = ({ setReady }) => {
     const [countTime, setCountTime] = useState<number>(3);
     const [counting, setCounting] = useState<boolean>(false);
     useEffect(() => {
@@ -36,7 +36,7 @@ const CountDown: React.FC<Props> = ({ setReady }) => {
     return (
         <>
             <div className="absolute z-20 w-screen">
-                <FavoriteHeader text="選択画面に戻る" href="/scoring" />
+                <FavoriteHeader text="選択画面に戻る" href="/scoring" mode="scoring" />
             </div>
             <div
                 className="h-screen w-screen absolute top-0 left-0 bg-white z-10 flex flex-col justify-center items-center"
@@ -51,4 +51,4 @@ const CountDown: React.FC<Props> = ({ setReady }) => {
     );
 };
 
-export default CountDown;
+export default FavoriteCountDown;

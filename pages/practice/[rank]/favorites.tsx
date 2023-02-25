@@ -12,7 +12,6 @@ import Head from 'next/head';
 import FavoriteStar from '../../../components/Favorites/FavoriteStar';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import Marquee from '../../../components/Worker/Marquee';
-import { useRouter } from 'next/router';
 import FavoriteHeader from '../../../components/Favorites/FavoriteHeader';
 
 export const getServerSideProps: GetServerSideProps<FavoritesPageProps> = async (context) => {
@@ -22,21 +21,13 @@ export const getServerSideProps: GetServerSideProps<FavoritesPageProps> = async 
 };
 
 const Favorites: FC<FavoritesPageProps> = ({ rankWords }) => {
-    const router = useRouter();
-    const { favoriteWords, word, typed, unTyped, handleWord } = useFavoriteWords(rankWords);
+    const { word, typed, unTyped, handleWord } = useFavoriteWords(rankWords);
     const pronounceVolume = useContext(pronounceVolumeContext);
     const soundEffectVolume = useContext(soundEffectVolumeContext);
     const typingVolume = useContext(typingVolumeContext);
     const [isOver, setIsOver] = useState<boolean>(false);
     const ref = useRef<HTMLDivElement>(null);
     const contentRef = useRef<HTMLSpanElement>(null);
-    useEffect(() => {
-        return () => {
-            if (favoriteWords.length === 1) {
-                router.push('/practice');
-            }
-        };
-    }, [favoriteWords, router]);
 
     useEffect(() => {
         if (word === undefined) {
@@ -89,7 +80,7 @@ const Favorites: FC<FavoritesPageProps> = ({ rankWords }) => {
             <Head>
                 <title>practice</title>
             </Head>
-            <FavoriteHeader text="選択画面に戻る" href="/practice" />
+            <FavoriteHeader text="選択画面に戻る" href="/practice" mode="practice" />
             <div className="h-4/5 relative w-full">
                 {word && (
                     <div className="absolute top-5 right-12 flex justify-between items-center w-32">

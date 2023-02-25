@@ -1,5 +1,4 @@
 import type { GetServerSideProps, NextPage } from 'next';
-import { useRouter } from 'next/router';
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import { pronounceVolumeContext } from '../../../Contexts/PronounceProvider';
@@ -22,22 +21,13 @@ export const getServerSideProps: GetServerSideProps<FavoritesPageProps> = async 
 };
 
 const Favorites: NextPage<FavoritesPageProps> = ({ rankWords }) => {
-    const router = useRouter();
-    const { favoriteWords, word, typed, unTyped, missed, handleWord } = useFavoriteWords(rankWords);
+    const { word, typed, unTyped, missed, handleWord } = useFavoriteWords(rankWords);
     const ref = useRef<HTMLDivElement>(null);
     const pronounceVolume = useContext(pronounceVolumeContext);
     const soundEffectVolume = useContext(soundEffectVolumeContext);
     const typingVolume = useContext(typingVolumeContext);
     const contentRef = useRef<HTMLSpanElement>(null);
     const [isOver, setIsOver] = useState<boolean>(false);
-
-    useEffect(() => {
-        return () => {
-            if (favoriteWords.length === 1) {
-                router.push('/test');
-            }
-        };
-    }, [favoriteWords, router]);
 
     useEffect(() => {
         if (word === undefined) {
@@ -92,7 +82,7 @@ const Favorites: NextPage<FavoritesPageProps> = ({ rankWords }) => {
             <Head>
                 <title>test</title>
             </Head>
-            <FavoriteHeader text="選択画面に戻る" href="/test" />
+            <FavoriteHeader text="選択画面に戻る" href="/test" mode="test" />
             <div className="h-4/5 relative w-full">
                 {word && (
                     <div className="absolute top-5 right-12 flex justify-between items-center w-32">
