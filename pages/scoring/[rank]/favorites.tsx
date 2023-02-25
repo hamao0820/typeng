@@ -63,11 +63,10 @@ const Favorites: NextPage<FavoritesPageProps> = ({ rankWords }) => {
     }, [favoriteWords]);
 
     const retry = useCallback(async () => {
-        if (
-            favoriteWords.length === 0 &&
-            confirm('おめでとうございます!!\n苦手な単語がなくなりました!!\nステージ選択ページに移動しますか?')
-        ) {
-            await router.push({ pathname: '/scoring' });
+        if (favoriteWords.length === 0) {
+            if (confirm('おめでとうございます!!\n苦手な単語がなくなりました!!\nステージ選択ページに移動しますか?')) {
+                await router.push({ pathname: '/scoring' });
+            }
         } else {
             initState();
         }

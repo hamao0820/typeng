@@ -17,7 +17,7 @@ type Props = {
 
 const FavoriteResult: React.FC<Props> = ({ missCount, results, measure, back, retry }) => {
     const allWordCount = results.map<number>((result) => result.en.length).reduce((p, c) => p + c, 0);
-    const correctTypeRate = Math.round(((allWordCount - missCount) / allWordCount + missCount) * 100);
+    const correctTypeRate = Math.round(((allWordCount - missCount) / (allWordCount + missCount)) * 100);
     const pronounceVolume = useContext(pronounceVolumeContext);
     return (
         <div className="h-screen w-screen absolute top-0 left-0 bg-white z-50 flex flex-col items-center overflow-hidden">
