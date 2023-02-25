@@ -46,7 +46,9 @@ const IdSelect: FC<Props> = ({ param }) => {
                             });
                         }}
                     >
-                        {hasFavorite && <option value="favorites">★</option>}
+                        <option value="favorites" disabled={!hasFavorite}>
+                            ★
+                        </option>
                         {allIndices.map((indices, i) => (
                             <option key={i} value={String(i)}>
                                 {`${indices[0]} ~ ${indices.at(-1)!}`}
