@@ -4,7 +4,7 @@ import SettingButton from '../Setting/SettingButton';
 import ModeSelect from '../Select/ModeSelect';
 import StageSelect from '../Select/StageSelect';
 import type { PathParam } from '../../types';
-import IdSelect from '../Select/IdSelect';
+import WorldSelect from '../Select/WorldSelect';
 import RankSelect from '../Select/RankSelect';
 
 type Props = {
@@ -19,7 +19,7 @@ const WorkHeader: React.FC<Props> = ({ text, href, param }) => {
             <BackButton href={href} text={text} />
             <div className="flex items-center">
                 <RankSelect param={param} />
-                <IdSelect param={param} />
+                <WorldSelect param={param} />
                 <StageSelect param={param} />
                 <ModeSelect param={param} />
                 <div

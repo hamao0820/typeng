@@ -16,7 +16,7 @@ import path from 'path';
 import { World, ListOpenState, Mode, Rank, Stage } from '../../types';
 import { rankIndicesObj, sliceByNumber } from '../../utils';
 import RankWordsList from './RankWordsList';
-import IdWordsList from './IdWordsList';
+import WorldWordsList from './WorldWordsList';
 import StageWordsList from './StageWordsList';
 import FavoriteWordsList from './FavoriteWordsList';
 import { useAuthContext } from '../../Contexts/AuthProvider';
@@ -31,11 +31,11 @@ type Props = {
 
 const SelectList: React.FC<Props> = ({ rank, mode, openStates, handleClick }) => {
     const [isRankWordsListModalOpen, setIsRankWordsListModalOpen] = useState<boolean>(false);
-    const [isIdWordsListModalOpen, setIsIdWordsListModalOpen] = useState<boolean>(false);
+    const [isWorldWordsListModalOpen, setIsWorldWordsListModalOpen] = useState<boolean>(false);
     const [isStageWordsListModalOpen, setIsStageWordsListModalOpen] = useState<boolean>(false);
     const [isFavoritesWordsListModalOpen, setIsFavoritesWordsListModalOpen] = useState<boolean>(false);
-    const [activeId, setActiveId] = useState<World>('0');
-    const [activeIdAndStage, setActiveIdAndStage] = useState<{ world: World; stage: Stage }>({
+    const [activeWorld, setActiveWorld] = useState<World>('0');
+    const [activeWorldAndStage, setActiveWorldAndStage] = useState<{ world: World; stage: Stage }>({
         world: '0',
         stage: 'all',
     });
@@ -58,18 +58,18 @@ const SelectList: React.FC<Props> = ({ rank, mode, openStates, handleClick }) =>
                     setIsRankWordsListModalOpen(false);
                 }}
             />
-            <IdWordsList
+            <WorldWordsList
                 rank={rank}
-                world={activeId}
-                isOpen={isIdWordsListModalOpen}
+                world={activeWorld}
+                isOpen={isWorldWordsListModalOpen}
                 close={() => {
-                    setIsIdWordsListModalOpen(false);
+                    setIsWorldWordsListModalOpen(false);
                 }}
             />
             <StageWordsList
                 rank={rank}
-                world={activeIdAndStage.world}
-                stage={activeIdAndStage.stage}
+                world={activeWorldAndStage.world}
+                stage={activeWorldAndStage.stage}
                 isOpen={isStageWordsListModalOpen}
                 close={() => {
                     setIsStageWordsListModalOpen(false);
@@ -157,8 +157,8 @@ const SelectList: React.FC<Props> = ({ rank, mode, openStates, handleClick }) =>
                                 }
                                 onContextMenu={(e) => {
                                     e.preventDefault();
-                                    setActiveId(String(world) as World);
-                                    setIsIdWordsListModalOpen(true);
+                                    setActiveWorld(String(world) as World);
+                                    setIsWorldWordsListModalOpen(true);
                                 }}
                             >
                                 <ListItemIcon>
@@ -191,7 +191,7 @@ const SelectList: React.FC<Props> = ({ rank, mode, openStates, handleClick }) =>
                                             sx={{ pl: 4 }}
                                             onContextMenu={(e) => {
                                                 e.preventDefault();
-                                                setActiveIdAndStage({
+                                                setActiveWorldAndStage({
                                                     world: String(world) as World,
                                                     stage: 'all',
                                                 });
@@ -225,7 +225,7 @@ const SelectList: React.FC<Props> = ({ rank, mode, openStates, handleClick }) =>
                                                         sx={{ pl: 4 }}
                                                         onContextMenu={(e) => {
                                                             e.preventDefault();
-                                                            setActiveIdAndStage({
+                                                            setActiveWorldAndStage({
                                                                 world: String(world) as World,
                                                                 stage: String(i) as Stage,
                                                             });

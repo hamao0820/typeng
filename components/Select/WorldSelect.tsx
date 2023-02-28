@@ -13,7 +13,7 @@ type Props = {
     param: PathParam;
 };
 
-const IdSelect: FC<Props> = ({ param }) => {
+const WorldSelect: FC<Props> = ({ param }) => {
     const { mode, rank, world } = param;
     const router = useRouter();
     const allIndices = sliceByNumber(
@@ -61,4 +61,4 @@ const IdSelect: FC<Props> = ({ param }) => {
     );
 };
 
-export default IdSelect;
+export default WorldSelect;
