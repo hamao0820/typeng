@@ -12,8 +12,6 @@ type Props = {
     param: PathParam;
 };
 
-const wordsNumObj: { [rank: string]: number } = { '1': 956, '2': 882, '3': 1024, '4': 938 };
-
 const StageSelect: React.FC<Props> = ({ param }) => {
     const router = useRouter();
     const allIndices = sliceByNumber(
@@ -35,8 +33,7 @@ const StageSelect: React.FC<Props> = ({ param }) => {
                         value={param.stage}
                         onChange={async (e) => {
                             await router.push({
-                                pathname: `/${path.join(param.mode, param.rank, param.world)}`,
-                                query: { stage: e.currentTarget.value },
+                                pathname: `/${path.join(param.mode, param.rank, param.world, e.currentTarget.value)}`,
                             });
                         }}
                     >

@@ -183,8 +183,7 @@ const SelectList: React.FC<Props> = ({ rank, mode, openStates, handleClick }) =>
                                 >
                                     <Link
                                         href={{
-                                            pathname: path.join(mode, String(rank), String(world)),
-                                            query: { stage: 'all' },
+                                            pathname: path.join(mode, String(rank), String(world), 'all'),
                                         }}
                                     >
                                         <ListItemButton
@@ -217,8 +216,12 @@ const SelectList: React.FC<Props> = ({ rank, mode, openStates, handleClick }) =>
                                             <React.Fragment key={`${world}-${i}`}>
                                                 <Link
                                                     href={{
-                                                        pathname: path.join(mode, String(rank), String(world)),
-                                                        query: { stage: String(i) },
+                                                        pathname: path.join(
+                                                            mode,
+                                                            String(rank),
+                                                            String(world),
+                                                            String(i)
+                                                        ),
                                                     }}
                                                 >
                                                     <ListItemButton

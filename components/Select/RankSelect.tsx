@@ -27,8 +27,7 @@ const RankSelect: FC<Props> = ({ param }) => {
                         value={rank}
                         onChange={async (e) => {
                             await router.push({
-                                pathname: `/${path.join(mode, e.currentTarget.value, '0')}`,
-                                query: { stage: '0' },
+                                pathname: `/${path.join(mode, e.currentTarget.value, '0', '0')}`,
                             });
                         }}
                     >

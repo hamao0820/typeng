@@ -41,8 +41,7 @@ const WorldSelect: FC<Props> = ({ param }) => {
                                 return;
                             }
                             await router.push({
-                                pathname: `/${path.join(mode, rank, world)}`,
-                                query: { stage: '0' },
+                                pathname: `/${path.join(mode, rank, world, '0')}`,
                             });
                         }}
                     >

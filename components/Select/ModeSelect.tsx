@@ -23,9 +23,7 @@ const ModeSelect: React.FC<Props> = ({ param }) => {
                     <NativeSelect
                         defaultValue={param.mode}
                         onChange={(e) => {
-                            router.push(
-                                `/${path.join(e.currentTarget.value, param.rank, param.world)}?stage=${param.stage}`
-                            );
+                            router.push(`/${path.join(e.currentTarget.value, param.rank, param.world, param.stage)}`);
                         }}
                     >
                         <option value="practice">練習モード</option>

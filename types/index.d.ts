@@ -13,6 +13,7 @@ export type PageProps = { allWords: Word[]; pathParam: PathParam };
 export type PathParams = {
     rank: Rank;
     world: World;
+    stage: Stage
 };
 
 export type ResultType = Word & {

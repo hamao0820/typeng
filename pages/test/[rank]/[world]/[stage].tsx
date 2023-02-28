@@ -11,12 +11,11 @@ import { pronounce, sound, typeSound } from '../../../../utils';
 import Head from 'next/head';
 import useWord from '../../../../hooks/useWord';
 import getAllWords from '../../../../middleware/getAllWords';
-import type { PageProps, PathParam, PathParams, Stage } from '../../../../types';
+import type { PageProps, PathParam, PathParams } from '../../../../types';
 import FavoriteStar from '../../../../components/Favorites/FavoriteStar';
 
 export const getServerSideProps: GetServerSideProps<PageProps> = async (context) => {
-    const { rank, world } = context.params as PathParams;
-    const { stage } = context.query as { stage: Stage };
+    const { rank, world, stage } = context.params as PathParams;
     const pathParam: PathParam = { mode: 'test', rank, world, stage };
     const allWords = getAllWords(rank, world);
     return { props: { allWords, pathParam } };

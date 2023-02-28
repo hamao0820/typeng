@@ -25,7 +25,6 @@ const FavoriteModeSelect: React.FC<Props> = ({ mode, rank }) => {
                     <NativeSelect
                         defaultValue={mode}
                         onChange={async (e) => {
-                            console.log(`/${path.join(e.currentTarget.value, rank, 'favorites')}`);
                             await router.push(`/${path.join(e.currentTarget.value, rank, 'favorites')}`);
                         }}
                         disabled={!useHasFavorites(rank)}

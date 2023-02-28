@@ -14,12 +14,11 @@ import WorkHeader from '../../../../components/Worker/WorkHeader';
 import { pronounce, shuffle, sliceByNumber, sound, typeSound, stageLoadMap } from '../../../../utils';
 import Head from 'next/head';
 import getAllWords from '../../../../middleware/getAllWords';
-import type { PageProps, PathParam, PathParams, ResultType, Stage, Word } from '../../../../types';
+import type { PageProps, PathParam, PathParams, ResultType, Word } from '../../../../types';
 import path from 'path';
 
 export const getServerSideProps: GetServerSideProps<PageProps> = async (context) => {
-    const { rank, world } = context.params as PathParams;
-    const { stage } = context.query as { stage: Stage };
+    const { rank, world, stage } = context.params as PathParams;
     const pathParam: PathParam = { mode: 'scoring', rank, world, stage };
     const allWords = getAllWords(rank, world);
     return { props: { allWords, pathParam } };
@@ -61,7 +60,10 @@ const Scoring: NextPage<PageProps> = ({ allWords, pathParam }) => {
 
     const next = useCallback(async () => {
         const target = stageLoadMap.find(
-            (v) => v.stage.world === pathParam.world && v.stage.rank === pathParam.rank && v.stage.stage === pathParam.stage
+            (v) =>
+                v.stage.world === pathParam.world &&
+                v.stage.rank === pathParam.rank &&
+                v.stage.stage === pathParam.stage
         );
         if (!target) return;
         const stageNo = target.stageNo;
@@ -69,9 +71,9 @@ const Scoring: NextPage<PageProps> = ({ allWords, pathParam }) => {
         if (!nextStage) return;
         const { rank, world, stage } = nextStage.stage;
         if (stage === 'all') {
-            await router.push({ pathname: `/${path.join('scoring', rank, world)}`, query: { stage } });
+            await router.push({ pathname: `/${path.join('scoring', rank, world, stage)}` });
         } else {
-            await router.push({ pathname: `/${path.join('practice', rank, world)}`, query: { stage } });
+            await router.push({ pathname: `/${path.join('practice', rank, world, stage)}` });
         }
     }, [pathParam, router]);
 
