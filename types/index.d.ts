@@ -6,13 +6,13 @@ export type Word = {
 
 export type Mode = 'practice' | 'test' | 'challenge' | 'scoring';
 export type Rank = '1' | '2' | '3' | '4';
-export type Id = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10';
+export type World = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10';
 export type Stage = 'all' | '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9';
 
 export type PageProps = { allWords: Word[]; pathParam: PathParam };
 export type PathParams = {
     rank: Rank;
-    id: Id;
+    id: World;
 };
 
 export type ResultType = Word & {
@@ -22,12 +22,12 @@ export type ResultType = Word & {
 export type PathParam = {
     mode: Mode;
     rank: Rank;
-    id: Id;
+    id: World;
     stage: Stage;
 };
 
 export type ListOpenState = {
-    id: Id;
+    id: World;
     open: boolean;
 };
 

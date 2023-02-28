@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
-import { Id, Rank, Stage } from '../../types';
+import { World, Rank, Stage } from '../../types';
 import path from 'path';
 import useGetWords from '../../hooks/useGetWords';
 import WordsList from './WordsList';
 
 type Props = {
     rank: Rank;
-    id: Id | '';
+    id: World | '';
     stage: Stage | '';
     isOpen: boolean;
     close: () => void;

@@ -1,5 +1,5 @@
 import React, { Dispatch, FC, ReactNode, SetStateAction, createContext, useState } from 'react';
-import { Id, ListOpenState, Rank } from '../types';
+import { World, ListOpenState, Rank } from '../types';
 import { allRanks, sliceByNumber, wordsCounts } from '../utils';
 
 type Props = {
@@ -24,7 +24,7 @@ const ListOpenStatesProvider: FC<Props> = ({ children }) => {
                     [...Array(wordsCount)].map((_, i) => i + 1),
                     100
                 ).map<ListOpenState>((_, id) => {
-                    return { id: String(id) as Id, open: false };
+                    return { id: String(id) as World, open: false };
                 }),
             };
         })

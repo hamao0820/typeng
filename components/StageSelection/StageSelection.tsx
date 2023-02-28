@@ -2,7 +2,7 @@ import Head from 'next/head';
 import React, { FC } from 'react';
 import Header from '../Header/Header';
 import useListOpenStates from '../../hooks/useListOpenStates';
-import { Id, Mode } from '../../types';
+import { World, Mode } from '../../types';
 import SelectList from './SelectList';
 import { allRanks } from '../../utils';
 
@@ -29,7 +29,7 @@ const StageSelection: FC<Props> = ({ mode }) => {
                             rank={rank}
                             mode={mode}
                             openStates={target.openStates}
-                            handleClick={(id: Id) => handleClick(rank, id)}
+                            handleClick={(id: World) => handleClick(rank, id)}
                         />
                     );
                 })}

@@ -1,12 +1,12 @@
 import { useContext } from 'react';
-import { Id, ListOpenState, Rank } from '../types';
+import { World, ListOpenState, Rank } from '../types';
 import { openStatesContext, setOpenStatesContext } from '../Contexts/ListOpenStatesProvider';
 
 const useListOpenStates = () => {
     const openStates = useContext(openStatesContext);
     const setOpenStates = useContext(setOpenStatesContext);
 
-    const handleClick = (rank: Rank, id: Id) => {
+    const handleClick = (rank: Rank, id: World) => {
         setOpenStates((prev) => {
             const target = prev.find((state) => state.rank === rank);
             if (target === undefined) return prev;

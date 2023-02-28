@@ -1,4 +1,4 @@
-import { Id, Rank, Stage } from '../types';
+import { World, Rank, Stage } from '../types';
 
 export const sliceByNumber = <T>(array: T[], number: number): T[][] => {
     const length = Math.ceil(array.length / number);
@@ -99,7 +99,7 @@ export const rankIndicesObj: RankIndicesObj[] = [
     },
 ];
 
-type StageLoadMap = { stageNo: number; stage: { rank: Rank; id: Id; stage: Stage } }[];
+type StageLoadMap = { stageNo: number; stage: { rank: Rank; id: World; stage: Stage } }[];
 export const stageLoadMap: StageLoadMap = wordsCounts
     .map((count, rankNum) => {
         const indices = new Array(count).map((_, i) => i);
@@ -108,7 +108,7 @@ export const stageLoadMap: StageLoadMap = wordsCounts
             .map((indices) => sliceByNumber(indices, 10))
             .map((v, idNum) => {
                 const rank = String(rankNum + 1) as Rank;
-                const id = String(idNum) as Id;
+                const id = String(idNum) as World;
                 const stage = v.map((_, stageNum) => String(stageNum) as Stage);
                 return stage.map((stage) => {
                     return { stage, rank, id };

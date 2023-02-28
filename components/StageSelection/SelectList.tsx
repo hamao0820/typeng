@@ -13,7 +13,7 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 import StarIcon from '@mui/icons-material/Star';
 import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
 import path from 'path';
-import { Id, ListOpenState, Mode, Rank, Stage } from '../../types';
+import { World, ListOpenState, Mode, Rank, Stage } from '../../types';
 import { rankIndicesObj, sliceByNumber } from '../../utils';
 import RankWordsList from './RankWordsList';
 import IdWordsList from './IdWordsList';
@@ -26,7 +26,7 @@ type Props = {
     rank: Rank;
     mode: Mode;
     openStates: ListOpenState[];
-    handleClick: (id: Id) => void;
+    handleClick: (id: World) => void;
 };
 
 const SelectList: React.FC<Props> = ({ rank, mode, openStates, handleClick }) => {
@@ -34,8 +34,8 @@ const SelectList: React.FC<Props> = ({ rank, mode, openStates, handleClick }) =>
     const [isIdWordsListModalOpen, setIsIdWordsListModalOpen] = useState<boolean>(false);
     const [isStageWordsListModalOpen, setIsStageWordsListModalOpen] = useState<boolean>(false);
     const [isFavoritesWordsListModalOpen, setIsFavoritesWordsListModalOpen] = useState<boolean>(false);
-    const [activeId, setActiveId] = useState<Id>('0');
-    const [activeIdAndStage, setActiveIdAndStage] = useState<{ id: Id; stage: Stage }>({ id: '0', stage: 'all' });
+    const [activeId, setActiveId] = useState<World>('0');
+    const [activeIdAndStage, setActiveIdAndStage] = useState<{ id: World; stage: Stage }>({ id: '0', stage: 'all' });
     const { user } = useAuthContext();
     const hasFavorite = useHasFavorites(rank);
 
@@ -143,7 +143,7 @@ const SelectList: React.FC<Props> = ({ rank, mode, openStates, handleClick }) =>
                         <React.Fragment key={id}>
                             <ListItemButton
                                 onClick={() => {
-                                    handleClick(String(id) as Id);
+                                    handleClick(String(id) as World);
                                 }}
                                 sx={
                                     openState.open
@@ -154,7 +154,7 @@ const SelectList: React.FC<Props> = ({ rank, mode, openStates, handleClick }) =>
                                 }
                                 onContextMenu={(e) => {
                                     e.preventDefault();
-                                    setActiveId(String(id) as Id);
+                                    setActiveId(String(id) as World);
                                     setIsIdWordsListModalOpen(true);
                                 }}
                             >
@@ -189,7 +189,7 @@ const SelectList: React.FC<Props> = ({ rank, mode, openStates, handleClick }) =>
                                             onContextMenu={(e) => {
                                                 e.preventDefault();
                                                 setActiveIdAndStage({
-                                                    id: String(id) as Id,
+                                                    id: String(id) as World,
                                                     stage: 'all',
                                                 });
                                                 setIsStageWordsListModalOpen(true);
@@ -223,7 +223,7 @@ const SelectList: React.FC<Props> = ({ rank, mode, openStates, handleClick }) =>
                                                         onContextMenu={(e) => {
                                                             e.preventDefault();
                                                             setActiveIdAndStage({
-                                                                id: String(id) as Id,
+                                                                id: String(id) as World,
                                                                 stage: String(i) as Stage,
                                                             });
                                                             setIsStageWordsListModalOpen(true);
