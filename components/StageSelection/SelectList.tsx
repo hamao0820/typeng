@@ -26,7 +26,7 @@ type Props = {
     rank: Rank;
     mode: Mode;
     openStates: ListOpenState[];
-    handleClick: (id: World) => void;
+    handleClick: (world: World) => void;
 };
 
 const SelectList: React.FC<Props> = ({ rank, mode, openStates, handleClick }) => {
@@ -35,7 +35,10 @@ const SelectList: React.FC<Props> = ({ rank, mode, openStates, handleClick }) =>
     const [isStageWordsListModalOpen, setIsStageWordsListModalOpen] = useState<boolean>(false);
     const [isFavoritesWordsListModalOpen, setIsFavoritesWordsListModalOpen] = useState<boolean>(false);
     const [activeId, setActiveId] = useState<World>('0');
-    const [activeIdAndStage, setActiveIdAndStage] = useState<{ id: World; stage: Stage }>({ id: '0', stage: 'all' });
+    const [activeIdAndStage, setActiveIdAndStage] = useState<{ world: World; stage: Stage }>({
+        world: '0',
+        stage: 'all',
+    });
     const { user } = useAuthContext();
     const hasFavorite = useHasFavorites(rank);
 
@@ -57,7 +60,7 @@ const SelectList: React.FC<Props> = ({ rank, mode, openStates, handleClick }) =>
             />
             <IdWordsList
                 rank={rank}
-                id={activeId}
+                world={activeId}
                 isOpen={isIdWordsListModalOpen}
                 close={() => {
                     setIsIdWordsListModalOpen(false);
@@ -65,7 +68,7 @@ const SelectList: React.FC<Props> = ({ rank, mode, openStates, handleClick }) =>
             />
             <StageWordsList
                 rank={rank}
-                id={activeIdAndStage.id}
+                world={activeIdAndStage.world}
                 stage={activeIdAndStage.stage}
                 isOpen={isStageWordsListModalOpen}
                 close={() => {
@@ -136,14 +139,14 @@ const SelectList: React.FC<Props> = ({ rank, mode, openStates, handleClick }) =>
                         <Divider />
                     </>
                 )}
-                {wordIndicesArr.map((wordIndices, id) => {
-                    const openState = openStates.find((state) => state.id === String(id));
+                {wordIndicesArr.map((wordIndices, world) => {
+                    const openState = openStates.find((state) => state.world === String(world));
                     if (openState === undefined) return;
                     return (
-                        <React.Fragment key={id}>
+                        <React.Fragment key={world}>
                             <ListItemButton
                                 onClick={() => {
-                                    handleClick(String(id) as World);
+                                    handleClick(String(world) as World);
                                 }}
                                 sx={
                                     openState.open
@@ -154,12 +157,12 @@ const SelectList: React.FC<Props> = ({ rank, mode, openStates, handleClick }) =>
                                 }
                                 onContextMenu={(e) => {
                                     e.preventDefault();
-                                    setActiveId(String(id) as World);
+                                    setActiveId(String(world) as World);
                                     setIsIdWordsListModalOpen(true);
                                 }}
                             >
                                 <ListItemIcon>
-                                    <span className="text-3xl font-bold">{id + 1}</span>
+                                    <span className="text-3xl font-bold">{world + 1}</span>
                                 </ListItemIcon>
                                 <ListItemText
                                     primary={`${wordIndices[0]}~${wordIndices.slice(-1)[0]}`}
@@ -180,7 +183,7 @@ const SelectList: React.FC<Props> = ({ rank, mode, openStates, handleClick }) =>
                                 >
                                     <Link
                                         href={{
-                                            pathname: path.join(mode, String(rank), String(id)),
+                                            pathname: path.join(mode, String(rank), String(world)),
                                             query: { stage: 'all' },
                                         }}
                                     >
@@ -189,7 +192,7 @@ const SelectList: React.FC<Props> = ({ rank, mode, openStates, handleClick }) =>
                                             onContextMenu={(e) => {
                                                 e.preventDefault();
                                                 setActiveIdAndStage({
-                                                    id: String(id) as World,
+                                                    world: String(world) as World,
                                                     stage: 'all',
                                                 });
                                                 setIsStageWordsListModalOpen(true);
@@ -211,10 +214,10 @@ const SelectList: React.FC<Props> = ({ rank, mode, openStates, handleClick }) =>
                                     </Link>
                                     {sliceByNumber(wordIndices, 10).map((wordIndices, i) => {
                                         return (
-                                            <React.Fragment key={`${id}-${i}`}>
+                                            <React.Fragment key={`${world}-${i}`}>
                                                 <Link
                                                     href={{
-                                                        pathname: path.join(mode, String(rank), String(id)),
+                                                        pathname: path.join(mode, String(rank), String(world)),
                                                         query: { stage: String(i) },
                                                     }}
                                                 >
@@ -223,7 +226,7 @@ const SelectList: React.FC<Props> = ({ rank, mode, openStates, handleClick }) =>
                                                         onContextMenu={(e) => {
                                                             e.preventDefault();
                                                             setActiveIdAndStage({
-                                                                id: String(id) as World,
+                                                                world: String(world) as World,
                                                                 stage: String(i) as Stage,
                                                             });
                                                             setIsStageWordsListModalOpen(true);

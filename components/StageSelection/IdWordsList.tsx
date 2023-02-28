@@ -6,14 +6,14 @@ import WordsList from './WordsList';
 
 type Props = {
     rank: Rank;
-    id: World | '';
+    world: World | '';
     isOpen: boolean;
     close: () => void;
 };
 
-const IdWordsList: FC<Props> = ({ rank, id, isOpen, close }) => {
-    const skipCondition = id === '';
-    const { words, isLoading } = useGetWords(isOpen, path.join('api', rank, id), skipCondition, 150);
+const IdWordsList: FC<Props> = ({ rank, world, isOpen, close }) => {
+    const skipCondition = world === '';
+    const { words, isLoading } = useGetWords(isOpen, path.join('api', rank, world), skipCondition, 150);
     return <WordsList isLoading={isLoading} isOpen={isLoading === 'done' && isOpen} words={words} close={close} />;
 };
 

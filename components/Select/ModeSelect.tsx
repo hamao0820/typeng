@@ -24,7 +24,7 @@ const ModeSelect: React.FC<Props> = ({ param }) => {
                         defaultValue={param.mode}
                         onChange={(e) => {
                             router.push(
-                                `/${path.join(e.currentTarget.value, param.rank, param.id)}?stage=${param.stage}`
+                                `/${path.join(e.currentTarget.value, param.rank, param.world)}?stage=${param.stage}`
                             );
                         }}
                     >

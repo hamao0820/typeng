@@ -21,7 +21,7 @@ const StageSelect: React.FC<Props> = ({ param }) => {
             return v.rank === param.rank;
         })!.indices,
         100
-    )[Number(param.id)];
+    )[Number(param.world)];
     const stages = sliceByNumber(allIndices, 10);
     return (
         <div>
@@ -35,7 +35,7 @@ const StageSelect: React.FC<Props> = ({ param }) => {
                         value={param.stage}
                         onChange={async (e) => {
                             await router.push({
-                                pathname: `/${path.join(param.mode, param.rank, param.id)}`,
+                                pathname: `/${path.join(param.mode, param.rank, param.world)}`,
                                 query: { stage: e.currentTarget.value },
                             });
                         }}

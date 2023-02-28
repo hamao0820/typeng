@@ -14,7 +14,7 @@ type Props = {
 };
 
 const IdSelect: FC<Props> = ({ param }) => {
-    const { mode, rank, id } = param;
+    const { mode, rank, world } = param;
     const router = useRouter();
     const allIndices = sliceByNumber(
         rankIndicesObj.find((v) => {
@@ -32,16 +32,16 @@ const IdSelect: FC<Props> = ({ param }) => {
                         id
                     </InputLabel>
                     <NativeSelect
-                        defaultValue={id}
-                        value={id}
+                        defaultValue={world}
+                        value={world}
                         onChange={async (e) => {
-                            const id = e.currentTarget.value;
-                            if (id === 'favorites') {
-                                await router.push({ pathname: `/${path.join(mode, rank, id)}` });
+                            const world = e.currentTarget.value;
+                            if (world === 'favorites') {
+                                await router.push({ pathname: `/${path.join(mode, rank, world)}` });
                                 return;
                             }
                             await router.push({
-                                pathname: `/${path.join(mode, rank, id)}`,
+                                pathname: `/${path.join(mode, rank, world)}`,
                                 query: { stage: '0' },
                             });
                         }}

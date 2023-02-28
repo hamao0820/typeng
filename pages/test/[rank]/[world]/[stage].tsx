@@ -15,10 +15,10 @@ import type { PageProps, PathParam, PathParams, Stage } from '../../../../types'
 import FavoriteStar from '../../../../components/Favorites/FavoriteStar';
 
 export const getServerSideProps: GetServerSideProps<PageProps> = async (context) => {
-    const { rank, id } = context.params as PathParams;
+    const { rank, world } = context.params as PathParams;
     const { stage } = context.query as { stage: Stage };
-    const pathParam: PathParam = { mode: 'test', rank, id, stage };
-    const allWords = getAllWords(rank, id);
+    const pathParam: PathParam = { mode: 'test', rank, world, stage };
+    const allWords = getAllWords(rank, world);
     return { props: { allWords, pathParam } };
 };
 

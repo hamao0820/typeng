@@ -15,10 +15,10 @@ import { pronounce, sound, typeSound } from '../../../../utils';
 import FavoriteStar from '../../../../components/Favorites/FavoriteStar';
 
 export const getServerSideProps: GetServerSideProps<PageProps> = async (context) => {
-    const { rank, id } = context.params as PathParams;
+    const { rank, world } = context.params as PathParams;
     const { stage } = context.query as { stage: Stage };
-    const pathParam: PathParam = { mode: 'practice', rank, id, stage };
-    const allWords = getAllWords(rank, id);
+    const pathParam: PathParam = { mode: 'practice', rank, world, stage };
+    const allWords = getAllWords(rank, world);
     return { props: { allWords, pathParam } };
 };
 

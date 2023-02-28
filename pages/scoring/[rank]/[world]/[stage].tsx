@@ -18,10 +18,10 @@ import type { PageProps, PathParam, PathParams, ResultType, Stage, Word } from '
 import path from 'path';
 
 export const getServerSideProps: GetServerSideProps<PageProps> = async (context) => {
-    const { rank, id } = context.params as PathParams;
+    const { rank, world } = context.params as PathParams;
     const { stage } = context.query as { stage: Stage };
-    const pathParam: PathParam = { mode: 'scoring', rank, id, stage };
-    const allWords = getAllWords(rank, id);
+    const pathParam: PathParam = { mode: 'scoring', rank, world, stage };
+    const allWords = getAllWords(rank, world);
     return { props: { allWords, pathParam } };
 };
 
@@ -61,17 +61,17 @@ const Scoring: NextPage<PageProps> = ({ allWords, pathParam }) => {
 
     const next = useCallback(async () => {
         const target = stageLoadMap.find(
-            (v) => v.stage.id === pathParam.id && v.stage.rank === pathParam.rank && v.stage.stage === pathParam.stage
+            (v) => v.stage.world === pathParam.world && v.stage.rank === pathParam.rank && v.stage.stage === pathParam.stage
         );
         if (!target) return;
         const stageNo = target.stageNo;
         const nextStage = stageLoadMap.find((v) => v.stageNo === stageNo + 1);
         if (!nextStage) return;
-        const { rank, id, stage } = nextStage.stage;
+        const { rank, world, stage } = nextStage.stage;
         if (stage === 'all') {
-            await router.push({ pathname: `/${path.join('scoring', rank, id)}`, query: { stage } });
+            await router.push({ pathname: `/${path.join('scoring', rank, world)}`, query: { stage } });
         } else {
-            await router.push({ pathname: `/${path.join('practice', rank, id)}`, query: { stage } });
+            await router.push({ pathname: `/${path.join('practice', rank, world)}`, query: { stage } });
         }
     }, [pathParam, router]);
 

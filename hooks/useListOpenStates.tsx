@@ -6,12 +6,12 @@ const useListOpenStates = () => {
     const openStates = useContext(openStatesContext);
     const setOpenStates = useContext(setOpenStatesContext);
 
-    const handleClick = (rank: Rank, id: World) => {
+    const handleClick = (rank: Rank, world: World) => {
         setOpenStates((prev) => {
             const target = prev.find((state) => state.rank === rank);
             if (target === undefined) return prev;
             const newStates: ListOpenState[] = target.openStates.map((state, i) => {
-                if (String(i) !== id) {
+                if (String(i) !== world) {
                     return { ...state, open: state.open };
                 } else {
                     return { ...state, open: !state.open };

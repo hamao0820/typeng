@@ -99,19 +99,19 @@ export const rankIndicesObj: RankIndicesObj[] = [
     },
 ];
 
-type StageLoadMap = { stageNo: number; stage: { rank: Rank; id: World; stage: Stage } }[];
+type StageLoadMap = { stageNo: number; stage: { rank: Rank; world: World; stage: Stage } }[];
 export const stageLoadMap: StageLoadMap = wordsCounts
     .map((count, rankNum) => {
         const indices = new Array(count).map((_, i) => i);
         const allIndices = sliceByNumber(indices, 100);
         return allIndices
             .map((indices) => sliceByNumber(indices, 10))
-            .map((v, idNum) => {
+            .map((v, worldNum) => {
                 const rank = String(rankNum + 1) as Rank;
-                const id = String(idNum) as World;
+                const world = String(worldNum) as World;
                 const stage = v.map((_, stageNum) => String(stageNum) as Stage);
                 return stage.map((stage) => {
-                    return { stage, rank, id };
+                    return { stage, rank, world };
                 });
             })
             .map((v) => [...v, { ...v[0], stage: 'all' as Stage }]);

@@ -29,7 +29,7 @@ const StageSelection: FC<Props> = ({ mode }) => {
                             rank={rank}
                             mode={mode}
                             openStates={target.openStates}
-                            handleClick={(id: World) => handleClick(rank, id)}
+                            handleClick={(world: World) => handleClick(rank, world)}
                         />
                     );
                 })}

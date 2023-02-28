@@ -23,8 +23,8 @@ const ListOpenStatesProvider: FC<Props> = ({ children }) => {
                 openStates: sliceByNumber(
                     [...Array(wordsCount)].map((_, i) => i + 1),
                     100
-                ).map<ListOpenState>((_, id) => {
-                    return { id: String(id) as World, open: false };
+                ).map<ListOpenState>((_, world) => {
+                    return { world: String(world) as World, open: false };
                 }),
             };
         })
