@@ -1,4 +1,4 @@
-import type { GetServerSideProps, NextPage } from 'next';
+import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
@@ -17,13 +17,21 @@ import getAllWords from '../../../../middleware/getAllWords';
 import type { PageProps, PathParam, PathParams, ResultType, Word } from '../../../../types';
 import path from 'path';
 
-export const getServerSideProps: GetServerSideProps<PageProps> = async (context) => {
+export const getStaticPaths: GetStaticPaths<PathParams> = async () => {
+    return {
+        paths: stageLoadMap.map((v) => {
+            return { params: v.stage };
+        }),
+        fallback: false,
+    };
+};
+
+export const getStaticProps: GetStaticProps<PageProps> = async (context) => {
     const { rank, world, stage } = context.params as PathParams;
-    const pathParam: PathParam = { mode: 'scoring', rank, world, stage };
+    const pathParam: PathParam = { mode: 'practice', rank, world, stage };
     const allWords = getAllWords(rank, world);
     return { props: { allWords, pathParam } };
 };
-
 const Scoring: NextPage<PageProps> = ({ allWords, pathParam }) => {
     const [word, setWord] = useState<Word>();
     const [typed, setTyped] = useState<string>('');
