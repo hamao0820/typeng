@@ -3,18 +3,18 @@ import { useRouter } from 'next/router';
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import LightbulbIcon from '@mui/icons-material/Lightbulb';
-import { pronounceVolumeContext } from '../../../Contexts/PronounceProvider';
-import { soundEffectVolumeContext } from '../../../Contexts/SoundEffectProvider';
-import { typingVolumeContext } from '../../../Contexts/TypingVolumeProvider';
-import Marquee from '../../../components/Worker/Marquee';
+import { pronounceVolumeContext } from '../../../../Contexts/PronounceProvider';
+import { soundEffectVolumeContext } from '../../../../Contexts/SoundEffectProvider';
+import { typingVolumeContext } from '../../../../Contexts/TypingVolumeProvider';
+import Marquee from '../../../../components/Worker/Marquee';
 import Button from '@mui/material/Button';
-import CountDown from '../../../components/Scoring/CountDown';
-import Result from '../../../components/Scoring/Result';
-import WorkHeader from '../../../components/Worker/WorkHeader';
-import { pronounce, shuffle, sliceByNumber, sound, typeSound, stageLoadMap } from '../../../utils';
+import CountDown from '../../../../components/Scoring/CountDown';
+import Result from '../../../../components/Scoring/Result';
+import WorkHeader from '../../../../components/Worker/WorkHeader';
+import { pronounce, shuffle, sliceByNumber, sound, typeSound, stageLoadMap } from '../../../../utils';
 import Head from 'next/head';
-import getAllWords from '../../../middleware/getAllWords';
-import type { PageProps, PathParam, PathParams, ResultType, Stage, Word } from '../../../types';
+import getAllWords from '../../../../middleware/getAllWords';
+import type { PageProps, PathParam, PathParams, ResultType, Stage, Word } from '../../../../types';
 import path from 'path';
 
 export const getServerSideProps: GetServerSideProps<PageProps> = async (context) => {
