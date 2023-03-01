@@ -2,60 +2,32 @@ import { useCallback, useEffect, useState } from 'react';
 import { Stage, Word } from '../types';
 import { shuffle, sliceByNumber } from '../utils';
 
-const createIndices = (num: number) => {
-    const serialIndices = [...Array(num)].map((_, i) => i);
-    const shuffledIndices = shuffle(serialIndices);
-    return shuffledIndices;
-};
-
 const useWord = (allWords: Word[], stage: Stage) => {
-    const [word, setWord] = useState<Word>();
-    const [words, setWords] = useState<Word[]>([]);
+    const [word, setWord] = useState<Word | null>(null);
+    const [randomWords, setRandomWords] = useState<Word[]>([]);
     const [typed, setTyped] = useState<string>('');
     const [unTyped, setUnTyped] = useState<string>('');
     const [missed, setMissed] = useState<boolean>(false);
     const [missCount, setMissCount] = useState<number>(0); // challenge
-    const [indices, setIndices] = useState<number[]>([]);
-    const [index, setIndex] = useState<number>(-1);
 
     useEffect(() => {
         if (stage === 'all') {
-            setWords((preWords) => (preWords.length === 0 ? allWords : preWords));
+            setRandomWords((preWords) => (preWords.length === 0 ? allWords : preWords));
         } else {
             const words_ = sliceByNumber(allWords, 10)[Number(stage)];
             if (words_ !== undefined) {
-                setWords((preWords) => (preWords.length === 0 ? shuffle(words_) : preWords));
+                setRandomWords((preWords) => (preWords.length === 0 ? shuffle(words_) : preWords));
             }
         }
         return () => {
             setMissCount(0);
-            setWords([]);
+            setRandomWords([]);
         };
     }, [allWords, stage]);
 
     useEffect(() => {
-        if (words.length !== 0) {
-            setIndices(createIndices(words.length));
-        }
-        return () => setIndex(-1);
-    }, [words]);
-
-    useEffect(() => {
-        if (indices.length !== 0) {
-            setIndex(indices[0]);
-        }
-
-        return () => setIndex(-1);
-    }, [indices]);
-
-    useEffect(() => {
-        // wordsが変わった時, cleanup関数でindexが-1になるため, indicesが変更されるまでは無視される.
-        if (index === -1) return;
-        setWords((words) => {
-            setWord(words[index]);
-            return words;
-        });
-    }, [index]);
+        if (randomWords.length > 0) setWord(randomWords[0]);
+    }, [randomWords]);
 
     useEffect(() => {
         if (word) {
@@ -74,12 +46,15 @@ const useWord = (allWords: Word[], stage: Stage) => {
             if (unTyped.startsWith(key)) {
                 setMissCount(0);
                 if (unTyped.length === 1) {
-                    setIndex((preIndex) => {
-                        if (indices.indexOf(preIndex) === indices.length - 1) {
-                            setIndices((indices) => shuffle(indices));
-                            return -1;
+                    setWord((preWord) => {
+                        if (preWord === null) return preWord;
+                        const preIndex = randomWords.findIndex((v) => v.id === preWord.id);
+                        if (preIndex === -1) return randomWords[0];
+                        if (preIndex === randomWords.length - 1) {
+                            setRandomWords((preWords) => shuffle(preWords));
+                            return null;
                         }
-                        return indices[indices.indexOf(preIndex) + 1];
+                        return randomWords[preIndex + 1];
                     });
                     return;
                 }
@@ -93,10 +68,10 @@ const useWord = (allWords: Word[], stage: Stage) => {
                 setMissed(true);
             }
         },
-        [indices, unTyped]
+        [randomWords, unTyped]
     );
 
-    return { word, words, typed, unTyped, missed, missCount, handleWord };
+    return { word, typed, unTyped, missed, missCount, handleWord };
 };
 
 export default useWord;

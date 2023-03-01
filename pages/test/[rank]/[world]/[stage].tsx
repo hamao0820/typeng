@@ -43,7 +43,7 @@ const Test: NextPage<PageProps> = ({ allWords, pathParam }) => {
     const [isOver, setIsOver] = useState<boolean>(false);
 
     useEffect(() => {
-        if (word === undefined) {
+        if (word === null) {
             return;
         }
         pronounce(word.en, pronounceVolume / 100);
@@ -109,7 +109,7 @@ const Test: NextPage<PageProps> = ({ allWords, pathParam }) => {
                     <div
                         className="w-fit h-fit flex items-center justify-center p-2 bg-green-500 rounded-md"
                         onClick={() => {
-                            if (word === undefined) return;
+                            if (word === null) return;
                             pronounce(word.en, pronounceVolume);
                         }}
                     >
@@ -121,7 +121,7 @@ const Test: NextPage<PageProps> = ({ allWords, pathParam }) => {
                                 {word?.ja}
                             </span>
                         </div>
-                        {word !== undefined && isOver && <Marquee content={word.ja} />}
+                        {word !== null && isOver && <Marquee content={word.ja} />}
                         <div className="whitespace-nowrap">
                             <span className="text-8xl font-bold whitespace-nowrap">{typed.replaceAll(' ', '␣')}</span>
                             <span
