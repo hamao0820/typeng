@@ -14,9 +14,6 @@ export const pronounce = async (word: string, volume: number) => {
     synthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(word);
     utterance.volume = volume;
-    utterance.onerror = (e) => {
-        console.table(e);
-    };
     const voices = synthesis.getVoices();
     if (voices.length === 0) {
         await new Promise<void>((resolve) => {

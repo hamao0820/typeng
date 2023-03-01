@@ -51,8 +51,11 @@ const useWord = (allWords: Word[], stage: Stage) => {
     useEffect(() => {
         // wordsが変わった時, cleanup関数でindexが-1になるため, indicesが変更されるまでは無視される.
         if (index === -1) return;
-        setWord(words[index]);
-    }, [index, words]);
+        setWords((words) => {
+            setWord(words[index]);
+            return words;
+        });
+    }, [index]);
 
     useEffect(() => {
         if (word) {

@@ -107,7 +107,6 @@ const Favorites: NextPage<FavoritesPageProps> = ({ rankWords }) => {
 
     useEffect(() => {
         if (word === null) return;
-        console.log('useEffect [word]');
         setUnTyped(word.en);
         const content = contentRef.current;
         if (content === null) return;
@@ -132,7 +131,6 @@ const Favorites: NextPage<FavoritesPageProps> = ({ rankWords }) => {
         const preVolume = pronounceVolume;
         let ignore = false;
         if (!ignore) {
-            console.log('useEffect [pronounceVolume, word]');
             pronounce(word.en, pronounceVolume / 100);
         }
         return () => {
@@ -209,7 +207,6 @@ const Favorites: NextPage<FavoritesPageProps> = ({ rankWords }) => {
                                 style={{ width: '13rem', height: '13rem' }}
                                 onClick={() => {
                                     if (word === null) return;
-                                    console.log('onclick');
                                     pronounce(word.en, pronounceVolume);
                                 }}
                             />
