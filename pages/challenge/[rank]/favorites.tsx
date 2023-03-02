@@ -9,12 +9,14 @@ import Marquee from '../../../components/Worker/Marquee';
 import Button from '@mui/material/Button';
 import { pronounce, sound, typeSound } from '../../../utils';
 import Head from 'next/head';
-import type { PathParams } from '../../../types';
+import type { Mode, PathParams, Rank } from '../../../types';
 import FavoriteStar from '../../../components/Favorites/FavoriteStar';
 import getRankWords from '../../../middleware/getRankWords';
 import { FavoritesPageProps } from '../../../types/favorite';
 import useFavoriteWords from '../../../hooks/useFavoriteWords';
 import FavoriteHeader from '../../../components/Favorites/FavoriteHeader';
+import useHasFavorites from '../../../hooks/useHasFavorites';
+import { useRouter } from 'next/router';
 
 export const getServerSideProps: GetServerSideProps<FavoritesPageProps> = async (context) => {
     const { rank } = context.params as PathParams;
@@ -31,6 +33,13 @@ const Favorites: NextPage<FavoritesPageProps> = ({ rankWords }) => {
     const contentRef = useRef<HTMLSpanElement>(null);
     const [isOver, setIsOver] = useState<boolean>(false);
     const [show, setShow] = useState<boolean>(false);
+
+    const router = useRouter();
+    const { rank } = router.query as { rank: Rank };
+    const mode = router.pathname.split('/')[1] as Mode; // /mode/[rank]/favorites
+    if (!useHasFavorites(rank)) {
+        router.push({ pathname: `/${mode}` });
+    }
 
     useEffect(() => {
         if (word === null) {

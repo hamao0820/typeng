@@ -7,12 +7,14 @@ import { typingVolumeContext } from '../../../Contexts/TypingVolumeProvider';
 import Marquee from '../../../components/Worker/Marquee';
 import { pronounce, sound, typeSound } from '../../../utils';
 import Head from 'next/head';
-import type { PathParams } from '../../../types';
+import type { Mode, PathParams, Rank } from '../../../types';
 import FavoriteStar from '../../../components/Favorites/FavoriteStar';
 import { FavoritesPageProps } from '../../../types/favorite';
 import getRankWords from '../../../middleware/getRankWords';
 import useFavoriteWords from '../../../hooks/useFavoriteWords';
 import FavoriteHeader from '../../../components/Favorites/FavoriteHeader';
+import { useRouter } from 'next/router';
+import useHasFavorites from '../../../hooks/useHasFavorites';
 
 export const getServerSideProps: GetServerSideProps<FavoritesPageProps> = async (context) => {
     const { rank } = context.params as PathParams;
@@ -28,6 +30,13 @@ const Favorites: NextPage<FavoritesPageProps> = ({ rankWords }) => {
     const typingVolume = useContext(typingVolumeContext);
     const contentRef = useRef<HTMLSpanElement>(null);
     const [isOver, setIsOver] = useState<boolean>(false);
+
+    const router = useRouter();
+    const { rank } = router.query as { rank: Rank };
+    const mode = router.pathname.split('/')[1] as Mode; // /mode/[rank]/favorites
+    if (!useHasFavorites(rank)) {
+        router.push({ pathname: `/${mode}` });
+    }
 
     useEffect(() => {
         if (word === null) {

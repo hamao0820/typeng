@@ -1,7 +1,7 @@
 import React, { FC, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { FavoritesPageProps } from '../../../types/favorite';
 import { GetServerSideProps } from 'next';
-import { PathParams } from '../../../types';
+import { Mode, PathParams, Rank } from '../../../types';
 import getRankWords from '../../../middleware/getRankWords';
 import useFavoriteWords from '../../../hooks/useFavoriteWords';
 import { pronounceVolumeContext } from '../../../Contexts/PronounceProvider';
@@ -13,6 +13,8 @@ import FavoriteStar from '../../../components/Favorites/FavoriteStar';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import Marquee from '../../../components/Worker/Marquee';
 import FavoriteHeader from '../../../components/Favorites/FavoriteHeader';
+import { useRouter } from 'next/router';
+import useHasFavorites from '../../../hooks/useHasFavorites';
 
 export const getServerSideProps: GetServerSideProps<FavoritesPageProps> = async (context) => {
     const { rank } = context.params as PathParams;
@@ -28,6 +30,13 @@ const Favorites: FC<FavoritesPageProps> = ({ rankWords }) => {
     const [isOver, setIsOver] = useState<boolean>(false);
     const ref = useRef<HTMLDivElement>(null);
     const contentRef = useRef<HTMLSpanElement>(null);
+
+    const router = useRouter();
+    const { rank } = router.query as { rank: Rank };
+    const mode = router.pathname.split('/')[1] as Mode; // /mode/[rank]/favorites
+    if (!useHasFavorites(rank)) {
+        router.push({ pathname: `/${mode}` });
+    }
 
     useEffect(() => {
         if (word === null) {
