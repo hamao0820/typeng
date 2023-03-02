@@ -1,46 +1,33 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useFavoritesContext } from '../Contexts/FavoritesProvider';
 import { Word } from '../types';
-import { createIndices, shuffle } from '../utils';
+import { shuffle } from '../utils';
 
 const useFavoriteWords = (words: Word[]) => {
     const favorites = useFavoritesContext();
-    const [word, setWord] = useState<Word>();
-    const [typed, setTyped] = useState<string>('');
-    const [unTyped, setUnTyped] = useState<string>('');
-    const [missed, setMissed] = useState<boolean>(false);
-    const [missCount, setMissCount] = useState<number>(0); // challenge
-    const [indices, setIndices] = useState<number[]>([]);
-    const [index, setIndex] = useState<number>(-1);
     const favoriteWords = useMemo(() => {
         return (favorites.map((id) => words.find((word) => word.id === id)).filter((v) => v) as Word[]).sort(
             (a, b) => a.id - b.id
         );
     }, [favorites, words]);
+    const [randomWords, setRandomWords] = useState<Word[]>(shuffle(favoriteWords));
+    const [word, setWord] = useState<Word | null>(randomWords.length > 0 ? randomWords[0] : null);
+    const [typed, setTyped] = useState<string>('');
+    const [unTyped, setUnTyped] = useState<string>('');
+    const [missed, setMissed] = useState<boolean>(false);
+    const [missCount, setMissCount] = useState<number>(0); // challenge
 
     useEffect(() => {
         setMissCount(0);
     }, []);
 
     useEffect(() => {
-        if (favoriteWords.length !== 0) {
-            setIndices(createIndices(favoriteWords.length));
-        }
-        return () => setIndex(-1);
+        setRandomWords(shuffle(favoriteWords));
     }, [favoriteWords]);
 
     useEffect(() => {
-        if (indices.length !== 0) {
-            setIndex(indices[0]);
-        }
-        return () => setIndex(-1);
-    }, [indices]);
-
-    useEffect(() => {
-        // wordsが変わった時, cleanup関数でindexが-1になるため, indicesが変更されるまでは無視される.
-        if (index === -1) return;
-        setWord(favoriteWords[index]);
-    }, [index, favoriteWords]);
+        setWord(randomWords.length > 0 ? randomWords[0] : null);
+    }, [randomWords]);
 
     useEffect(() => {
         if (word) {
@@ -52,47 +39,40 @@ const useFavoriteWords = (words: Word[]) => {
         };
     }, [word]);
 
-    const handleWord = useCallback(
-        (e: React.KeyboardEvent<HTMLDivElement> | KeyboardEvent) => {
-            const key = e.key;
-            if (unTyped === undefined || unTyped == '') return;
-            if (unTyped.startsWith(key)) {
-                setMissCount(0);
-                if (unTyped.length === 1) {
-                    if (indices.length === 1) {
-                        setWord((preWord) => {
-                            return { ...preWord! };
+    const handleWord = (e: React.KeyboardEvent<HTMLDivElement> | KeyboardEvent) => {
+        const key = e.key;
+        if (unTyped === undefined || unTyped == '') return;
+        if (unTyped.startsWith(key)) {
+            setMissCount(0);
+            if (unTyped.length === 1) {
+                setWord((preWord) => {
+                    if (preWord) {
+                        const preIndex = randomWords.findIndex((v) => v.id === preWord.id);
+                        if (preIndex === -1) return randomWords.length > 0 ? randomWords[0] : null;
+                        if (preIndex !== randomWords.length - 1) return randomWords[preIndex + 1];
+                        setRandomWords((p) => {
+                            if (p.length <= 1) return [...p];
+                            while (true) {
+                                const next = shuffle(p);
+                                if (preWord.id !== next[0].id) return next;
+                            }
                         });
-                        return;
                     }
-                    setIndex((preIndex) => {
-                        if (indices.indexOf(preIndex) === indices.length - 1) {
-                            setIndices((indices) => {
-                                while (true) {
-                                    const nextIndices = shuffle(indices);
-                                    if (nextIndices[0] !== preIndex) return nextIndices;
-                                }
-                            });
-                            return -1;
-                        }
-                        return indices[indices.indexOf(preIndex) + 1] !== undefined
-                            ? indices[indices.indexOf(preIndex) + 1]
-                            : -1;
-                    });
-                    return;
-                }
-                setUnTyped((prev) => prev.slice(1));
-                setTyped((prev) => prev + key);
-            } else {
-                if (unTyped[0].toUpperCase() === unTyped[0] && e.shiftKey) {
-                    return;
-                }
-                setMissCount((prev) => prev + 1);
-                setMissed(true);
+                    return null;
+                });
+                return;
             }
-        },
-        [indices, unTyped]
-    );
+            setUnTyped((prev) => prev.slice(1));
+            setTyped((prev) => prev + key);
+        } else {
+            if (unTyped[0].toUpperCase() === unTyped[0] && e.shiftKey) {
+                return;
+            }
+            setMissCount((prev) => prev + 1);
+            setMissed(true);
+        }
+    };
+
     return { favoriteWords, word, typed, unTyped, missed, missCount, handleWord };
 };
 

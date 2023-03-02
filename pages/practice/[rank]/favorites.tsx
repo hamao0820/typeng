@@ -30,7 +30,7 @@ const Favorites: FC<FavoritesPageProps> = ({ rankWords }) => {
     const contentRef = useRef<HTMLSpanElement>(null);
 
     useEffect(() => {
-        if (word === undefined) {
+        if (word === null) {
             return;
         }
         pronounce(word.en, pronounceVolume / 100);
@@ -94,7 +94,7 @@ const Favorites: FC<FavoritesPageProps> = ({ rankWords }) => {
                     <div
                         className="w-fit h-fit flex items-center justify-center p-2 bg-green-500 rounded-md"
                         onClick={() => {
-                            if (word === undefined) return;
+                            if (word === null) return;
                             pronounce(word.en, pronounceVolume);
                         }}
                     >
@@ -107,7 +107,7 @@ const Favorites: FC<FavoritesPageProps> = ({ rankWords }) => {
                             </span>
                         </div>
 
-                        {word !== undefined && isOver && <Marquee content={word.ja} />}
+                        {word !== null && isOver && <Marquee content={word.ja} />}
                         <div className="whitespace-nowrap">
                             <span className="text-8xl font-bold whitespace-nowrap">{typed.replaceAll(' ', '␣')}</span>
                             <span className="text-8xl font-bold text-gray-300 whitespace-nowrap">

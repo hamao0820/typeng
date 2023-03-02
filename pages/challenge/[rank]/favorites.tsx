@@ -33,7 +33,7 @@ const Favorites: NextPage<FavoritesPageProps> = ({ rankWords }) => {
     const [show, setShow] = useState<boolean>(false);
 
     useEffect(() => {
-        if (word === undefined) {
+        if (word === null) {
             return;
         }
         pronounce(word.en, pronounceVolume / 100);
@@ -49,7 +49,7 @@ const Favorites: NextPage<FavoritesPageProps> = ({ rankWords }) => {
     }, [word]);
 
     useEffect(() => {
-        if (word === undefined) return;
+        if (word === null) return;
         const timer = setInterval(() => {
             pronounce(word.en, pronounceVolume / 100);
         }, 3000);
@@ -109,7 +109,7 @@ const Favorites: NextPage<FavoritesPageProps> = ({ rankWords }) => {
                         <VolumeUpIcon
                             style={{ width: '13rem', height: '13rem' }}
                             onClick={() => {
-                                if (word === undefined) return;
+                                if (word === null) return;
                                 pronounce(word.en, pronounceVolume);
                             }}
                         />
@@ -130,7 +130,7 @@ const Favorites: NextPage<FavoritesPageProps> = ({ rankWords }) => {
                                 {word?.ja}
                             </span>
                         </div>
-                        {word !== undefined && isOver && <Marquee content={word.ja} />}
+                        {word !== null && isOver && <Marquee content={word.ja} />}
                         <div className="whitespace-nowrap">
                             <span className="text-8xl font-bold whitespace-nowrap">{typed.replaceAll(' ', '␣')}</span>
                             {missCount >= 3 ? (
