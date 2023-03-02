@@ -82,7 +82,8 @@ const Favorites: FC<FavoritesPageProps> = ({ rankWords }) => {
     );
 
     useEffect(() => {
-        document.onkeydown = handleKeyDown;
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
     }, [handleKeyDown]);
     return (
         <div className="h-screen w-screen overflow-hidden" ref={ref}>

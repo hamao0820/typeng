@@ -9,11 +9,13 @@ const FavoriteCountDown: React.FC<Props> = ({ setReady }) => {
     const [countTime, setCountTime] = useState<number>(3);
     const [counting, setCounting] = useState<boolean>(false);
     useEffect(() => {
-        window.onkeydown = (e: React.KeyboardEvent<HTMLDivElement> | KeyboardEvent) => {
+        const onkeydown = (e: React.KeyboardEvent<HTMLDivElement> | KeyboardEvent) => {
             if (e.code === 'Space') {
                 setCounting(true);
             }
         };
+        window.addEventListener('keydown', onkeydown);
+        return () => window.removeEventListener('keydown', onkeydown);
     }, []);
 
     useEffect(() => {

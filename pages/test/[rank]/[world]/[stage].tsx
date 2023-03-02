@@ -87,7 +87,8 @@ const Test: NextPage<PageProps> = ({ allWords, pathParam }) => {
     );
 
     useEffect(() => {
-        document.onkeydown = handleKeyDown;
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
     }, [handleKeyDown]);
 
     return (

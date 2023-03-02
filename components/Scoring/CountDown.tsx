@@ -11,11 +11,13 @@ const CountDown: React.FC<Props> = ({ setReady }) => {
     const [counting, setCounting] = useState<boolean>(false);
     const router = useRouter();
     useEffect(() => {
-        window.onkeydown = (e: React.KeyboardEvent<HTMLDivElement> | KeyboardEvent) => {
+        const onkeydown = (e: React.KeyboardEvent<HTMLDivElement> | KeyboardEvent) => {
             if (e.code === 'Space') {
                 setCounting(true);
             }
         };
+        window.addEventListener('keydown', onkeydown);
+        return () => window.removeEventListener('keydown', onkeydown);
     }, []);
 
     useEffect(() => {

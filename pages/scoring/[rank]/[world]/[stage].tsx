@@ -153,10 +153,8 @@ const Scoring: NextPage<PageProps> = ({ allWords, pathParam }) => {
 
     useEffect(() => {
         if (!ready) return;
-        document.addEventListener('keydown', handleKeyDown);
-        return () => {
-            document.removeEventListener('keydown', handleKeyDown);
-        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
     }, [handleKeyDown, ready]);
 
     useEffect(() => {
@@ -172,7 +170,6 @@ const Scoring: NextPage<PageProps> = ({ allWords, pathParam }) => {
             performance.mark('end');
             performance.measure('measure', 'start', 'end');
             setMeasure(performance.getEntriesByName('measure'));
-            document.onkeydown = () => {};
             setShowResult(true);
             return;
         }
