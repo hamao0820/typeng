@@ -66,7 +66,7 @@ const Scoring: NextPage<PageProps> = ({ allWords, pathParam }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const next = useCallback(async () => {
+    const next = async () => {
         const target = stageLoadMap.find(
             (v) =>
                 v.stage.world === pathParam.world &&
@@ -83,7 +83,7 @@ const Scoring: NextPage<PageProps> = ({ allWords, pathParam }) => {
         } else {
             await router.push({ pathname: `/${path.join('practice', rank, world, stage)}` });
         }
-    }, [pathParam, router]);
+    };
 
     useEffect(() => {
         initState();
