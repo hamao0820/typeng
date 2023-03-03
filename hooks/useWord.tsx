@@ -12,7 +12,7 @@ const useWord = (allWords: Word[], stage: Stage) => {
 
     useEffect(() => {
         if (stage === 'all') {
-            setRandomWords((preWords) => (preWords.length === 0 ? allWords : preWords));
+            setRandomWords((preWords) => (preWords.length === 0 ? shuffle(allWords) : shuffle(preWords)));
         } else {
             const words_ = sliceByNumber(allWords, 10)[Number(stage)];
             if (words_ !== undefined) {
