@@ -1,6 +1,6 @@
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import LightbulbIcon from '@mui/icons-material/Lightbulb';
 import { pronounceVolumeContext } from '../../../../Contexts/PronounceProvider';
@@ -11,7 +11,7 @@ import Button from '@mui/material/Button';
 import CountDown from '../../../../components/Scoring/CountDown';
 import Result from '../../../../components/Scoring/Result';
 import WorkHeader from '../../../../components/Worker/WorkHeader';
-import { pronounce, shuffle, sliceByNumber, sound, typeSound, stageLoadMap } from '../../../../utils';
+import { pronounce, shuffle, sliceByNumber, sound, typeSound, stageLoadMap, createIndices } from '../../../../utils';
 import Head from 'next/head';
 import getAllWords from '../../../../middleware/getAllWords';
 import type { PageProps, PathParam, PathParams, ResultType, Word } from '../../../../types';
@@ -33,16 +33,21 @@ export const getStaticProps: GetStaticProps<PageProps> = async (context) => {
     return { props: { allWords, pathParam } };
 };
 const Scoring: NextPage<PageProps> = ({ allWords, pathParam }) => {
-    const [word, setWord] = useState<Word>();
+    const { stage } = pathParam;
+    const words = useMemo(
+        () => (stage === 'all' ? allWords : sliceByNumber(allWords, 10)[Number(stage)]),
+        [allWords, stage]
+    );
+    const [randomWords, setRandomWords] = useState<Word[]>(words ? shuffle(words) : []);
+    const [index, setIndex] = useState<number>(0);
+    const word: Word | null = randomWords[index] ?? null;
+    const [unTyped, setUnTyped] = useState<string>(word ? word.en : '');
     const [typed, setTyped] = useState<string>('');
-    const [unTyped, setUnTyped] = useState<string>('');
     const ref = useRef<HTMLDivElement>(null);
     const pronounceVolume = useContext(pronounceVolumeContext);
     const soundEffectVolume = useContext(soundEffectVolumeContext);
     const typingVolume = useContext(typingVolumeContext);
     const router = useRouter();
-    const { stage } = pathParam;
-    const [words, setWords] = useState<Word[]>([]);
     const [results, setResults] = useState<ResultType[]>([]);
     const contentRef = useRef<HTMLSpanElement>(null);
     const [isOver, setIsOver] = useState<boolean>(false);
@@ -50,21 +55,19 @@ const Scoring: NextPage<PageProps> = ({ allWords, pathParam }) => {
     const [missCount, setMissCount] = useState<number>(0);
     const [miss, setMiss] = useState<boolean>(false);
     const [ready, setReady] = useState<boolean>(false);
-    const [index, setIndex] = useState<number>(0);
     const [showResult, setShowResult] = useState<boolean>(false);
     const [missCountSum, setMissCountSum] = useState<number>(0);
     const [measure, setMeasure] = useState<PerformanceEntryList>([]);
 
-    const initState = useCallback(() => {
+    const initState = () => {
         setResults([]);
-        setReady(false);
         setIndex(0);
+        setRandomWords((p) => shuffle(p));
+        setReady(false);
         setShowResult(false);
         setMissCountSum(0);
         setMeasure([]);
-        document.removeEventListener('keydown', handleKeyDown);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    };
 
     const next = async () => {
         const target = stageLoadMap.find(
@@ -86,50 +89,53 @@ const Scoring: NextPage<PageProps> = ({ allWords, pathParam }) => {
     };
 
     useEffect(() => {
-        initState();
-        if (stage === 'all') {
-            setWords(shuffle(allWords));
-            setReady(false);
-            return;
+        if (word) {
+            setUnTyped(word.en);
+            const content = contentRef.current;
+            content && setIsOver(800 <= content.clientWidth);
         }
-        const words_ = sliceByNumber(allWords, 10)[Number(stage)];
-        if (words_ === undefined) return;
-        setReady(false);
-        setWords(shuffle(words_));
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [allWords, stage]);
+        return () => {
+            setShow(false);
+            setTyped('');
+            setMissCount(0);
+            setMiss(false);
+        };
+    }, [word]);
 
     useEffect(() => {
-        if (!ready) return;
-        if (word === undefined) return;
-        pronounce(word.en, pronounceVolume / 100);
-        setShow(false);
-        setUnTyped(word.en);
-        setTyped('');
-        setMissCount(0);
-        setMiss(false);
-        const content = contentRef.current;
-        if (content === null) return;
-        if (800 <= content.clientWidth) {
-            setIsOver(true);
-        } else {
-            setIsOver(false);
+        if (ready && word) {
+            pronounce(word.en, pronounceVolume / 100);
         }
+        // pronounceVolumeを無視
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [word, ready]);
+    }, [ready, word]);
 
     useEffect(() => {
         if (!ready) return;
         performance.mark('start');
     }, [ready]);
 
-    const handleKeyDown = useCallback(
-        (e: React.KeyboardEvent<HTMLDivElement> | KeyboardEvent) => {
+    useEffect(() => {
+        const handleKeydown = (e: React.KeyboardEvent<HTMLDivElement> | KeyboardEvent) => {
             const key = e.key;
             if (unTyped === '') return;
             if (unTyped.startsWith(key)) {
-                typeSound(typingVolume / 100);
                 setMissCount(0);
+                if (unTyped.length === 1) {
+                    word && setResults((p) => [...p, { ...word, correct: !miss }]);
+                    setIndex((p) => {
+                        if (p === randomWords.length - 1) {
+                            performance.mark('end');
+                            performance.measure('measure', 'start', 'end');
+                            setMeasure(performance.getEntriesByName('measure'));
+                            setShowResult(true);
+                            return -1;
+                        }
+                        return p + 1;
+                    });
+                    return;
+                }
+                typeSound(typingVolume / 100);
                 setUnTyped((prev) => prev.slice(1));
                 setTyped((prev) => prev + key);
             } else {
@@ -147,42 +153,12 @@ const Scoring: NextPage<PageProps> = ({ allWords, pathParam }) => {
                     direction: 'alternate',
                 });
             }
-        },
-        [unTyped, typingVolume, soundEffectVolume]
-    );
-
-    useEffect(() => {
-        if (!ready) return;
-        window.addEventListener('keydown', handleKeyDown);
-        return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [handleKeyDown, ready]);
-
-    useEffect(() => {
-        if (stage !== undefined && words === undefined) {
-            router.push('/scoring');
-            return;
+        };
+        if (ready && !showResult) {
+            window.addEventListener('keydown', handleKeydown);
         }
-    }, [router, stage, words]);
-
-    useEffect(() => {
-        if (words === undefined || words.length === 0) return;
-        if (index >= words.length) {
-            performance.mark('end');
-            performance.measure('measure', 'start', 'end');
-            setMeasure(performance.getEntriesByName('measure'));
-            setShowResult(true);
-            return;
-        }
-        setWord(words[index]);
-    }, [index, words]);
-
-    useEffect(() => {
-        if (word === undefined || typed === '') return;
-        if (word.en === typed) {
-            setResults((prev) => [...prev, { ...word, correct: !miss }]);
-            setIndex((prevIndex) => prevIndex + 1);
-        }
-    }, [word, typed, miss]);
+        return () => window.removeEventListener('keydown', handleKeydown);
+    }, [miss, randomWords, ready, showResult, soundEffectVolume, typingVolume, unTyped, word]);
 
     return (
         <>
@@ -197,9 +173,9 @@ const Scoring: NextPage<PageProps> = ({ allWords, pathParam }) => {
                     param={{ mode: 'scoring', ...(router.query as any) }}
                 />
                 <div className="h-4/5 relative w-full">
-                    {words && (
+                    {randomWords && (
                         <div className="absolute top-5 right-10 text-3xl">
-                            {index + 1} / {words.length}
+                            {index + 1} / {randomWords.length}
                         </div>
                     )}
                     <div className="flex h-fit justify-start absolute top-1/3 left-60 w-full">
@@ -207,7 +183,7 @@ const Scoring: NextPage<PageProps> = ({ allWords, pathParam }) => {
                             <VolumeUpIcon
                                 style={{ width: '13rem', height: '13rem' }}
                                 onClick={() => {
-                                    if (word === undefined) return;
+                                    if (word === null) return;
                                     pronounce(word.en, pronounceVolume);
                                 }}
                             />
@@ -225,10 +201,10 @@ const Scoring: NextPage<PageProps> = ({ allWords, pathParam }) => {
                         <div className="flex flex-col justify-between ml-5" style={{ width: '800px' }}>
                             <div className={isOver ? 'hidden' : ''}>
                                 <span className="text-7xl font-bold whitespace-nowrap h-fit max-w-4xl overflow-hidden text-ellipsis inline-block">
-                                    {word?.ja}
+                                    {word && word.ja}
                                 </span>
                             </div>
-                            {word !== undefined && isOver && <Marquee content={word.ja} />}
+                            {word !== null && isOver && <Marquee content={word.ja} />}
                             <div className="whitespace-nowrap">
                                 <span className="text-8xl font-bold whitespace-nowrap">
                                     {typed.replaceAll(' ', '␣')}

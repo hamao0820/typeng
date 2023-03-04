@@ -18,7 +18,7 @@ type Props = {
 
 const Result: React.FC<Props> = ({ missCount, results, measure, next, retry }) => {
     const allWordCount = results.map<number>((result) => result.en.length).reduce((p, c) => p + c);
-    const correctTypeRate = Math.round(((allWordCount - missCount) / allWordCount) * 100);
+    const correctTypeRate = Math.round(((allWordCount - missCount) / (allWordCount + missCount)) * 100);
     const router = useRouter();
     const pronounceVolume = useContext(pronounceVolumeContext);
     return (
