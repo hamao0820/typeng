@@ -44,7 +44,8 @@ const reducer: Reducer<WordStateType, Action> = (state, action): WordStateType =
             // 単語が存在する
 
             if (!unTyped.startsWith(key)) {
-                if (word.en[0].toUpperCase() === unTyped[0] && shiftKey) return { ...state, typeState: 'correct' };
+                if (word.en[0].toUpperCase() === unTyped[0] && (shiftKey || key === unTyped[0].toLowerCase()))
+                    return { ...state, typeState: 'correct' };
 
                 const continueMissCount = state.continueMissCount + 1;
                 const missCountSum = state.missCountSum + 1;
