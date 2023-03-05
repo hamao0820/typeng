@@ -9,9 +9,10 @@ type Props = {
     word: Word | null;
     typed: string;
     unTyped: string;
+    showUnTyped?: boolean;
 };
 
-const ShowWord: FC<Props> = ({ word, typed, unTyped }) => {
+const ShowWord: FC<Props> = ({ word, typed, unTyped, showUnTyped = true }) => {
     const pronounceVolume = useContext(pronounceVolumeContext);
     return (
         <div className="w-screen h-full">
@@ -31,13 +32,19 @@ const ShowWord: FC<Props> = ({ word, typed, unTyped }) => {
                 </div>
                 <div className="flex flex-col justify-between mx-2 flex-1">
                     <div className="line-clamp-2">
-                        <div className="text-8xl font-bold line-clamp-2 tracking-tighter" style={{ lineHeight: '100px' }}>
+                        <div
+                            className="text-8xl font-bold line-clamp-2 tracking-tighter"
+                            style={{ lineHeight: '100px' }}
+                        >
                             {word && word.ja}
                         </div>
                     </div>
                     <div className="whitespace-nowrap">
                         <span className="text-7xl font-bold whitespace-nowrap">{typed.replaceAll(' ', '␣')}</span>
-                        <span className="text-7xl font-bold text-gray-300 whitespace-nowrap">
+                        <span
+                            className="text-7xl font-bold text-gray-300 whitespace-nowrap"
+                            style={{ display: showUnTyped ? '' : 'none' }}
+                        >
                             {unTyped.replaceAll(' ', '␣')}
                         </span>
                     </div>

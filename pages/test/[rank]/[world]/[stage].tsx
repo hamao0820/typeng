@@ -1,19 +1,17 @@
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { useCallback, useContext, useEffect, useRef, useState } from 'react';
-import VolumeUpIcon from '@mui/icons-material/VolumeUp';
+import { useCallback, useContext, useEffect, useRef } from 'react';
 import { pronounceVolumeContext } from '../../../../Contexts/PronounceProvider';
 import { soundEffectVolumeContext } from '../../../../Contexts/SoundEffectProvider';
 import { typingVolumeContext } from '../../../../Contexts/TypingVolumeProvider';
-import Marquee from '../../../../components/Worker/Marquee';
 import WorkHeader from '../../../../components/Worker/WorkHeader';
 import { pronounce, sound, typeSound } from '../../../../utils';
 import Head from 'next/head';
 import useWord from '../../../../hooks/useWord';
 import getAllWords from '../../../../middleware/getAllWords';
 import type { PageProps, PathParam, PathParams } from '../../../../types';
-import FavoriteStar from '../../../../components/Favorites/FavoriteStar';
 import { stageLoadMap } from '../../../../utils';
+import ShowWord from '../../../../components/Worker/ShowWord';
 
 export const getStaticPaths: GetStaticPaths<PathParams> = async () => {
     return {
@@ -39,21 +37,12 @@ const Test: NextPage<PageProps> = ({ allWords, pathParam }) => {
     const pronounceVolume = useContext(pronounceVolumeContext);
     const soundEffectVolume = useContext(soundEffectVolumeContext);
     const typingVolume = useContext(typingVolumeContext);
-    const contentRef = useRef<HTMLSpanElement>(null);
-    const [isOver, setIsOver] = useState<boolean>(false);
 
     useEffect(() => {
         if (word === null) {
             return;
         }
         pronounce(word.en, pronounceVolume / 100);
-        const content = contentRef.current;
-        if (content === null) return;
-        if (800 <= content.clientWidth) {
-            setIsOver(true);
-        } else {
-            setIsOver(false);
-        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [word]);
 
@@ -96,52 +85,11 @@ const Test: NextPage<PageProps> = ({ allWords, pathParam }) => {
             <Head>
                 <title>test</title>
             </Head>
-            <WorkHeader text="選択画面に戻る" href="/test" param={{ mode: 'test', ...(router.query as any) }} />
-            <div className="h-4/5 relative w-full">
-                {word && (
-                    <div className="absolute top-5 right-12 flex justify-between items-center w-32">
-                        <div>
-                            <FavoriteStar word={word} />
-                        </div>
-                        <div className="text-3xl whitespace-nowrap">id: {word.id}</div>
-                    </div>
-                )}
-                <div className="flex h-fit justify-start absolute top-1/3 left-60 w-full">
-                    <div
-                        className="w-fit h-fit flex items-center justify-center p-2 bg-green-500 rounded-md"
-                        onClick={() => {
-                            if (word === null) return;
-                            pronounce(word.en, pronounceVolume);
-                        }}
-                    >
-                        <VolumeUpIcon style={{ width: '13rem', height: '13rem' }} />
-                    </div>
-                    <div className="flex flex-col justify-between ml-5" style={{ width: '800px' }}>
-                        <div className={isOver ? 'hidden' : ''}>
-                            <span className="text-7xl font-bold whitespace-nowrap h-fit max-w-4xl overflow-hidden text-ellipsis inline-block">
-                                {word?.ja}
-                            </span>
-                        </div>
-                        {word !== null && isOver && <Marquee content={word.ja} />}
-                        <div className="whitespace-nowrap">
-                            <span className="text-8xl font-bold whitespace-nowrap">{typed.replaceAll(' ', '␣')}</span>
-                            <span
-                                className="text-8xl font-bold text-gray-300 whitespace-nowrap"
-                                style={missed ? {} : { display: 'none' }}
-                            >
-                                {unTyped.replaceAll(' ', '␣')}
-                            </span>
-                        </div>
-                    </div>
+            <div className="flex flex-col">
+                <WorkHeader text="選択画面に戻る" href="/test" param={{ mode: 'test', ...(router.query as any) }} />
+                <div className="flex-1">
+                    <ShowWord {...{ word, typed, unTyped, showUnTyped: missed }} />
                 </div>
-            </div>
-            <div className="invisible">
-                <span
-                    className="text-7xl font-bold whitespace-nowrap h-fit max-w-4xl overflow-hidden text-ellipsis inline-block"
-                    ref={contentRef}
-                >
-                    {word?.ja}
-                </span>
             </div>
         </div>
     );
