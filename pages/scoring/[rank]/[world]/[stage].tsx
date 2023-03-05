@@ -100,18 +100,29 @@ const Scoring: NextPage<PageProps> = ({ allWords, pathParam }) => {
     }, [ready, wordState.word]);
 
     useEffect(() => {
-        if (wordState.continueMissCount === 0) return;
-        const body = ref.current;
-        if (body === null) return;
-        sound('sine', 0.1, soundEffectVolume / 100);
-        body.animate([{ backgroundColor: 'rgba(200, 0, 0, 0.1)' }, { backgroundColor: '' }], {
-            duration: 300,
-            direction: 'alternate',
-        });
-
-        // soundEffectVolumeを無視
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [wordState.continueMissCount]);
+        switch (wordState.typeState) {
+            case 'correct': {
+                typeSound(typingVolume / 100);
+                wordDispatch({ type: 'typing-init' });
+                return;
+            }
+            case 'incorrect': {
+                const body = ref.current;
+                if (body === null) return;
+                sound('sine', 0.1, soundEffectVolume / 100);
+                body.animate([{ backgroundColor: 'rgba(200, 0, 0, 0.1)' }, { backgroundColor: '' }], {
+                    duration: 300,
+                    direction: 'alternate',
+                });
+                wordDispatch({
+                    type: 'typing-init',
+                });
+                return;
+            }
+            default:
+                return;
+        }
+    }, [soundEffectVolume, typingVolume, wordDispatch, wordState.typeState]);
 
     useEffect(() => {
         if (!ready) return;
@@ -126,7 +137,6 @@ const Scoring: NextPage<PageProps> = ({ allWords, pathParam }) => {
 
     useEffect(() => {
         const handleKeydown = (event: React.KeyboardEvent<HTMLDivElement> | KeyboardEvent) => {
-            typeSound(typingVolume / 100);
             wordDispatch({ type: 'typed', payload: { event } });
         };
         if (ready && !showResult) {

@@ -7,6 +7,7 @@ type Action =
           type: 'typed';
           payload: { event: React.KeyboardEvent<HTMLDivElement> | KeyboardEvent };
       }
+    | { type: 'typing-init' }
     | { type: 'init'; payload: { words: Word[] } };
 type WordStateType = {
     words: Word[];
@@ -18,6 +19,7 @@ type WordStateType = {
     continueMissCount: number;
     missCountSum: number;
     results: ResultType[];
+    typeState: 'correct' | 'incorrect' | 'waiting';
 };
 
 const initialWordsState: WordStateType = {
@@ -30,6 +32,7 @@ const initialWordsState: WordStateType = {
     continueMissCount: 0,
     missCountSum: 0,
     results: [],
+    typeState: 'waiting',
 };
 
 const reducer: Reducer<WordStateType, Action> = (state, action): WordStateType => {
@@ -40,18 +43,25 @@ const reducer: Reducer<WordStateType, Action> = (state, action): WordStateType =
             if (word === null) return state;
             // 単語が存在する
 
-            if (word.en[0].toUpperCase() === unTyped[0] && !shiftKey) return state;
-            // 文字の大小以外は正解
-
             if (!unTyped.startsWith(key)) {
+                if (word.en[0].toUpperCase() === unTyped[0] && shiftKey) return { ...state, typeState: 'correct' };
+
                 const continueMissCount = state.continueMissCount + 1;
                 const missCountSum = state.missCountSum + 1;
-                return { ...state, continueMissCount, missCountSum, miss: true };
+                return { ...state, continueMissCount, missCountSum, miss: true, typeState: 'incorrect' };
             }
             // 文字の大小まで正解している
 
             if (unTyped.length !== 1)
-                return { ...state, typed: typed + key, unTyped: unTyped.slice(1), continueMissCount: 0 };
+                return key === 'Shift'
+                    ? { ...state, typeState: 'correct' }
+                    : {
+                          ...state,
+                          typed: typed + key,
+                          unTyped: unTyped.slice(1),
+                          continueMissCount: 0,
+                          typeState: 'correct',
+                      };
             // 各単語を最後までうち終わった
 
             if (index !== words.length - 1) {
@@ -66,6 +76,7 @@ const reducer: Reducer<WordStateType, Action> = (state, action): WordStateType =
                     continueMissCount: 0,
                     miss: false,
                     results: [...results, { ...word, correct: !miss }],
+                    typeState: 'correct',
                 };
             }
             // 全ての単語を打ち終わった
@@ -77,7 +88,11 @@ const reducer: Reducer<WordStateType, Action> = (state, action): WordStateType =
                 word: null,
                 index: 0,
                 results: [...results, { ...word, correct: continueMissCount === 0 }],
+                typeState: 'correct',
             };
+        }
+        case 'typing-init': {
+            return { ...state, typeState: 'waiting' };
         }
         case 'init': {
             const index = 0;
@@ -100,7 +115,6 @@ const reducer: Reducer<WordStateType, Action> = (state, action): WordStateType =
         }
     }
 };
-
 const useScoringWord = (words: Word[]) => {
     const [state, dispatch] = useReducer(reducer, initialWordsState);
     useEffect(() => {
