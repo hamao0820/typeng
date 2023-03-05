@@ -1,7 +1,6 @@
 import type { GetServerSideProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
-import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import LightbulbIcon from '@mui/icons-material/Lightbulb';
 import { pronounceVolumeContext } from '../../../Contexts/PronounceProvider';
 import { soundEffectVolumeContext } from '../../../Contexts/SoundEffectProvider';
@@ -16,6 +15,7 @@ import getRankWords from '../../../middleware/getRankWords';
 import { useFavoritesContext } from '../../../Contexts/FavoritesProvider';
 import FavoriteResult from '../../../components/Favorites/FavoriteResult';
 import FavoriteCountDown from '../../../components/Favorites/FavoriteCountDown';
+import ShowWord from '../../../components/Worker/ShowWord';
 
 export const getServerSideProps: GetServerSideProps<FavoritesPageProps> = async (context) => {
     const { rank } = context.params as PathParams;
@@ -186,71 +186,16 @@ const Favorites: NextPage<FavoritesPageProps> = ({ rankWords }) => {
                 {!ready && <FavoriteCountDown setReady={setReady} />}
                 <div className="flex flex-col">
                     <FavoriteHeader text="選択画面に戻る" href="/scoring" mode="scoring" />
-                    <div className="flex-1">
-                        <div className="w-screen h-full">
-                            <div className="flex justify-between items-center w-32 ml-auto mr-20 my-6">
-                                <div className="text-5xl whitespace-nowrap">
-                                    {index + 1} / {words.length}
-                                </div>
-                            </div>
-                            <div className="flex h-fit justify-start w-full ml-3 mt-16">
-                                <div
-                                    className="w-fit h-fit flex items-center justify-center bg-green-500 rounded-md"
-                                    onClick={() => {
-                                        if (word === null) return;
-                                        pronounce(word.en, pronounceVolume);
-                                    }}
-                                >
-                                    <VolumeUpIcon
-                                        sx={{ height: '40vh', width: '40vh', minHeight: '200px', minWidth: '200px' }}
-                                    />
-                                </div>
-                                <div className="flex flex-col justify-between mx-2 flex-1">
-                                    <div className="line-clamp-2">
-                                        <div
-                                            className="text-8xl font-bold line-clamp-2 tracking-tighter"
-                                            style={{ lineHeight: '100px' }}
-                                        >
-                                            {word && word.ja}
-                                        </div>
-                                    </div>
-                                    <div className="whitespace-nowrap">
-                                        <span className="text-7xl font-bold whitespace-nowrap">
-                                            {typed.replaceAll(' ', '␣')}
-                                        </span>
-                                        {showUnTyped ? (
-                                            <span className="text-7xl font-bold text-gray-300 whitespace-nowrap">
-                                                {unTyped.replaceAll(' ', '␣')}
-                                            </span>
-                                        ) : (
-                                            <>
-                                                {missCount >= 3 ? (
-                                                    <>
-                                                        <span className="text-7xl font-bold text-gray-300 whitespace-nowrap">
-                                                            {unTyped.replaceAll(' ', '␣')[0]}
-                                                        </span>
-                                                        <span
-                                                            className="text-7xl font-bold text-gray-300 whitespace-nowrap"
-                                                            style={{ display: 'none' }}
-                                                        >
-                                                            {unTyped.replaceAll(' ', '␣').slice(1)}
-                                                        </span>
-                                                    </>
-                                                ) : (
-                                                    <span
-                                                        className="text-7xl font-bold text-gray-300 whitespace-nowrap"
-                                                        style={{ display: 'none' }}
-                                                    >
-                                                        {unTyped.replaceAll(' ', '␣')}
-                                                    </span>
-                                                )}
-                                            </>
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <ShowWord
+                        {...{
+                            word,
+                            unTyped,
+                            typed,
+                            showUnTyped,
+                            showHint: miss,
+                            progress: `${index + 1} / ${words.length}`,
+                        }}
+                    />
                 </div>
                 <div className="w-screen flex justify-center mt-5">
                     <Button

@@ -11,15 +11,19 @@ type Props = {
     unTyped: string;
     showUnTyped?: boolean;
     showHint?: boolean;
+    progress?: `${number} / ${number}`;
 };
 
-const ShowWord: FC<Props> = ({ word, typed, unTyped, showUnTyped = true, showHint = false }) => {
+const ShowWord: FC<Props> = ({ word, typed, unTyped, showUnTyped = true, showHint = false, progress }) => {
     const pronounceVolume = useContext(pronounceVolumeContext);
     return (
         <div className="w-screen h-full">
-            <div className="flex justify-between items-center w-32 ml-auto mr-20 my-6">
-                <div>{word && <FavoriteStar word={word} />}</div>
-                <div className="text-5xl whitespace-nowrap">id: {word && word.id}</div>
+            <div className="flex justify-end w-screen my-6">
+                {progress && <div className="text-5xl whitespace-nowrap">{progress}</div>}
+                <div className="flex justify-between items-center w-32 mx-28">
+                    <div>{word && <FavoriteStar word={word} />}</div>
+                    <div className="text-5xl whitespace-nowrap">id: {word && word.id}</div>
+                </div>
             </div>
             <div className="flex h-fit justify-start w-full ml-3 mt-16">
                 <div

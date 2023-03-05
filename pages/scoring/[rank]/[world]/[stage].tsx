@@ -1,7 +1,6 @@
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
-import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import LightbulbIcon from '@mui/icons-material/Lightbulb';
 import { pronounceVolumeContext } from '../../../../Contexts/PronounceProvider';
 import { soundEffectVolumeContext } from '../../../../Contexts/SoundEffectProvider';
@@ -16,6 +15,7 @@ import getAllWords from '../../../../middleware/getAllWords';
 import type { PageProps, PathParam, PathParams } from '../../../../types';
 import path from 'path';
 import useScoringWord from '../../../../hooks/useScoringWord';
+import ShowWord from '../../../../components/Worker/ShowWord';
 
 export const getStaticPaths: GetStaticPaths<PathParams> = async () => {
     return {
@@ -154,71 +154,14 @@ const Scoring: NextPage<PageProps> = ({ allWords, pathParam }) => {
                         href="/scoring"
                         param={{ mode: 'scoring', ...(router.query as any) }}
                     />
-                    <div className="flex-1">
-                        <div className="w-screen h-full">
-                            <div className="flex justify-between items-center w-32 ml-auto mr-20 my-6">
-                                <div className="text-5xl whitespace-nowrap">
-                                    {wordState.index + 1} / {wordState.words.length}
-                                </div>
-                            </div>
-                            <div className="flex h-fit justify-start w-full ml-3 mt-16">
-                                <div
-                                    className="w-fit h-fit flex items-center justify-center bg-green-500 rounded-md"
-                                    onClick={() => {
-                                        if (wordState.word === null) return;
-                                        pronounce(wordState.word.en, pronounceVolume);
-                                    }}
-                                >
-                                    <VolumeUpIcon
-                                        sx={{ height: '40vh', width: '40vh', minHeight: '200px', minWidth: '200px' }}
-                                    />
-                                </div>
-                                <div className="flex flex-col justify-between mx-2 flex-1">
-                                    <div className="line-clamp-2">
-                                        <div
-                                            className="text-8xl font-bold line-clamp-2 tracking-tighter"
-                                            style={{ lineHeight: '100px' }}
-                                        >
-                                            {wordState.word && wordState.word.ja}
-                                        </div>
-                                    </div>
-                                    <div className="whitespace-nowrap">
-                                        <span className="text-7xl font-bold whitespace-nowrap">
-                                            {wordState.typed.replaceAll(' ', '␣')}
-                                        </span>
-                                        {showUnTyped ? (
-                                            <span className="text-7xl font-bold text-gray-300 whitespace-nowrap">
-                                                {wordState.unTyped.replaceAll(' ', '␣')}
-                                            </span>
-                                        ) : (
-                                            <>
-                                                {wordState.continueMissCount >= 3 ? (
-                                                    <>
-                                                        <span className="text-7xl font-bold text-gray-300 whitespace-nowrap">
-                                                            {wordState.unTyped.replaceAll(' ', '␣')[0]}
-                                                        </span>
-                                                        <span
-                                                            className="text-7xl font-bold text-gray-300 whitespace-nowrap"
-                                                            style={{ display: 'none' }}
-                                                        >
-                                                            {wordState.unTyped.replaceAll(' ', '␣').slice(1)}
-                                                        </span>
-                                                    </>
-                                                ) : (
-                                                    <span
-                                                        className="text-7xl font-bold text-gray-300 whitespace-nowrap"
-                                                        style={{ display: 'none' }}
-                                                    >
-                                                        {wordState.unTyped.replaceAll(' ', '␣')}
-                                                    </span>
-                                                )}
-                                            </>
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <ShowWord
+                        word={wordState.word}
+                        typed={wordState.typed}
+                        unTyped={wordState.unTyped}
+                        showUnTyped={showUnTyped}
+                        showHint={wordState.continueMissCount >= 3}
+                        progress={`${wordState.index + 1} / ${wordState.words.length}`}
+                    />
                 </div>
                 <div className="w-screen flex justify-center mt-5">
                     <Button
