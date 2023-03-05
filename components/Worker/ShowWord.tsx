@@ -19,9 +19,9 @@ const ShowWord: FC<Props> = ({ word, typed, unTyped, showUnTyped = true, showHin
     return (
         <div className="w-screen h-full">
             <div className="flex justify-end w-screen my-6">
-                {progress && <div className="text-5xl whitespace-nowrap">{progress}</div>}
-                <div className="flex justify-between items-center w-32 mx-28">
-                    <div>{word && <FavoriteStar word={word} />}</div>
+                {progress && <div className="text-5xl whitespace-nowrap mx-10">{progress}</div>}
+                <div className="flex justify-between items-center w-32 mr-28">
+                    <div>{word && !progress && <FavoriteStar word={word} />}</div>
                     <div className="text-5xl whitespace-nowrap">id: {word && word.id}</div>
                 </div>
             </div>
