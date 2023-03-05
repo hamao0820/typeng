@@ -7,13 +7,14 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "build-start":"npm run build && npm start"
+    "build-start": "npm run build && npm start"
   },
   "dependencies": {
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@mui/icons-material": "^5.11.0",
     "@mui/material": "^5.11.3",
+    "@tailwindcss/line-clamp": "^0.4.2",
     "firebase": "^9.17.1",
     "framer-motion": "^8.1.7",
     "next": "13.1.1",
