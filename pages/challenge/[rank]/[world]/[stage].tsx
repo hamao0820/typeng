@@ -1,12 +1,10 @@
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
-import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import LightbulbIcon from '@mui/icons-material/Lightbulb';
 import { pronounceVolumeContext } from '../../../../Contexts/PronounceProvider';
 import { soundEffectVolumeContext } from '../../../../Contexts/SoundEffectProvider';
 import { typingVolumeContext } from '../../../../Contexts/TypingVolumeProvider';
-import Marquee from '../../../../components/Worker/Marquee';
 import Button from '@mui/material/Button';
 import WorkHeader from '../../../../components/Worker/WorkHeader';
 import { pronounce, sound, typeSound } from '../../../../utils';
@@ -14,8 +12,8 @@ import Head from 'next/head';
 import useWord from '../../../../hooks/useWord';
 import getAllWords from '../../../../middleware/getAllWords';
 import type { PageProps, PathParam, PathParams } from '../../../../types';
-import FavoriteStar from '../../../../components/Favorites/FavoriteStar';
 import { stageLoadMap } from '../../../../utils';
+import ShowWord from '../../../../components/Worker/ShowWord';
 
 export const getStaticPaths: GetStaticPaths<PathParams> = async () => {
     return {
@@ -41,23 +39,14 @@ const Challenge: NextPage<PageProps> = ({ allWords, pathParam }) => {
     const pronounceVolume = useContext(pronounceVolumeContext);
     const soundEffectVolume = useContext(soundEffectVolumeContext);
     const typingVolume = useContext(typingVolumeContext);
-    const contentRef = useRef<HTMLSpanElement>(null);
-    const [isOver, setIsOver] = useState<boolean>(false);
-    const [show, setShow] = useState<boolean>(false);
+    const [showUnTyped, setShowUnTyped] = useState<boolean>(false);
 
     useEffect(() => {
         if (word === null) {
             return;
         }
         pronounce(word.en, pronounceVolume / 100);
-        setShow(false);
-        const content = contentRef.current;
-        if (content === null) return;
-        if (800 <= content.clientWidth) {
-            setIsOver(true);
-        } else {
-            setIsOver(false);
-        }
+        setShowUnTyped(false);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [word]);
 
@@ -99,8 +88,8 @@ const Challenge: NextPage<PageProps> = ({ allWords, pathParam }) => {
     );
 
     useEffect(() => {
-        window.addEventListener("keydown", handleKeyDown)
-        return ()=> window.removeEventListener("keydown", handleKeyDown)
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
     }, [handleKeyDown]);
 
     return (
@@ -108,80 +97,25 @@ const Challenge: NextPage<PageProps> = ({ allWords, pathParam }) => {
             <Head>
                 <title>challenge</title>
             </Head>
-            <WorkHeader
-                text="選択画面に戻る"
-                href="/challenge"
-                param={{ mode: 'challenge', ...(router.query as any) }}
-            />
-            <div className="h-4/5 relative w-full">
-                {word && (
-                    <div className="absolute top-5 right-12 flex justify-between items-center w-32">
-                        <div>
-                            <FavoriteStar word={word} />
-                        </div>
-                        <div className="text-3xl whitespace-nowrap">id: {word.id}</div>
-                    </div>
-                )}
-                <div className="flex h-fit justify-start absolute top-1/3 left-60 w-full">
-                    <div className="w-fit h-fit flex items-center justify-center p-2 bg-green-500 rounded-md">
-                        <VolumeUpIcon
-                            style={{ width: '13rem', height: '13rem' }}
-                            onClick={() => {
-                                if (word === null) return;
-                                pronounce(word.en, pronounceVolume);
-                            }}
-                        />
-                        <div className="absolute left-60 top-80">
-                            <Button
-                                variant="outlined"
-                                endIcon={<LightbulbIcon style={{ width: '1.5rem', height: '1.5rem' }} />}
-                                style={{ width: '224px', padding: '8px' }}
-                                onClick={() => setShow(true)}
-                            >
-                                <span className="text-lg">答えを見る</span>
-                            </Button>
-                        </div>
-                    </div>
-                    <div className="flex flex-col justify-between ml-5" style={{ width: '800px' }}>
-                        <div className={isOver ? 'hidden' : ''}>
-                            <span className="text-7xl font-bold whitespace-nowrap h-fit max-w-4xl overflow-hidden text-ellipsis inline-block">
-                                {word?.ja}
-                            </span>
-                        </div>
-                        {word !== null && isOver && <Marquee content={word.ja} />}
-                        <div className="whitespace-nowrap">
-                            <span className="text-8xl font-bold whitespace-nowrap">{typed.replaceAll(' ', '␣')}</span>
-                            {missCount >= 3 ? (
-                                <>
-                                    <span className="text-8xl font-bold text-gray-300 whitespace-nowrap">
-                                        {unTyped.replaceAll(' ', '␣')[0]}
-                                    </span>
-                                    <span
-                                        className="text-8xl font-bold text-gray-300 whitespace-nowrap"
-                                        style={show ? {} : { display: 'none' }}
-                                    >
-                                        {unTyped.replaceAll(' ', '␣').slice(1)}
-                                    </span>
-                                </>
-                            ) : (
-                                <span
-                                    className="text-8xl font-bold text-gray-300 whitespace-nowrap"
-                                    style={show ? {} : { display: 'none' }}
-                                >
-                                    {unTyped.replaceAll(' ', '␣')}
-                                </span>
-                            )}
-                        </div>
-                    </div>
+            <div className="flex flex-col">
+                <WorkHeader
+                    text="選択画面に戻る"
+                    href="/challenge"
+                    param={{ mode: 'challenge', ...(router.query as any) }}
+                />
+                <div className="flex-1">
+                    <ShowWord {...{ word, typed, unTyped, showUnTyped, showHint: missCount >= 3 }} />
                 </div>
             </div>
-            <div className="invisible">
-                <span
-                    className="text-7xl font-bold whitespace-nowrap h-fit max-w-4xl overflow-hidden text-ellipsis inline-block"
-                    ref={contentRef}
+            <div className="w-screen flex justify-center mt-5">
+                <Button
+                    variant="outlined"
+                    endIcon={<LightbulbIcon style={{ width: '1.5rem', height: '1.5rem' }} />}
+                    style={{ width: '224px', padding: '8px' }}
+                    onClick={() => setShowUnTyped(true)}
                 >
-                    {word?.ja}
-                </span>
+                    <span className="text-lg">答えを見る</span>
+                </Button>
             </div>
         </div>
     );

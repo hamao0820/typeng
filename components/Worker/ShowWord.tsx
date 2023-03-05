@@ -10,9 +10,10 @@ type Props = {
     typed: string;
     unTyped: string;
     showUnTyped?: boolean;
+    showHint?: boolean;
 };
 
-const ShowWord: FC<Props> = ({ word, typed, unTyped, showUnTyped = true }) => {
+const ShowWord: FC<Props> = ({ word, typed, unTyped, showUnTyped = true, showHint = false }) => {
     const pronounceVolume = useContext(pronounceVolumeContext);
     return (
         <div className="w-screen h-full">
@@ -41,12 +42,34 @@ const ShowWord: FC<Props> = ({ word, typed, unTyped, showUnTyped = true }) => {
                     </div>
                     <div className="whitespace-nowrap">
                         <span className="text-7xl font-bold whitespace-nowrap">{typed.replaceAll(' ', '␣')}</span>
-                        <span
-                            className="text-7xl font-bold text-gray-300 whitespace-nowrap"
-                            style={{ display: showUnTyped ? '' : 'none' }}
-                        >
-                            {unTyped.replaceAll(' ', '␣')}
-                        </span>
+                        {showUnTyped ? (
+                            <span className="text-7xl font-bold text-gray-300 whitespace-nowrap">
+                                {unTyped.replaceAll(' ', '␣')}
+                            </span>
+                        ) : (
+                            <>
+                                {showHint ? (
+                                    <>
+                                        <span className="text-7xl font-bold text-gray-300 whitespace-nowrap">
+                                            {unTyped.replaceAll(' ', '␣')[0]}
+                                        </span>
+                                        <span
+                                            className="text-7xl font-bold text-gray-300 whitespace-nowrap"
+                                            style={{ display: 'none' }}
+                                        >
+                                            {unTyped.replaceAll(' ', '␣').slice(1)}
+                                        </span>
+                                    </>
+                                ) : (
+                                    <span
+                                        className="text-7xl font-bold text-gray-300 whitespace-nowrap"
+                                        style={{ display: 'none' }}
+                                    >
+                                        {unTyped.replaceAll(' ', '␣')}
+                                    </span>
+                                )}
+                            </>
+                        )}
                     </div>
                 </div>
             </div>
