@@ -6,7 +6,6 @@ import LightbulbIcon from '@mui/icons-material/Lightbulb';
 import { pronounceVolumeContext } from '../../../Contexts/PronounceProvider';
 import { soundEffectVolumeContext } from '../../../Contexts/SoundEffectProvider';
 import { typingVolumeContext } from '../../../Contexts/TypingVolumeProvider';
-import Marquee from '../../../components/Worker/Marquee';
 import Button from '@mui/material/Button';
 import { pronounce, shuffle, sound, typeSound } from '../../../utils';
 import Head from 'next/head';
@@ -35,9 +34,7 @@ const Favorites: NextPage<FavoritesPageProps> = ({ rankWords }) => {
     const router = useRouter();
     const [words, setWords] = useState<Word[]>([]);
     const [results, setResults] = useState<ResultType[]>([]);
-    const contentRef = useRef<HTMLSpanElement>(null);
-    const [isOver, setIsOver] = useState<boolean>(false);
-    const [show, setShow] = useState<boolean>(false);
+    const [showUnTyped, setShowUnTyped] = useState<boolean>(false);
     const [missCount, setMissCount] = useState<number>(0);
     const [miss, setMiss] = useState<boolean>(false);
     const [ready, setReady] = useState<boolean>(false);
@@ -108,15 +105,8 @@ const Favorites: NextPage<FavoritesPageProps> = ({ rankWords }) => {
     useEffect(() => {
         if (word === null) return;
         setUnTyped(word.en);
-        const content = contentRef.current;
-        if (content === null) return;
-        if (800 <= content.clientWidth) {
-            setIsOver(true);
-        } else {
-            setIsOver(false);
-        }
         return () => {
-            setShow(false);
+            setShowUnTyped(false);
             setTyped('');
             setMissCount(0);
             setMiss((prevMiss) => {
@@ -194,75 +184,83 @@ const Favorites: NextPage<FavoritesPageProps> = ({ rankWords }) => {
             </Head>
             <div className="h-screen w-screen overflow-hidden" ref={ref}>
                 {!ready && <FavoriteCountDown setReady={setReady} />}
-                <FavoriteHeader text="選択画面に戻る" href="/scoring" mode="scoring" />
-                <div className="h-4/5 relative w-full">
-                    {words && (
-                        <div className="absolute top-5 right-10 text-3xl">
-                            {index + 1} / {words.length}
-                        </div>
-                    )}
-                    <div className="flex h-fit justify-start absolute top-1/3 left-60 w-full">
-                        <div className="w-fit h-fit flex items-center justify-center p-2 bg-green-500 rounded-md">
-                            <VolumeUpIcon
-                                style={{ width: '13rem', height: '13rem' }}
-                                onClick={() => {
-                                    if (word === null) return;
-                                    pronounce(word.en, pronounceVolume);
-                                }}
-                            />
-                            <div className="absolute left-60 top-80">
-                                <Button
-                                    variant="outlined"
-                                    endIcon={<LightbulbIcon style={{ width: '1.5rem', height: '1.5rem' }} />}
-                                    style={{ width: '224px', padding: '8px' }}
-                                    onClick={() => setShow(true)}
+                <div className="flex flex-col">
+                    <FavoriteHeader text="選択画面に戻る" href="/scoring" mode="scoring" />
+                    <div className="flex-1">
+                        <div className="w-screen h-full">
+                            <div className="flex justify-between items-center w-32 ml-auto mr-20 my-6">
+                                <div className="text-5xl whitespace-nowrap">
+                                    {index + 1} / {words.length}
+                                </div>
+                            </div>
+                            <div className="flex h-fit justify-start w-full ml-3 mt-16">
+                                <div
+                                    className="w-fit h-fit flex items-center justify-center bg-green-500 rounded-md"
+                                    onClick={() => {
+                                        if (word === null) return;
+                                        pronounce(word.en, pronounceVolume);
+                                    }}
                                 >
-                                    <span className="text-lg">答えを見る</span>
-                                </Button>
-                            </div>
-                        </div>
-                        <div className="flex flex-col justify-between ml-5" style={{ width: '800px' }}>
-                            <div className={isOver ? 'hidden' : ''}>
-                                <span className="text-7xl font-bold whitespace-nowrap h-fit max-w-4xl overflow-hidden text-ellipsis inline-block">
-                                    {word?.ja}
-                                </span>
-                            </div>
-                            {word !== null && isOver && <Marquee content={word.ja} />}
-                            <div className="whitespace-nowrap">
-                                <span className="text-8xl font-bold whitespace-nowrap">
-                                    {typed.replaceAll(' ', '␣')}
-                                </span>
-                                {missCount >= 3 ? (
-                                    <>
-                                        <span className="text-8xl font-bold text-gray-300 whitespace-nowrap">
-                                            {unTyped.replaceAll(' ', '␣')[0]}
-                                        </span>
-                                        <span
-                                            className="text-8xl font-bold text-gray-300 whitespace-nowrap"
-                                            style={show ? {} : { display: 'none' }}
+                                    <VolumeUpIcon
+                                        sx={{ height: '40vh', width: '40vh', minHeight: '200px', minWidth: '200px' }}
+                                    />
+                                </div>
+                                <div className="flex flex-col justify-between mx-2 flex-1">
+                                    <div className="line-clamp-2">
+                                        <div
+                                            className="text-8xl font-bold line-clamp-2 tracking-tighter"
+                                            style={{ lineHeight: '100px' }}
                                         >
-                                            {unTyped.replaceAll(' ', '␣').slice(1)}
+                                            {word && word.ja}
+                                        </div>
+                                    </div>
+                                    <div className="whitespace-nowrap">
+                                        <span className="text-7xl font-bold whitespace-nowrap">
+                                            {typed.replaceAll(' ', '␣')}
                                         </span>
-                                    </>
-                                ) : (
-                                    <span
-                                        className="text-8xl font-bold text-gray-300 whitespace-nowrap"
-                                        style={show ? {} : { display: 'none' }}
-                                    >
-                                        {unTyped.replaceAll(' ', '␣')}
-                                    </span>
-                                )}
+                                        {showUnTyped ? (
+                                            <span className="text-7xl font-bold text-gray-300 whitespace-nowrap">
+                                                {unTyped.replaceAll(' ', '␣')}
+                                            </span>
+                                        ) : (
+                                            <>
+                                                {missCount >= 3 ? (
+                                                    <>
+                                                        <span className="text-7xl font-bold text-gray-300 whitespace-nowrap">
+                                                            {unTyped.replaceAll(' ', '␣')[0]}
+                                                        </span>
+                                                        <span
+                                                            className="text-7xl font-bold text-gray-300 whitespace-nowrap"
+                                                            style={{ display: 'none' }}
+                                                        >
+                                                            {unTyped.replaceAll(' ', '␣').slice(1)}
+                                                        </span>
+                                                    </>
+                                                ) : (
+                                                    <span
+                                                        className="text-7xl font-bold text-gray-300 whitespace-nowrap"
+                                                        style={{ display: 'none' }}
+                                                    >
+                                                        {unTyped.replaceAll(' ', '␣')}
+                                                    </span>
+                                                )}
+                                            </>
+                                        )}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div className="invisible">
-                    <span
-                        className="text-7xl font-bold whitespace-nowrap h-fit max-w-4xl overflow-hidden text-ellipsis inline-block"
-                        ref={contentRef}
+                <div className="w-screen flex justify-center mt-5">
+                    <Button
+                        variant="outlined"
+                        endIcon={<LightbulbIcon style={{ width: '1.5rem', height: '1.5rem' }} />}
+                        style={{ width: '224px', padding: '8px' }}
+                        onClick={() => setShowUnTyped(true)}
                     >
-                        {word?.ja}
-                    </span>
+                        <span className="text-lg">答えを見る</span>
+                    </Button>
                 </div>
             </div>
             {showResult && (
