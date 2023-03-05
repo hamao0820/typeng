@@ -10,15 +10,17 @@ import FavoriteHeader from './FavoriteHeader';
 type Props = {
     missCount: number;
     results: ResultType[];
-    measure: PerformanceEntryList;
+    measures: PerformanceEntryList;
     back: () => void;
     retry: () => void;
 };
 
-const FavoriteResult: React.FC<Props> = ({ missCount, results, measure, back, retry }) => {
+const FavoriteResult: React.FC<Props> = ({ missCount, results, measures, back, retry }) => {
     const allWordCount = results.map<number>((result) => result.en.length).reduce((p, c) => p + c, 0);
     const correctTypeRate = Math.round(((allWordCount - missCount) / (allWordCount + missCount)) * 100);
     const pronounceVolume = useContext(pronounceVolumeContext);
+    const measure = measures[0];
+    const duration = measure ? measure.duration : 1;
     return (
         <div className="h-screen w-screen absolute top-0 left-0 bg-white z-50 flex flex-col items-center overflow-hidden">
             <FavoriteHeader text="ステージ選択に戻る" href="/scoring" mode="scoring"></FavoriteHeader>
@@ -73,12 +75,12 @@ const FavoriteResult: React.FC<Props> = ({ missCount, results, measure, back, re
                     </div>
                     <div className="flex items-end justify-between border-b-2 border-solid border-gray-300 p-3">
                         <div className="text-lg font-bold">タイム</div>
-                        <div className="text-5xl font-bold">{Math.round(measure[0].duration) / 1000} 秒</div>
+                        <div className="text-5xl font-bold">{Math.round(duration) / 1000} 秒</div>
                     </div>
                     <div className="flex items-end justify-between border-b-2 border-solid border-gray-300 p-3">
                         <div className="text-lg font-bold">入力速度(文字/秒)</div>
                         <div className="text-5xl font-bold">
-                            {Math.round((allWordCount / measure[0].duration) * 1000 * 100) / 100}
+                            {Math.round((allWordCount / duration) * 1000 * 100) / 100}
                         </div>
                     </div>
                     <div className="flex items-end justify-between border-b-2 border-solid border-gray-300 p-3">

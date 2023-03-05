@@ -119,6 +119,7 @@ const reducer: Reducer<WordStateType, Action> = (state, action): WordStateType =
 const useScoringWord = (words: Word[]) => {
     const [state, dispatch] = useReducer(reducer, initialWordsState);
     useEffect(() => {
+        if (words.length === 0) return;
         dispatch({ type: 'init', payload: { words } });
     }, [words]);
     return { state, dispatch };

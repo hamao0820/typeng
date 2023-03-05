@@ -50,7 +50,7 @@ const Scoring: NextPage<PageProps> = ({ allWords, pathParam }) => {
     const [measures, setMeasures] = useState<PerformanceEntryList>([]);
 
     const initState = useCallback(() => {
-        wordDispatch({ type: 'init', payload: { words: words } });
+        wordDispatch({ type: 'init', payload: { words } });
         setReady(false);
         setShowResult(false);
         setMeasures([]);
