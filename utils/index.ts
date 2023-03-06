@@ -1,4 +1,4 @@
-import { PathParams,Rank, Stage, World } from '../types';
+import { PathParams, Rank, Stage, World } from '../types';
 
 export const sliceByNumber = <T>(array: T[], number: number): T[][] => {
     const length = Math.ceil(array.length / number);
@@ -126,3 +126,13 @@ export const createIndices = (num: number) => {
     const shuffledIndices = shuffle(serialIndices);
     return shuffledIndices;
 };
+
+export const stageIdRange = (
+    allRanks.map((rank) => rankIndicesObj.find((v) => v.rank === rank)).filter((v) => v) as RankIndicesObj[]
+)
+    .map((v) => v.indices)
+    .map((v) => sliceByNumber(v, 100))
+    .flat()
+    .map((v) => [...sliceByNumber(v, 10), v])
+    .flat()
+    .map((v, i) => ({ ...stageLoadMap[i], v }));
