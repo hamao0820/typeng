@@ -1,18 +1,19 @@
 import type { GetServerSideProps, NextPage } from 'next';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
 import { useCallback, useContext, useEffect, useRef } from 'react';
+
+import FavoriteHeader from '../../../components/Favorites/FavoriteHeader';
+import ShowWord from '../../../components/Worker/ShowWord';
 import { pronounceVolumeContext } from '../../../Contexts/PronounceProvider';
 import { soundEffectVolumeContext } from '../../../Contexts/SoundEffectProvider';
 import { typingVolumeContext } from '../../../Contexts/TypingVolumeProvider';
-import { pronounce, sound, typeSound } from '../../../utils';
-import Head from 'next/head';
+import useFavoriteWords from '../../../hooks/useFavoriteWords';
+import useHasFavorites from '../../../hooks/useHasFavorites';
+import getRankWords from '../../../middleware/getRankWords';
 import type { Mode, PathParams, Rank } from '../../../types';
 import { FavoritesPageProps } from '../../../types/favorite';
-import getRankWords from '../../../middleware/getRankWords';
-import useFavoriteWords from '../../../hooks/useFavoriteWords';
-import FavoriteHeader from '../../../components/Favorites/FavoriteHeader';
-import { useRouter } from 'next/router';
-import useHasFavorites from '../../../hooks/useHasFavorites';
-import ShowWord from '../../../components/Worker/ShowWord';
+import { pronounce, sound, typeSound } from '../../../utils';
 
 export const getServerSideProps: GetServerSideProps<FavoritesPageProps> = async (context) => {
     const { rank } = context.params as PathParams;

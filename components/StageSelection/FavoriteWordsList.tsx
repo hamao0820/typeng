@@ -1,10 +1,11 @@
-import React, { FC } from 'react';
-import { Rank, Word } from '../../types';
-import WordsList from './WordsList';
-import useGetWords from '../../hooks/useGetWords';
 import path from 'path';
+import React, { FC } from 'react';
+
 import { useFavoritesContext } from '../../Contexts/FavoritesProvider';
+import useGetWords from '../../hooks/useGetWords';
+import { Rank, Word } from '../../types';
 import { rankIndicesObj } from '../../utils';
+import WordsList from './WordsList';
 
 type Props = {
     rank: Rank;

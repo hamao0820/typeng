@@ -1,7 +1,8 @@
-import React, { FC } from 'react';
-import { Rank } from '../../types';
-import useGetWords from '../../hooks/useGetWords';
 import path from 'path';
+import React, { FC } from 'react';
+
+import useGetWords from '../../hooks/useGetWords';
+import { Rank } from '../../types';
 import WordsList from './WordsList';
 
 type Props = {

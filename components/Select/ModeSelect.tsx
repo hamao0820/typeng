@@ -1,10 +1,11 @@
-import React from 'react';
 import Box from '@mui/material/Box';
-import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
 import NativeSelect from '@mui/material/NativeSelect';
-import path from 'path';
 import { useRouter } from 'next/router';
+import path from 'path';
+import React from 'react';
+
 import type { PathParam } from '../../types';
 
 type Props = {

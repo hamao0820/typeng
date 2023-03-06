@@ -1,6 +1,6 @@
-import React, { FC, ReactNode } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import Fade from '@mui/material/Fade';
+import React, { FC, ReactNode } from 'react';
 
 type Props = {
     children: ReactNode;

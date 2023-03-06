@@ -1,22 +1,23 @@
-import type { GetServerSideProps, NextPage } from 'next';
-import { useRouter } from 'next/router';
-import Head from 'next/head';
-import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import LightbulbIcon from '@mui/icons-material/Lightbulb';
 import Button from '@mui/material/Button';
+import type { GetServerSideProps, NextPage } from 'next';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+
+import FavoriteCountDown from '../../../components/Favorites/FavoriteCountDown';
+import FavoriteHeader from '../../../components/Favorites/FavoriteHeader';
+import FavoriteResult from '../../../components/Favorites/FavoriteResult';
+import ShowWord from '../../../components/Worker/ShowWord';
+import { useFavoritesContext } from '../../../Contexts/FavoritesProvider';
 import { pronounceVolumeContext } from '../../../Contexts/PronounceProvider';
 import { soundEffectVolumeContext } from '../../../Contexts/SoundEffectProvider';
 import { typingVolumeContext } from '../../../Contexts/TypingVolumeProvider';
-import { pronounce, sound, typeSound } from '../../../utils';
-import type { PathParams, Word } from '../../../types';
-import FavoriteHeader from '../../../components/Favorites/FavoriteHeader';
-import { FavoritesPageProps } from '../../../types/favorite';
-import getRankWords from '../../../middleware/getRankWords';
-import { useFavoritesContext } from '../../../Contexts/FavoritesProvider';
-import FavoriteResult from '../../../components/Favorites/FavoriteResult';
-import FavoriteCountDown from '../../../components/Favorites/FavoriteCountDown';
-import ShowWord from '../../../components/Worker/ShowWord';
 import useScoringWord from '../../../hooks/useScoringWord';
+import getRankWords from '../../../middleware/getRankWords';
+import type { PathParams, Word } from '../../../types';
+import { FavoritesPageProps } from '../../../types/favorite';
+import { pronounce, sound, typeSound } from '../../../utils';
 
 export const getServerSideProps: GetServerSideProps<FavoritesPageProps> = async (context) => {
     const { rank } = context.params as PathParams;

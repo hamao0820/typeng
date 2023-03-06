@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import WorkHeader from '../Worker/WorkHeader';
 import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
+
+import WorkHeader from '../Worker/WorkHeader';
 
 type Props = {
     setReady: React.Dispatch<React.SetStateAction<boolean>>;

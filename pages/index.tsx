@@ -1,14 +1,15 @@
-import type { NextPage } from 'next';
-import { forwardRef, useState } from 'react';
-import ModeCard from '../components/ModeSelection/ModeCard';
-import Logo from '../components/ModeSelection/Logo';
-import SettingButton from '../components/Setting/SettingButton';
-import Head from 'next/head';
-import SignInButton from '../components/ModeSelection/SignInButton';
-import { useAuthContext } from '../Contexts/AuthProvider';
-import SignOutButton from '../components/ModeSelection/SignOutButton';
-import Snackbar from '@mui/material/Snackbar';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
+import Snackbar from '@mui/material/Snackbar';
+import type { NextPage } from 'next';
+import Head from 'next/head';
+import { forwardRef, useState } from 'react';
+
+import Logo from '../components/ModeSelection/Logo';
+import ModeCard from '../components/ModeSelection/ModeCard';
+import SignInButton from '../components/ModeSelection/SignInButton';
+import SignOutButton from '../components/ModeSelection/SignOutButton';
+import SettingButton from '../components/Setting/SettingButton';
+import { useAuthContext } from '../Contexts/AuthProvider';
 
 const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;

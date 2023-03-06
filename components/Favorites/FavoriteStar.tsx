@@ -1,9 +1,10 @@
-import React, { FC } from 'react';
-import StarBorderIcon from '@mui/icons-material/StarBorder';
 import StarIcon from '@mui/icons-material/Star';
+import StarBorderIcon from '@mui/icons-material/StarBorder';
 import IconButton from '@mui/material/IconButton';
-import useFavorites from '../../hooks/useFavorites';
+import React, { FC } from 'react';
+
 import { useAuthContext } from '../../Contexts/AuthProvider';
+import useFavorites from '../../hooks/useFavorites';
 import { Word } from '../../types';
 
 type Props = { word: Word };

@@ -1,14 +1,15 @@
-import React from 'react';
-import Box from '@mui/material/Box';
-import InputLabel from '@mui/material/InputLabel';
-import FormControl from '@mui/material/FormControl';
-import NativeSelect from '@mui/material/NativeSelect';
 import UnfoldLess from '@mui/icons-material/UnfoldLess';
+import Box from '@mui/material/Box';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import NativeSelect from '@mui/material/NativeSelect';
 import { useRouter } from 'next/router';
-import BackButton from './BackButton';
-import SettingButton from '../Setting/SettingButton';
-import type { Mode } from '../../types';
+import React from 'react';
+
 import { useAuthContext } from '../../Contexts/AuthProvider';
+import type { Mode } from '../../types';
+import SettingButton from '../Setting/SettingButton';
+import BackButton from './BackButton';
 
 type Props = {
     text: string;

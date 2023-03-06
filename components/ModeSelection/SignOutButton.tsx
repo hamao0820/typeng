@@ -1,5 +1,6 @@
 import { signOut } from 'firebase/auth';
 import React, { FC } from 'react';
+
 import { auth } from '../../lib/firebase/firebase';
 
 type Props = { onSignOut: () => void };

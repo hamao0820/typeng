@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+
 import { Stage, Word } from '../types';
 import { shuffle, sliceByNumber } from '../utils';
 

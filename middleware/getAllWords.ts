@@ -1,6 +1,7 @@
-import path from 'path';
 import fs from 'fs';
-import { World, Rank, Word } from '../types';
+import path from 'path';
+
+import { Rank, Word,World } from '../types';
 import { sliceByNumber } from '../utils';
 
 const getAllWords = (rank: Rank, world: World): Word[] => {

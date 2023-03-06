@@ -1,17 +1,17 @@
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useCallback, useContext, useEffect, useRef } from 'react';
+
+import ShowWord from '../../../../components/Worker/ShowWord';
+import WorkHeader from '../../../../components/Worker/WorkHeader';
 import { pronounceVolumeContext } from '../../../../Contexts/PronounceProvider';
 import { soundEffectVolumeContext } from '../../../../Contexts/SoundEffectProvider';
 import { typingVolumeContext } from '../../../../Contexts/TypingVolumeProvider';
-import WorkHeader from '../../../../components/Worker/WorkHeader';
-import { pronounce, sound, typeSound } from '../../../../utils';
-import Head from 'next/head';
 import useWord from '../../../../hooks/useWord';
 import getAllWords from '../../../../middleware/getAllWords';
 import type { PageProps, PathParam, PathParams } from '../../../../types';
-import { stageLoadMap } from '../../../../utils';
-import ShowWord from '../../../../components/Worker/ShowWord';
+import { pronounce, sound, stageLoadMap,typeSound  } from '../../../../utils';
 
 export const getStaticPaths: GetStaticPaths<PathParams> = async () => {
     return {

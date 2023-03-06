@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { World, Rank, Word } from '../../../../types';
+
 import getAllWords from '../../../../middleware/getAllWords';
+import { Rank, Word,World } from '../../../../types';
 
 export default function personHandler(req: NextApiRequest, res: NextApiResponse<Word[]>) {
     const { query } = req;

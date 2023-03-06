@@ -1,10 +1,11 @@
-import React, { FC, useContext, useMemo } from 'react';
-import { pronounce } from '../../utils';
-import { Word } from '../../types';
-import { pronounceVolumeContext } from '../../Contexts/PronounceProvider';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
-import FavoriteStar from '../Favorites/FavoriteStar';
+import React, { FC, useContext, useMemo } from 'react';
+
+import { pronounceVolumeContext } from '../../Contexts/PronounceProvider';
 import { useTextSizeContext } from '../../Contexts/TextSizeProvider';
+import { Word } from '../../types';
+import { pronounce } from '../../utils';
+import FavoriteStar from '../Favorites/FavoriteStar';
 
 type Props = {
     word: Word | null;

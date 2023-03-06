@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
 import SettingsIcon from '@mui/icons-material/Settings';
+import React, { useState } from 'react';
+
 import { Setting } from './Setting';
 
 const SettingButton = () => {

@@ -1,9 +1,10 @@
+import { useRouter } from 'next/router';
 import React from 'react';
+
+import { Mode, Rank } from '../../types';
 import BackButton from '../Header/BackButton';
 import SettingButton from '../Setting/SettingButton';
 import FavoriteModeSelect from './FavoriteModeSelect';
-import { useRouter } from 'next/router';
-import { Mode, Rank } from '../../types';
 import FavoriteRankSelect from './FavoriteRankSelect';
 
 type Props = {

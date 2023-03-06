@@ -1,6 +1,6 @@
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Link from 'next/link';
 import React from 'react';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 type Props = {
     text: string;

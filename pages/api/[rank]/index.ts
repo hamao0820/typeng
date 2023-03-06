@@ -1,6 +1,7 @@
-import path from 'path';
 import fs from 'fs';
 import { NextApiRequest, NextApiResponse } from 'next';
+import path from 'path';
+
 import { Rank, Word } from '../../../types';
 
 export default function personHandler(req: NextApiRequest, res: NextApiResponse<Word[]>) {

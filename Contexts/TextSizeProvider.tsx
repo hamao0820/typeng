@@ -1,4 +1,5 @@
-import React, { Dispatch, FC, ReactNode, SetStateAction, createContext, useContext, useState } from 'react';
+import React, { createContext, Dispatch, FC, ReactNode, SetStateAction, useContext, useState } from 'react';
+
 import { TextSize } from '../types';
 
 type Props = {

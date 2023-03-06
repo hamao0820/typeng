@@ -1,8 +1,9 @@
 import React, { FC, Fragment } from 'react';
+
 import { Loading, Word } from '../../types';
+import FavoriteStar from '../Favorites/FavoriteStar';
 import Modal from './Modal';
 import Spinner from './Spinner';
-import FavoriteStar from '../Favorites/FavoriteStar';
 
 type Props = {
     isLoading: Loading;

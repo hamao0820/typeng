@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+
 import { Loading, Word } from '../types';
 
 const useGetWords = (isOpen: boolean, path: string, skipCondition?: boolean, time: number = 50) => {

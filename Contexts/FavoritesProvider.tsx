@@ -1,9 +1,10 @@
-import React, { FC, ReactNode, createContext, useContext, useEffect, useState } from 'react';
-import { getDatabase, ref, onValue } from '@firebase/database';
+import { getDatabase, onValue,ref } from '@firebase/database';
 import { FirebaseError } from 'firebase/app';
+import path from 'path';
+import React, { createContext, FC, ReactNode, useContext, useEffect, useState } from 'react';
+
 import { Favorites } from '../types/favorite';
 import { useAuthContext } from './AuthProvider';
-import path from 'path';
 
 type Props = {
     children: ReactNode;

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
+
 import { useFavoritesContext } from '../Contexts/FavoritesProvider';
 import { Word } from '../types';
 import { shuffle } from '../utils';

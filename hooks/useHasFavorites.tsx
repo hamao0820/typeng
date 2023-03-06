@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+
 import { useFavoritesContext } from '../Contexts/FavoritesProvider';
 import { Rank } from '../types';
 import { rankIndicesObj } from '../utils';

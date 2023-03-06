@@ -1,5 +1,6 @@
-import React, { Dispatch, FC, ReactNode, SetStateAction, createContext, useState } from 'react';
-import { World, ListOpenState, Rank } from '../types';
+import React, { createContext, Dispatch, FC, ReactNode, SetStateAction, useState } from 'react';
+
+import { ListOpenState, Rank,World } from '../types';
 import { allRanks, sliceByNumber, wordsCounts } from '../utils';
 
 type Props = {

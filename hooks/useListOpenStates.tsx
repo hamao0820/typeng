@@ -1,6 +1,7 @@
 import { useContext } from 'react';
-import { World, ListOpenState, Rank } from '../types';
+
 import { openStatesContext, setOpenStatesContext } from '../Contexts/ListOpenStatesProvider';
+import { ListOpenState, Rank,World } from '../types';
 
 const useListOpenStates = () => {
     const openStates = useContext(openStatesContext);

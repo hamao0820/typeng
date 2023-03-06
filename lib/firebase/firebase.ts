@@ -1,6 +1,6 @@
 import { getApp, getApps, initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
-import { GoogleAuthProvider } from 'firebase/auth';
+import { getAuth , GoogleAuthProvider } from 'firebase/auth';
+
 import {
     FIREBASE_API_KEY,
     FIREBASE_APP_ID,

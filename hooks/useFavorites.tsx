@@ -1,9 +1,10 @@
-import { getDatabase, ref, set, remove } from '@firebase/database';
+import { getDatabase, ref, remove,set } from '@firebase/database';
 import { FirebaseError } from '@firebase/util';
-import { Word } from '../types';
-import { useFavoritesContext } from '../Contexts/FavoritesProvider';
 import path from 'path';
+
 import { useAuthContext } from '../Contexts/AuthProvider';
+import { useFavoritesContext } from '../Contexts/FavoritesProvider';
+import { Word } from '../types';
 
 const useFavorites = () => {
     const favorites = useFavoritesContext();

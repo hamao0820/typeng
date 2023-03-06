@@ -1,11 +1,12 @@
 import React from 'react';
-import BackButton from '../Header/BackButton';
-import SettingButton from '../Setting/SettingButton';
-import ModeSelect from '../Select/ModeSelect';
-import StageSelect from '../Select/StageSelect';
+
 import type { PathParam } from '../../types';
-import WorldSelect from '../Select/WorldSelect';
+import BackButton from '../Header/BackButton';
+import ModeSelect from '../Select/ModeSelect';
 import RankSelect from '../Select/RankSelect';
+import StageSelect from '../Select/StageSelect';
+import WorldSelect from '../Select/WorldSelect';
+import SettingButton from '../Setting/SettingButton';
 
 type Props = {
     text: string;

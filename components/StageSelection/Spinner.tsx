@@ -1,4 +1,5 @@
 import React, { FC, Fragment } from 'react';
+
 import { Loading } from '../../types';
 
 type Props = {

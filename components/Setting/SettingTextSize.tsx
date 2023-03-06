@@ -1,9 +1,10 @@
-import React, { FC, MouseEvent, useState } from 'react';
+import Grid from '@mui/material/Grid';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import Box from '@mui/system/Box';
-import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
+import Box from '@mui/system/Box';
+import React, { FC, MouseEvent, useState } from 'react';
+
 import { useTextSizeContext } from '../../Contexts/TextSizeProvider';
 import { TextSize } from '../../types';
 

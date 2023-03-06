@@ -1,4 +1,5 @@
 import { Reducer, useEffect, useReducer } from 'react';
+
 import { ResultType, Word } from '../types';
 import { shuffle } from '../utils';
 

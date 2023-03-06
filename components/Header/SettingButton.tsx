@@ -1,8 +1,9 @@
 import React, { useContext } from 'react';
-import { pronounce, sound, typeSound } from '../../utils';
+
 import { pronounceVolumeContext, setPronounceVolumeContext } from '../../Contexts/PronounceProvider';
 import { setSoundEffectVolumeContext, soundEffectVolumeContext } from '../../Contexts/SoundEffectProvider';
 import { setTypingVolumeContext, typingVolumeContext } from '../../Contexts/TypingVolumeProvider';
+import { pronounce, sound, typeSound } from '../../utils';
 import SettingSlider from '../Setting/SettingSlider';
 
 export const Setting = () => {

@@ -1,26 +1,27 @@
-import React, { useState } from 'react';
-import Link from 'next/link';
-import ListSubheader from '@mui/material/ListSubheader';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
+import StarIcon from '@mui/icons-material/Star';
+import Button from '@mui/material/Button';
+import Collapse from '@mui/material/Collapse';
+import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import Button from '@mui/material/Button';
-import Collapse from '@mui/material/Collapse';
-import Divider from '@mui/material/Divider';
-import ExpandLess from '@mui/icons-material/ExpandLess';
-import ExpandMore from '@mui/icons-material/ExpandMore';
-import StarIcon from '@mui/icons-material/Star';
-import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
+import ListSubheader from '@mui/material/ListSubheader';
+import Link from 'next/link';
 import path from 'path';
-import { World, ListOpenState, Mode, Rank, Stage } from '../../types';
-import { rankIndicesObj, sliceByNumber } from '../../utils';
-import RankWordsList from './RankWordsList';
-import WorldWordsList from './WorldWordsList';
-import StageWordsList from './StageWordsList';
-import FavoriteWordsList from './FavoriteWordsList';
+import React, { useState } from 'react';
+
 import { useAuthContext } from '../../Contexts/AuthProvider';
 import useHasFavorites from '../../hooks/useHasFavorites';
+import { ListOpenState, Mode, Rank, Stage,World } from '../../types';
+import { rankIndicesObj, sliceByNumber } from '../../utils';
+import FavoriteWordsList from './FavoriteWordsList';
+import RankWordsList from './RankWordsList';
+import StageWordsList from './StageWordsList';
+import WorldWordsList from './WorldWordsList';
 
 type Props = {
     rank: Rank;

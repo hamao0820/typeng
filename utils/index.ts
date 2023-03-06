@@ -1,4 +1,4 @@
-import { World, Rank, Stage, PathParams } from '../types';
+import { PathParams,Rank, Stage, World } from '../types';
 
 export const sliceByNumber = <T>(array: T[], number: number): T[][] => {
     const length = Math.ceil(array.length / number);

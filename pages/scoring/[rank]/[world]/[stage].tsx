@@ -1,21 +1,22 @@
-import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
-import { useRouter } from 'next/router';
-import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import LightbulbIcon from '@mui/icons-material/Lightbulb';
+import Button from '@mui/material/Button';
+import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+import path from 'path';
+import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+
+import CountDown from '../../../../components/Scoring/CountDown';
+import Result from '../../../../components/Scoring/Result';
+import ShowWord from '../../../../components/Worker/ShowWord';
+import WorkHeader from '../../../../components/Worker/WorkHeader';
 import { pronounceVolumeContext } from '../../../../Contexts/PronounceProvider';
 import { soundEffectVolumeContext } from '../../../../Contexts/SoundEffectProvider';
 import { typingVolumeContext } from '../../../../Contexts/TypingVolumeProvider';
-import Button from '@mui/material/Button';
-import CountDown from '../../../../components/Scoring/CountDown';
-import Result from '../../../../components/Scoring/Result';
-import WorkHeader from '../../../../components/Worker/WorkHeader';
-import { pronounce, sliceByNumber, sound, typeSound, stageLoadMap } from '../../../../utils';
-import Head from 'next/head';
+import useScoringWord from '../../../../hooks/useScoringWord';
 import getAllWords from '../../../../middleware/getAllWords';
 import type { PageProps, PathParam, PathParams } from '../../../../types';
-import path from 'path';
-import useScoringWord from '../../../../hooks/useScoringWord';
-import ShowWord from '../../../../components/Worker/ShowWord';
+import { pronounce, sliceByNumber, sound, stageLoadMap,typeSound } from '../../../../utils';
 
 export const getStaticPaths: GetStaticPaths<PathParams> = async () => {
     return {

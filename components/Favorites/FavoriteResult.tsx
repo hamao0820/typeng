@@ -1,9 +1,10 @@
-import React, { useContext } from 'react';
-import Button from '@mui/material/Button';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
+import Button from '@mui/material/Button';
+import React, { useContext } from 'react';
+
+import { pronounceVolumeContext } from '../../Contexts/PronounceProvider';
 import type { ResultType } from '../../types';
 import { pronounce } from '../../utils';
-import { pronounceVolumeContext } from '../../Contexts/PronounceProvider';
 import FavoriteStar from '../Favorites/FavoriteStar';
 import FavoriteHeader from './FavoriteHeader';
 

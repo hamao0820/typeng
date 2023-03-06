@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
 import { motion, useAnimationControls } from 'framer-motion';
+import React, { useEffect } from 'react';
 
 type Props = {
     content: string;
