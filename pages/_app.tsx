@@ -7,6 +7,7 @@ import ListOpenStatesProvider from '../Contexts/ListOpenStatesProvider';
 import { initializeFirebaseApp } from '../lib/firebase/firebase';
 import AuthProvider from '../Contexts/AuthProvider';
 import FavoritesProvider from '../Contexts/FavoritesProvider';
+import TextSizeProvider from '../Contexts/TextSizeProvider';
 
 initializeFirebaseApp();
 function MyApp({ Component, pageProps }: AppProps) {
@@ -17,7 +18,9 @@ function MyApp({ Component, pageProps }: AppProps) {
                     <ListOpenStatesProvider>
                         <AuthProvider>
                             <FavoritesProvider>
-                                <Component {...pageProps} />
+                                <TextSizeProvider>
+                                    <Component {...pageProps} />
+                                </TextSizeProvider>
                             </FavoritesProvider>
                         </AuthProvider>
                     </ListOpenStatesProvider>
