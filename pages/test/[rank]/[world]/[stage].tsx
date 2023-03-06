@@ -49,6 +49,7 @@ const Test: NextPage<PageProps> = ({ allWords, pathParam }) => {
     const handleEffect = useCallback(
         (e: React.KeyboardEvent<HTMLDivElement> | KeyboardEvent) => {
             const key = e.key;
+            if (e.altKey || e.metaKey || e.ctrlKey || e.key === 'Enter') return;
             if (unTyped.startsWith(key)) {
                 typeSound(typingVolume / 100);
             } else {

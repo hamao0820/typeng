@@ -43,6 +43,7 @@ const useWord = (allWords: Word[], stage: Stage) => {
     const handleWord = useCallback(
         (e: React.KeyboardEvent<HTMLDivElement> | KeyboardEvent) => {
             const key = e.key;
+            if (e.altKey || e.metaKey || e.ctrlKey || e.key === 'Enter') return;
             if (unTyped === undefined || unTyped == '') return;
             if (unTyped.startsWith(key)) {
                 setMissCount(0);

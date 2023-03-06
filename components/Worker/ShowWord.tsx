@@ -1,7 +1,9 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC, useContext, useEffect, useMemo } from 'react';
 
+import { pronounceVolumeContext } from '../../Contexts/PronounceProvider';
 import { useTextSizeContext } from '../../Contexts/TextSizeProvider';
 import { Word } from '../../types';
+import { pronounce } from '../../utils';
 import FavoriteStar from '../Favorites/FavoriteStar';
 
 type Props = {
@@ -11,10 +13,20 @@ type Props = {
     showUnTyped?: boolean;
     showHint?: boolean;
     progress?: `${number} / ${number}`;
+    canPronounce?: boolean;
 };
 
-const ShowWord: FC<Props> = ({ word, typed, unTyped, showUnTyped = true, showHint = false, progress }) => {
+const ShowWord: FC<Props> = ({
+    word,
+    typed,
+    unTyped,
+    showUnTyped = true,
+    showHint = false,
+    progress,
+    canPronounce = true,
+}) => {
     const { textSize } = useTextSizeContext();
+    const pronounceVolume = useContext(pronounceVolumeContext);
     const textSizeClassName = useMemo(() => {
         switch (textSize) {
             case 'large':
@@ -27,6 +39,18 @@ const ShowWord: FC<Props> = ({ word, typed, unTyped, showUnTyped = true, showHin
                 return 'text-8xl';
         }
     }, [textSize]);
+
+    useEffect(() => {
+        if (word === null) return;
+        const handleKeydown = (e: React.KeyboardEvent<HTMLDivElement> | KeyboardEvent) => {
+            if ((e.altKey || e.metaKey || e.ctrlKey) && e.key === 'Enter' && canPronounce) {
+                pronounce(word.en, 100 / pronounceVolume);
+            }
+        };
+        window.addEventListener('keydown', handleKeydown);
+        return () => window.removeEventListener('keydown', handleKeydown);
+    }, [pronounceVolume, word, canPronounce]);
+
     return (
         <div className="w-screen">
             <div className="flex justify-end w-full my-6">

@@ -153,6 +153,7 @@ const Favorites: NextPage<FavoritesPageProps> = ({ rankWords }) => {
                             showUnTyped,
                             showHint: wordState.continueMissCount >= 3,
                             progress: `${wordState.index + 1} / ${wordState.words.length}`,
+                            canPronounce: ready && !showResult,
                         }}
                     />
                 </div>

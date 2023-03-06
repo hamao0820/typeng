@@ -16,7 +16,7 @@ import { typingVolumeContext } from '../../../../Contexts/TypingVolumeProvider';
 import useScoringWord from '../../../../hooks/useScoringWord';
 import getAllWords from '../../../../middleware/getAllWords';
 import type { PageProps, PathParam, PathParams } from '../../../../types';
-import { pronounce, sliceByNumber, sound, stageLoadMap,typeSound } from '../../../../utils';
+import { pronounce, sliceByNumber, sound, stageLoadMap, typeSound } from '../../../../utils';
 
 export const getStaticPaths: GetStaticPaths<PathParams> = async () => {
     return {
@@ -162,6 +162,7 @@ const Scoring: NextPage<PageProps> = ({ allWords, pathParam }) => {
                         showUnTyped={showUnTyped}
                         showHint={wordState.continueMissCount >= 3}
                         progress={`${wordState.index + 1} / ${wordState.words.length}`}
+                        canPronounce={ready && !showResult}
                     />
                 </div>
                 <div className="w-screen flex justify-center mt-5">

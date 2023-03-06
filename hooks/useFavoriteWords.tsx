@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { useFavoritesContext } from '../Contexts/FavoritesProvider';
 import { Word } from '../types';
@@ -42,6 +42,7 @@ const useFavoriteWords = (words: Word[]) => {
 
     const handleWord = (e: React.KeyboardEvent<HTMLDivElement> | KeyboardEvent) => {
         const key = e.key;
+        if (e.altKey || e.metaKey || e.ctrlKey || e.key === 'Enter') return;
         if (unTyped === undefined || unTyped == '') return;
         if (unTyped.startsWith(key)) {
             setMissCount(0);

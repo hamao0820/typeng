@@ -30,7 +30,7 @@ const Favorites: FC<FavoritesPageProps> = ({ rankWords }) => {
     const router = useRouter();
     const { rank } = router.query as { rank: Rank };
     const mode = router.pathname.split('/')[1] as Mode; // /mode/[rank]/favorites
-    
+
     if (!useHasFavorites(rank)) {
         router.push({ pathname: `/${mode}` });
     }
@@ -46,6 +46,7 @@ const Favorites: FC<FavoritesPageProps> = ({ rankWords }) => {
     const handleEffect = useCallback(
         (e: React.KeyboardEvent<HTMLDivElement> | KeyboardEvent) => {
             const key = e.key;
+            if (e.altKey || e.metaKey || e.ctrlKey || e.key === 'Enter') return;
             if (unTyped.startsWith(key)) {
                 typeSound(typingVolume / 100);
             } else {

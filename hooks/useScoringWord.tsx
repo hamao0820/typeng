@@ -40,7 +40,8 @@ const reducer: Reducer<WordStateType, Action> = (state, action): WordStateType =
     switch (action.type) {
         case 'typed': {
             const { words, word, index, unTyped, typed, continueMissCount, results, miss } = state;
-            const { key, shiftKey } = action.payload.event;
+            const { key, shiftKey, altKey, metaKey, ctrlKey } = action.payload.event;
+            if (altKey || metaKey || ctrlKey || key === 'Enter') return state;
             if (word === null) return state;
             // 単語が存在する
 
