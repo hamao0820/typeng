@@ -23,18 +23,18 @@ const FavoriteResult: React.FC<Props> = ({ missCount, results, measures, back, r
     const measure = measures[0];
     const duration = measure ? measure.duration : 1;
     return (
-        <div className="h-screen w-screen absolute top-0 left-0 bg-white z-50 flex flex-col items-center overflow-hidden">
+        <div className="absolute top-0 left-0 z-50 flex h-screen w-screen flex-col items-center overflow-hidden bg-white">
             <FavoriteHeader text="ステージ選択に戻る" href="/scoring" mode="scoring"></FavoriteHeader>
-            <div className="h-4/5 w-5/6 flex flex-1">
-                <div className="h-full flex-1 m-1 overflow-hidden">
+            <div className="flex h-4/5 w-5/6 flex-1">
+                <div className="m-1 h-full flex-1 overflow-hidden">
                     <div className="text-center text-xl font-bold">単語</div>
                     <div className="h-full overflow-y-scroll pb-6 scrollbar-hide">
                         {results.map((result) => {
                             return (
                                 <React.Fragment key={result.id}>
-                                    <div className="flex border-b-2 border-solid border-gray-300 p-1 my-2 items-end">
+                                    <div className="my-2 flex items-end border-b-2 border-solid border-gray-300 p-1">
                                         <div
-                                            className="w-fit h-fit flex items-center justify-center p-1 bg-green-400 rounded-md"
+                                            className="flex h-fit w-fit items-center justify-center rounded-md bg-green-400 p-1"
                                             onClick={() => {
                                                 pronounce(result.en, pronounceVolume);
                                             }}
@@ -42,14 +42,14 @@ const FavoriteResult: React.FC<Props> = ({ missCount, results, measures, back, r
                                             <VolumeUpIcon style={{ width: '2.5rem', height: '2.5rem' }} />
                                         </div>
                                         <div className="mx-2">
-                                            <div className="text-sm whitespace-nowrap text-ellipsis overflow-hidden">
+                                            <div className="overflow-hidden text-ellipsis whitespace-nowrap text-sm">
                                                 {result.ja}
                                             </div>
                                             <div
                                                 className={
                                                     result.correct
                                                         ? 'text-lg font-bold'
-                                                        : 'text-red-500 font-bold text-lg'
+                                                        : 'text-lg font-bold text-red-500'
                                                 }
                                             >
                                                 {result.en}
@@ -66,7 +66,7 @@ const FavoriteResult: React.FC<Props> = ({ missCount, results, measures, back, r
                         })}
                     </div>
                 </div>
-                <div className="flex-1 m-1 flex flex-col">
+                <div className="m-1 flex flex-1 flex-col">
                     <div className="text-center text-xl font-bold">結果</div>
                     <div className="flex items-end justify-between border-b-2 border-solid border-gray-300 p-3">
                         <div className="text-lg font-bold">正答率</div>

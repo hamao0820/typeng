@@ -165,7 +165,7 @@ const Scoring: NextPage<PageProps> = ({ allWords, pathParam }) => {
                         canPronounce={ready && !showResult}
                     />
                 </div>
-                <div className="w-screen flex justify-center mt-5">
+                <div className="mt-5 flex w-screen justify-center">
                     <Button
                         variant="outlined"
                         endIcon={<LightbulbIcon style={{ width: '1.5rem', height: '1.5rem' }} />}

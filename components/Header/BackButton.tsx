@@ -11,11 +11,11 @@ const BackButton: React.FC<Props> = ({ text, href }) => {
     return (
         <div className="w-fit">
             <Link href={href}>
-                <div className="flex items-center m-2">
-                    <div className="p-2 bg-blue-300 w-fit rounded-md">
+                <div className="m-2 flex items-center">
+                    <div className="w-fit rounded-md bg-blue-300 p-2">
                         <ArrowBackIcon style={{ width: '3rem', height: '3rem' }} />
                     </div>
-                    <span className="text-xl font-bold ml-5">{text}</span>
+                    <span className="ml-5 text-xl font-bold">{text}</span>
                 </div>
             </Link>
         </div>

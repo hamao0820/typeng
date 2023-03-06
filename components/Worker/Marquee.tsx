@@ -43,7 +43,7 @@ const Marquee: React.FC<Props> = ({ content }) => {
         };
     }, [control, content]);
     return (
-        <div className="max-w-4xl overflow-hidden text-7xl font-bold whitespace-nowrap w-full">
+        <div className="w-full max-w-4xl overflow-hidden whitespace-nowrap text-7xl font-bold">
             <motion.div animate={control} className="w-fit">
                 {content}
             </motion.div>

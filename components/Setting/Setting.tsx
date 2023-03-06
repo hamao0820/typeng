@@ -16,7 +16,7 @@ export const Setting = () => {
     const setTypingVolume = useContext(setTypingVolumeContext);
 
     return (
-        <div className="fit w-60 border-2 border-solid border-black rounded-md absolute top-16 right-2 z-10 flex flex-col justify-center items-center bg-white">
+        <div className="fit absolute top-16 right-2 z-10 flex w-60 flex-col items-center justify-center rounded-md border-2 border-solid border-black bg-white">
             <SettingSlider
                 volume={pronounceVolume}
                 setVolume={setPronounceVolume}

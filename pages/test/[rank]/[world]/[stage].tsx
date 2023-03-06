@@ -11,7 +11,7 @@ import { typingVolumeContext } from '../../../../Contexts/TypingVolumeProvider';
 import useWord from '../../../../hooks/useWord';
 import getAllWords from '../../../../middleware/getAllWords';
 import type { PageProps, PathParam, PathParams } from '../../../../types';
-import { pronounce, sound, stageLoadMap,typeSound  } from '../../../../utils';
+import { pronounce, sound, stageLoadMap, typeSound } from '../../../../utils';
 
 export const getStaticPaths: GetStaticPaths<PathParams> = async () => {
     return {

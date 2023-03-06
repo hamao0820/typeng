@@ -8,7 +8,7 @@ type Props = { onSignOut: () => void };
 const SignOutButton: FC<Props> = ({ onSignOut }) => {
     return (
         <button
-            className="px-6 py-3 mt-4 font-semibold text-gray-900 bg-white border-2 border-gray-500 rounded-md shadow outline-none hover:bg-blue-50 hover:border-blue-400 focus:outline-none"
+            className="mt-4 rounded-md border-2 border-gray-500 bg-white px-6 py-3 font-semibold text-gray-900 shadow outline-none hover:border-blue-400 hover:bg-blue-50 focus:outline-none"
             onClick={() => {
                 if (confirm('サインアウトしますか？')) {
                     signOut(auth);
@@ -18,7 +18,7 @@ const SignOutButton: FC<Props> = ({ onSignOut }) => {
         >
             <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="inline w-4 h-4 mr-3 text-gray-900 fill-current"
+                className="mr-3 inline h-4 w-4 fill-current text-gray-900"
                 viewBox="0 0 48 48"
                 width="48px"
                 height="48px"

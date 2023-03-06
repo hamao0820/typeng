@@ -16,7 +16,7 @@ import React, { useState } from 'react';
 
 import { useAuthContext } from '../../Contexts/AuthProvider';
 import useHasFavorites from '../../hooks/useHasFavorites';
-import { ListOpenState, Mode, Rank, Stage,World } from '../../types';
+import { ListOpenState, Mode, Rank, Stage, World } from '../../types';
 import { rankIndicesObj, sliceByNumber } from '../../utils';
 import FavoriteWordsList from './FavoriteWordsList';
 import RankWordsList from './RankWordsList';
@@ -94,8 +94,8 @@ const SelectList: React.FC<Props> = ({ rank, mode, openStates, handleClick }) =>
                 component="nav"
                 subheader={
                     <ListSubheader component="div" id="nested-list-subheader">
-                        <div className="flex justify-between items-center">
-                            <span className="text-2xl font-bold flex-1">Rank {rank}</span>
+                        <div className="flex items-center justify-between">
+                            <span className="flex-1 text-2xl font-bold">Rank {rank}</span>
                             <Button
                                 sx={{
                                     border: '2px solid rgb(147, 197, 253)',

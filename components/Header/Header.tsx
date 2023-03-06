@@ -22,9 +22,9 @@ const Header: React.FC<Props> = ({ text, href, mode, collapseAll }) => {
     const router = useRouter();
     const { user } = useAuthContext();
     return (
-        <div className="w-full flex justify-between items-center">
+        <div className="flex w-full items-center justify-between">
             <BackButton href={href} text={text} />
-            <div className="flex items-center flex-col">
+            <div className="flex flex-col items-center">
                 <div>リストを右クリックすると単語一覧が表示されます</div>
                 {user ? (
                     <div>一覧から苦手な単語を登録することができます</div>
@@ -34,7 +34,7 @@ const Header: React.FC<Props> = ({ text, href, mode, collapseAll }) => {
             </div>
             <div className="flex items-center">
                 <div
-                    className="cursor-pointer border-2 border-solid border-blue-200 rounded-md mr-2"
+                    className="mr-2 cursor-pointer rounded-md border-2 border-solid border-blue-200"
                     onClick={collapseAll}
                 >
                     <UnfoldLess style={{ width: '3rem', height: '3rem' }} />
@@ -60,7 +60,7 @@ const Header: React.FC<Props> = ({ text, href, mode, collapseAll }) => {
                     </Box>
                 </div>
                 <div
-                    className="flex justify-center items-center m-2 p-2 relative"
+                    className="relative m-2 flex items-center justify-center p-2"
                     onClick={(e) => {
                         e.stopPropagation();
                     }}

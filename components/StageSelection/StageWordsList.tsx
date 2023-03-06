@@ -2,7 +2,7 @@ import path from 'path';
 import React, { FC } from 'react';
 
 import useGetWords from '../../hooks/useGetWords';
-import { Rank, Stage,World } from '../../types';
+import { Rank, Stage, World } from '../../types';
 import WordsList from './WordsList';
 
 type Props = {

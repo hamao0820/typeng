@@ -48,13 +48,13 @@ const CountDown: React.FC<Props> = ({ setReady }) => {
                 />
             </div>
             <div
-                className="h-screen w-screen absolute top-0 left-0 bg-white z-10 flex flex-col justify-center items-center"
+                className="absolute top-0 left-0 z-10 flex h-screen w-screen flex-col items-center justify-center bg-white"
                 onKeyDown={(e) => {
                     e.stopPropagation();
                 }}
             >
                 <div className="text-9xl">{countTime}</div>
-                <div className={counting ? 'text-3xl invisible' : 'text-3xl'}>スペースキーで開始</div>
+                <div className={counting ? 'invisible text-3xl' : 'text-3xl'}>スペースキーで開始</div>
             </div>
         </>
     );

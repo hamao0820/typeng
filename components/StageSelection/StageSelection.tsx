@@ -2,7 +2,7 @@ import Head from 'next/head';
 import React, { FC } from 'react';
 
 import useListOpenStates from '../../hooks/useListOpenStates';
-import { Mode,World } from '../../types';
+import { Mode, World } from '../../types';
 import { allRanks } from '../../utils';
 import Header from '../Header/Header';
 import SelectList from './SelectList';

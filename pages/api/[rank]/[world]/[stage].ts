@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import getAllWords from '../../../../middleware/getAllWords';
-import { Rank, Stage, Word,World } from '../../../../types';
+import { Rank, Stage, Word, World } from '../../../../types';
 import { sliceByNumber } from '../../../../utils';
 
 export default function personHandler(req: NextApiRequest, res: NextApiResponse<Word[]>) {

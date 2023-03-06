@@ -23,7 +23,7 @@ const Home: NextPage = () => {
         setOpenSnack(true);
     };
     return (
-        <div className="flex flex-col h-screen">
+        <div className="flex h-screen flex-col">
             <Head>
                 <title>Typeng</title>
                 <link rel="icon" href="favicons/favicon.ico" />
@@ -38,7 +38,7 @@ const Home: NextPage = () => {
                     サインアウトしました
                 </Alert>
             </Snackbar>
-            <div className="flex justify-center items-center h-1/5 relative">
+            <div className="relative flex h-1/5 items-center justify-center">
                 <Logo />
                 <div
                     className="absolute top-2 right-2 m-2"
@@ -52,9 +52,9 @@ const Home: NextPage = () => {
                     {user ? <SignOutButton onSignOut={onSignOut} /> : <SignInButton />}
                 </div>
             </div>
-            <div className="flex flex-col justify-center items-center h-4/5">
+            <div className="flex h-4/5 flex-col items-center justify-center">
                 <div className="text-2xl font-bold">モード選択{' : '}</div>
-                <div className="flex flex-wrap w-1/2 justify-center mt-2">
+                <div className="mt-2 flex w-1/2 flex-wrap justify-center">
                     <ModeCard title="練習モード" explanation="意味と単語が表示されます" href="practice" />
                     <ModeCard
                         title="確認モード"

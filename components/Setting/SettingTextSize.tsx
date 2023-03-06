@@ -20,7 +20,7 @@ const SettingTextSize: FC = () => {
     return (
         <div className="m-2">
             <Box sx={{ width: 200 }}>
-                <Typography className="text-lg ml-1">{'Text Size'}: </Typography>
+                <Typography className="ml-1 text-lg">{'Text Size'}: </Typography>
                 <Grid container spacing={2} justifyContent={'center'}>
                     <Grid item>
                         <ToggleButtonGroup

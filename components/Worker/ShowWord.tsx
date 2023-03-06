@@ -53,38 +53,38 @@ const ShowWord: FC<Props> = ({
 
     return (
         <div className="w-screen">
-            <div className="flex justify-end w-full my-6">
-                {progress && <div className="text-5xl whitespace-nowrap mx-10">{progress}</div>}
-                <div className="flex justify-between items-center w-32 mr-28">
+            <div className="my-6 flex w-full justify-end">
+                {progress && <div className="mx-10 whitespace-nowrap text-5xl">{progress}</div>}
+                <div className="mr-28 flex w-32 items-center justify-between">
                     <div>{word && !progress && <FavoriteStar word={word} />}</div>
-                    <div className="text-5xl whitespace-nowrap">id: {word && word.id}</div>
+                    <div className="whitespace-nowrap text-5xl">id: {word && word.id}</div>
                 </div>
             </div>
-            <div className="flex justify-center w-full">
-                <div className="flex flex-col justify-between items-center w-full">
-                    <div className="h-52 mx-1">
+            <div className="flex w-full justify-center">
+                <div className="flex w-full flex-col items-center justify-between">
+                    <div className="mx-1 h-52">
                         <div
-                            className={`${textSizeClassName} font-bold line-clamp-2 tracking-tighter text-center`}
+                            className={`${textSizeClassName} text-center font-bold tracking-tighter line-clamp-2`}
                             style={{ lineHeight: '100px' }}
                         >
                             {word && word.ja}
                         </div>
                     </div>
-                    <div className="whitespace-nowrap flex items-center justify-center w-5/6 h-20 border-b-4 border-collapse border-gray-300 my-2">
-                        <span className="text-7xl font-bold whitespace-nowrap">{typed.replaceAll(' ', '␣')}</span>
+                    <div className="my-2 flex h-20 w-5/6 border-collapse items-center justify-center whitespace-nowrap border-b-4 border-gray-300">
+                        <span className="whitespace-nowrap text-7xl font-bold">{typed.replaceAll(' ', '␣')}</span>
                         {showUnTyped ? (
-                            <span className="text-7xl font-bold text-gray-300 whitespace-nowrap">
+                            <span className="whitespace-nowrap text-7xl font-bold text-gray-300">
                                 {unTyped.replaceAll(' ', '␣')}
                             </span>
                         ) : (
                             <>
                                 {showHint ? (
                                     <>
-                                        <span className="text-7xl font-bold text-gray-300 whitespace-nowrap">
+                                        <span className="whitespace-nowrap text-7xl font-bold text-gray-300">
                                             {unTyped.replaceAll(' ', '␣')[0]}
                                         </span>
                                         <span
-                                            className="text-7xl font-bold text-gray-300 whitespace-nowrap"
+                                            className="whitespace-nowrap text-7xl font-bold text-gray-300"
                                             style={{ display: 'none' }}
                                         >
                                             {unTyped.replaceAll(' ', '␣').slice(1)}
@@ -92,7 +92,7 @@ const ShowWord: FC<Props> = ({
                                     </>
                                 ) : (
                                     <span
-                                        className="text-7xl font-bold text-gray-300 whitespace-nowrap"
+                                        className="whitespace-nowrap text-7xl font-bold text-gray-300"
                                         style={{ display: 'none' }}
                                     >
                                         {unTyped.replaceAll(' ', '␣')}

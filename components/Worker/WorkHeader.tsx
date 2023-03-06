@@ -16,7 +16,7 @@ type Props = {
 
 const WorkHeader: React.FC<Props> = ({ text, href, param }) => {
     return (
-        <div className="w-full flex justify-between items-center">
+        <div className="flex w-full items-center justify-between">
             <BackButton href={href} text={text} />
             <div className="flex items-center">
                 <RankSelect param={param} />
@@ -24,7 +24,7 @@ const WorkHeader: React.FC<Props> = ({ text, href, param }) => {
                 <StageSelect param={param} />
                 <ModeSelect param={param} />
                 <div
-                    className="flex justify-center items-center m-2 p-2 relative"
+                    className="relative m-2 flex items-center justify-center p-2"
                     onClick={(e) => {
                         e.stopPropagation();
                     }}

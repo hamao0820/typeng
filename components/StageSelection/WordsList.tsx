@@ -21,11 +21,11 @@ const WordsList: FC<Props> = ({ isLoading, isOpen, words, close }) => {
                     {words.map((word, i) => {
                         return (
                             <Fragment key={i}>
-                                <div className={`flex mx-2 py-2 items-center ${i % 2 === 0 && 'bg-gray-200'}`}>
+                                <div className={`mx-2 flex items-center py-2 ${i % 2 === 0 && 'bg-gray-200'}`}>
                                     <div className="mr-4 ml-1">No.{word.id}</div>
                                     <div className="text-lg">{word.en}</div>
                                     <span className="ml-1 mr-2">:</span>
-                                    <div className="text-lg whitespace-nowrap text-ellipsis overflow-x-hidden">
+                                    <div className="overflow-x-hidden text-ellipsis whitespace-nowrap text-lg">
                                         {word.ja}
                                     </div>
                                     <div className="flex-1">

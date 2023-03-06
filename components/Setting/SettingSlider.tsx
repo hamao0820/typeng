@@ -37,7 +37,7 @@ const SettingSlider: React.FC<Props> = ({ volume, setVolume, item, check }) => {
     return (
         <div className="m-2">
             <Box sx={{ width: 200 }}>
-                <span className="text-lg ml-1">{item}: </span>
+                <span className="ml-1 text-lg">{item}: </span>
                 <Grid container spacing={2} alignItems="center">
                     <Grid item>
                         <VolumeUp />

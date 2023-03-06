@@ -18,13 +18,13 @@ const FavoriteHeader: React.FC<Props> = ({ text, href, mode }) => {
     const { rank } = router.query as { rank: Rank };
     const a = { mode, rank };
     return (
-        <div className="w-full flex justify-between items-center">
+        <div className="flex w-full items-center justify-between">
             <BackButton href={href} text={text} />
             <div className="flex items-center">
                 <FavoriteRankSelect mode={mode} rank={rank} />
                 <FavoriteModeSelect mode={mode} rank={rank} />
                 <div
-                    className="flex justify-center items-center m-2 p-2 relative"
+                    className="relative m-2 flex items-center justify-center p-2"
                     onClick={(e) => {
                         e.stopPropagation();
                     }}
