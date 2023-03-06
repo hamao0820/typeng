@@ -1,9 +1,10 @@
-import React, { FC, useContext } from 'react';
+import React, { FC, useContext, useMemo } from 'react';
 import { pronounce } from '../../utils';
 import { Word } from '../../types';
 import { pronounceVolumeContext } from '../../Contexts/PronounceProvider';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import FavoriteStar from '../Favorites/FavoriteStar';
+import { useTextSizeContext } from '../../Contexts/TextSizeProvider';
 
 type Props = {
     word: Word | null;
@@ -16,6 +17,19 @@ type Props = {
 
 const ShowWord: FC<Props> = ({ word, typed, unTyped, showUnTyped = true, showHint = false, progress }) => {
     const pronounceVolume = useContext(pronounceVolumeContext);
+    const { textSize } = useTextSizeContext();
+    const textSizeClassName = useMemo(() => {
+        switch (textSize) {
+            case 'large':
+                return 'text-8xl';
+            case 'middle':
+                return 'text-7xl';
+            case 'small':
+                return 'text-6xl';
+            default:
+                return 'text-8xl';
+        }
+    }, [textSize]);
     return (
         <div className="w-screen h-full">
             <div className="flex justify-end w-screen my-6">
@@ -38,7 +52,7 @@ const ShowWord: FC<Props> = ({ word, typed, unTyped, showUnTyped = true, showHin
                 <div className="flex flex-col justify-between mx-2 flex-1">
                     <div className="line-clamp-2">
                         <div
-                            className="text-8xl font-bold line-clamp-2 tracking-tighter"
+                            className={`${textSizeClassName} font-bold line-clamp-2 tracking-tighter`}
                             style={{ lineHeight: '100px' }}
                         >
                             {word && word.ja}
