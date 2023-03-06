@@ -4,6 +4,7 @@ import { pronounceVolumeContext, setPronounceVolumeContext } from '../../Context
 import { setSoundEffectVolumeContext, soundEffectVolumeContext } from '../../Contexts/SoundEffectProvider';
 import { setTypingVolumeContext, typingVolumeContext } from '../../Contexts/TypingVolumeProvider';
 import SettingSlider from './SettingSlider';
+import SettingTextSize from './SettingTextSize';
 
 export const Setting = () => {
     const pronounceVolume = useContext(pronounceVolumeContext);
@@ -33,6 +34,7 @@ export const Setting = () => {
                 item={'Typing'}
                 check={(volume) => typeSound(volume / 100)}
             />
+            <SettingTextSize />
         </div>
     );
 };

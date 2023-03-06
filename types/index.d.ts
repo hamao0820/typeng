@@ -13,7 +13,7 @@ export type PageProps = { allWords: Word[]; pathParam: PathParam };
 export type PathParams = {
     rank: Rank;
     world: World;
-    stage: Stage
+    stage: Stage;
 };
 
 export type ResultType = Word & {
@@ -33,3 +33,4 @@ export type ListOpenState = {
 };
 
 export type Loading = 'hold' | 'loading' | 'done';
+export type TextSize = 'large' | 'middle' | 'small';
