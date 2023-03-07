@@ -18,10 +18,10 @@ import { useAuthContext } from '../../Contexts/AuthProvider';
 import useHasFavorites from '../../hooks/useHasFavorites';
 import { ListOpenState, Mode, Rank, Stage, World } from '../../types';
 import { rankIndicesObj, sliceByNumber } from '../../utils';
-import FavoriteWordsList from './FavoriteWordsList';
-import RankWordsList from './RankWordsList';
-import StageWordsList from './StageWordsList';
-import WorldWordsList from './WorldWordsList';
+import FavoriteWordsList from '../WordsList/FavoriteWordsList';
+import RankWordsList from '../WordsList/RankWordsList';
+import StageWordsList from '../WordsList/StageWordsList';
+import WorldWordsList from '../WordsList/WorldWordsList';
 
 type Props = {
     rank: Rank;
