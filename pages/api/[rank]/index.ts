@@ -1,13 +1,12 @@
-import fs from 'fs';
 import { NextApiRequest, NextApiResponse } from 'next';
-import path from 'path';
 
+import { getRankWords } from '../../../middleware/getWords';
 import { Rank, Word } from '../../../types';
 
-export default function personHandler(req: NextApiRequest, res: NextApiResponse<Word[]>) {
-    const { query } = req;
+export default function handler(req: NextApiRequest, res: NextApiResponse<Word[]>) {
+    const { query, method } = req;
+    if (method !== 'GET') return res.end();
     const { rank } = query as { rank: Rank };
-    const dataDir = path.join(process.cwd(), 'public');
-    const words = JSON.parse(fs.readFileSync(path.join(dataDir, `rank${rank}.json`), 'utf-8')) as Word[];
+    const words = getRankWords(rank);
     return res.status(200).json(words);
 }

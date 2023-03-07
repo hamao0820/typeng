@@ -1,14 +1,12 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import getAllWords from '../../../../middleware/getAllWords';
-import { Rank, Stage, Word, World } from '../../../../types';
-import { sliceByNumber } from '../../../../utils';
+import getWords from '../../../../middleware/getWords';
+import { PathParams, Word } from '../../../../types';
 
-export default function personHandler(req: NextApiRequest, res: NextApiResponse<Word[]>) {
-    const { query } = req;
-    const { rank, world, stage } = query as { rank: Rank; world: World; stage: Stage };
-    const allWords = getAllWords(rank, world);
-    if (stage === 'all') return res.status(200).json(allWords);
-    const words = sliceByNumber(allWords, 10)[Number(stage)];
+export default function handler(req: NextApiRequest, res: NextApiResponse<Word[]>) {
+    const { query, method } = req;
+    if (method !== 'GET') return res.end();
+    const pathParams = query as PathParams;
+    const words = getWords(pathParams);
     return res.status(200).json(words);
 }
