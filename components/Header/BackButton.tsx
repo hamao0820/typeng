@@ -15,7 +15,7 @@ const BackButton: React.FC<Props> = ({ text, href }) => {
                     <div className="w-fit rounded-md bg-blue-300 p-2">
                         <ArrowBackIcon style={{ width: '3rem', height: '3rem' }} />
                     </div>
-                    <span className="ml-5 text-xl font-bold">{text}</span>
+                    <span className="ml-5 hidden whitespace-nowrap text-xl font-bold md:flex">{text}</span>
                 </div>
             </Link>
         </div>
