@@ -6,7 +6,7 @@ import { auth, provider } from '../../lib/firebase/firebase';
 const SignInButton = () => {
     return (
         <button
-            className="mt-4 rounded-md border-2 border-gray-500 bg-white px-6 py-3 font-semibold text-gray-900 shadow outline-none hover:border-blue-400 hover:bg-blue-50 focus:outline-none"
+            className="whitespace-nowrap rounded-md border-2 border-gray-500 bg-white px-6 py-3 font-semibold text-gray-900 shadow outline-none hover:border-blue-400 hover:bg-blue-50 focus:outline-none"
             onClick={async () => {
                 try {
                     await signInWithPopup(auth, provider);

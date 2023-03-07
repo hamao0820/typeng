@@ -12,7 +12,7 @@ const SettingButton = () => {
         };
     };
     return (
-        <div>
+        <div className="relative">
             <div className="cursor-pointer" onClick={handleSetting}>
                 <SettingsIcon style={{ width: '3rem', height: '3rem' }} />
             </div>
