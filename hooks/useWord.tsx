@@ -11,6 +11,8 @@ const useWord = (words: Word[]) => {
     const [missed, setMissed] = useState<boolean>(false);
     const [missCount, setMissCount] = useState<number>(0); // challenge
 
+    useEffect(() => setRandomWords(shuffle(words)), [words]);
+
     useEffect(() => {
         if (randomWords.length > 0) setWord(randomWords[0]);
     }, [randomWords]);
