@@ -7,7 +7,7 @@ import { rankIndicesObj, stageIdRange } from '../utils';
 const dataDir = path.join(process.cwd(), 'public');
 const data = JSON.parse(fs.readFileSync(path.join(dataDir, 'data.json'), 'utf-8')) as WordsData;
 
-const getWords = (pathParams: PathParams) => {
+export const getStageWords = (pathParams: PathParams) => {
     const target = stageIdRange.find((v) => {
         const { rank, world, stage } = v.stage;
         const { rank: targetRank, world: targetWorld, stage: targetStage } = pathParams;
@@ -31,5 +31,3 @@ export const getRankWords = (rank: Rank): Word[] => {
     const rankWords = target.indices.map((id) => data.words.find((word) => word.id === id)).filter((v) => v) as Word[];
     return rankWords;
 };
-
-export default getWords;

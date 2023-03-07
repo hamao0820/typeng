@@ -14,7 +14,7 @@ import { pronounceVolumeContext } from '../../../../Contexts/PronounceProvider';
 import { soundEffectVolumeContext } from '../../../../Contexts/SoundEffectProvider';
 import { typingVolumeContext } from '../../../../Contexts/TypingVolumeProvider';
 import useScoringWord from '../../../../hooks/useScoringWord';
-import getWords from '../../../../middleware/getWords';
+import { getStageWords } from '../../../../middleware/getWords';
 import type { PageProps, PathParam, PathParams } from '../../../../types';
 import { pronounce, sound, stageLoadMap, typeSound } from '../../../../utils';
 
@@ -30,7 +30,7 @@ export const getStaticPaths: GetStaticPaths<PathParams> = async () => {
 export const getStaticProps: GetStaticProps<PageProps> = async (context) => {
     const pathParams = context.params as PathParams;
     const pathParam: PathParam = { ...pathParams, mode: 'scoring' };
-    const words = getWords(pathParams);
+    const words = getStageWords(pathParams);
     return { props: { words, pathParam } };
 };
 

@@ -14,7 +14,7 @@ import { pronounceVolumeContext } from '../../../Contexts/PronounceProvider';
 import { soundEffectVolumeContext } from '../../../Contexts/SoundEffectProvider';
 import { typingVolumeContext } from '../../../Contexts/TypingVolumeProvider';
 import useScoringWord from '../../../hooks/useScoringWord';
-import getRankWords from '../../../middleware/getRankWords';
+import { getRankWords } from '../../../middleware/getWords';
 import type { PathParams, Word } from '../../../types';
 import { FavoritesPageProps } from '../../../types/favorite';
 import { pronounce, sound, typeSound } from '../../../utils';

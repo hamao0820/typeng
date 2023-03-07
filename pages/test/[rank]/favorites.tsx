@@ -10,7 +10,7 @@ import { soundEffectVolumeContext } from '../../../Contexts/SoundEffectProvider'
 import { typingVolumeContext } from '../../../Contexts/TypingVolumeProvider';
 import useFavoriteWords from '../../../hooks/useFavoriteWords';
 import useHasFavorites from '../../../hooks/useHasFavorites';
-import getRankWords from '../../../middleware/getRankWords';
+import { getRankWords } from '../../../middleware/getWords';
 import type { Mode, PathParams, Rank } from '../../../types';
 import { FavoritesPageProps } from '../../../types/favorite';
 import { pronounce, sound, typeSound } from '../../../utils';
