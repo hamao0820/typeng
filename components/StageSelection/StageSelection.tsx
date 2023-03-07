@@ -14,13 +14,13 @@ type Props = {
 const StageSelection: FC<Props> = ({ mode }) => {
     const { openStates, handleClick, collapseAll } = useListOpenStates();
     return (
-        <div className="h-screen w-screen overflow-hidden">
+        <div className="flex h-screen min-w-fit flex-col">
             <Head>
                 <title>{mode}</title>
                 <link rel="shortcut icon" href="favicons/favicon.ico" />
             </Head>
             <Header text="モード選択に戻る" href="/" mode={mode} collapseAll={collapseAll} />
-            <div className="flex justify-center">
+            <div className="flex flex-1 justify-center">
                 {allRanks.map((rank, i) => {
                     const target = openStates.find((state) => state.rank === rank);
                     if (target === undefined) return;

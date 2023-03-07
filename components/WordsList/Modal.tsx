@@ -12,8 +12,8 @@ const Modal: FC<Props> = ({ children, isOpen, close }) => {
     return (
         <>
             {isOpen && (
-                <div className="fixed top-0 left-0 z-10 flex h-screen w-screen items-center justify-center">
-                    <div className="fixed top-0 left-0 h-screen w-screen bg-black opacity-50" onClick={close}></div>
+                <div className="fixed top-0 left-0 z-10 flex h-full w-full items-center justify-center">
+                    <div className="fixed top-0 left-0 h-full w-full bg-black opacity-50" onClick={close}></div>
                     <Fade in={isOpen}>
                         <div className="z-20 flex h-5/6 w-5/6 flex-col rounded-md bg-white">
                             <div className="m-2">

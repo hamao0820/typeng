@@ -51,7 +51,7 @@ const SelectList: React.FC<Props> = ({ rank, mode, openStates, handleClick }) =>
     );
 
     return (
-        <div className="m-2 w-screen">
+        <div className="m-2 h-full w-full">
             <RankWordsList
                 rank={rank}
                 isOpen={isRankWordsListModalOpen}
@@ -86,8 +86,8 @@ const SelectList: React.FC<Props> = ({ rank, mode, openStates, handleClick }) =>
             <List
                 sx={{
                     width: '100%',
+                    height: '100%',
                     bgcolor: 'background.paper',
-                    height: '85vh',
                     overflow: 'auto',
                     '::-webkit-scrollbar': { display: 'none' },
                 }}
