@@ -1,16 +1,22 @@
 import SettingsIcon from '@mui/icons-material/Settings';
-import React, { useState } from 'react';
+import React, { MouseEvent, useEffect, useState } from 'react';
 
 import { Setting } from './Setting';
 
 const SettingButton = () => {
     const [isSetting, setIsSetting] = useState<boolean>(false);
-    const handleSetting = () => {
+    useEffect(() => {
+        const close = () => setIsSetting(false);
+        window.addEventListener('click', () => {
+            close();
+        });
+        return window.removeEventListener('click', close);
+    });
+    const handleSetting = (e: MouseEvent<HTMLDivElement>) => {
+        e.stopPropagation();
         setIsSetting((prev) => !prev);
-        document.onclick = () => {
-            setIsSetting(false);
-        };
     };
+
     return (
         <div className="relative">
             <div className="cursor-pointer" onClick={handleSetting}>
