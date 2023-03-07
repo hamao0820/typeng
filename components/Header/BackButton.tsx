@@ -5,9 +5,10 @@ import React from 'react';
 type Props = {
     text: string;
     href: string;
+    hidden?: boolean;
 };
 
-const BackButton: React.FC<Props> = ({ text, href }) => {
+const BackButton: React.FC<Props> = ({ text, href, hidden = false }) => {
     return (
         <div className="w-fit">
             <Link href={href}>
@@ -15,7 +16,9 @@ const BackButton: React.FC<Props> = ({ text, href }) => {
                     <div className="w-fit rounded-md bg-blue-300 p-2">
                         <ArrowBackIcon style={{ width: '3rem', height: '3rem' }} />
                     </div>
-                    <span className="ml-5 flex whitespace-nowrap text-xl font-bold">{text}</span>
+                    <span className={`${hidden ? 'hidden md:flex' : 'flex'} ml-5 whitespace-nowrap text-xl font-bold`}>
+                        {text}
+                    </span>
                 </div>
             </Link>
         </div>

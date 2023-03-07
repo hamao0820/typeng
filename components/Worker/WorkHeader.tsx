@@ -17,7 +17,7 @@ type Props = {
 const WorkHeader: React.FC<Props> = ({ text, href, param }) => {
     return (
         <div className="flex w-full items-center justify-between">
-            <BackButton href={href} text={text} />
+            <BackButton href={href} text={text} hidden={true} />
             <div className="flex items-center">
                 <RankSelect param={param} />
                 <WorldSelect param={param} />
