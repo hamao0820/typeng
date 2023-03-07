@@ -9,7 +9,7 @@ import { pronounceVolumeContext } from '../../../../Contexts/PronounceProvider';
 import { soundEffectVolumeContext } from '../../../../Contexts/SoundEffectProvider';
 import { typingVolumeContext } from '../../../../Contexts/TypingVolumeProvider';
 import useWord from '../../../../hooks/useWord';
-import getAllWords from '../../../../middleware/getAllWords';
+import getWords from '../../../../middleware/getWords';
 import type { PageProps, PathParam, PathParams } from '../../../../types';
 import { pronounce, sound, stageLoadMap, typeSound } from '../../../../utils';
 
@@ -23,16 +23,15 @@ export const getStaticPaths: GetStaticPaths<PathParams> = async () => {
 };
 
 export const getStaticProps: GetStaticProps<PageProps> = async (context) => {
-    const { rank, world, stage } = context.params as PathParams;
-    const pathParam: PathParam = { mode: 'practice', rank, world, stage };
-    const allWords = getAllWords(rank, world);
-    return { props: { allWords, pathParam } };
+    const pathParams = context.params as PathParams;
+    const pathParam: PathParam = { ...pathParams, mode: 'practice' };
+    const words = getWords(pathParams);
+    return { props: { words, pathParam } };
 };
 
-const Practice: NextPage<PageProps> = ({ allWords, pathParam }) => {
+const Practice: NextPage<PageProps> = ({ words }) => {
     const router = useRouter();
-    const { stage } = pathParam;
-    const { word, typed, unTyped, handleWord } = useWord(allWords, stage);
+    const { word, typed, unTyped, handleWord } = useWord(words);
     const ref = useRef<HTMLDivElement>(null);
     const pronounceVolume = useContext(pronounceVolumeContext);
     const soundEffectVolume = useContext(soundEffectVolumeContext);

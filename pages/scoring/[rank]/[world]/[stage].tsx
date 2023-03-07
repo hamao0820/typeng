@@ -4,7 +4,7 @@ import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import path from 'path';
-import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 
 import CountDown from '../../../../components/Scoring/CountDown';
 import Result from '../../../../components/Scoring/Result';
@@ -14,9 +14,9 @@ import { pronounceVolumeContext } from '../../../../Contexts/PronounceProvider';
 import { soundEffectVolumeContext } from '../../../../Contexts/SoundEffectProvider';
 import { typingVolumeContext } from '../../../../Contexts/TypingVolumeProvider';
 import useScoringWord from '../../../../hooks/useScoringWord';
-import getAllWords from '../../../../middleware/getAllWords';
+import getWords from '../../../../middleware/getWords';
 import type { PageProps, PathParam, PathParams } from '../../../../types';
-import { pronounce, sliceByNumber, sound, stageLoadMap, typeSound } from '../../../../utils';
+import { pronounce, sound, stageLoadMap, typeSound } from '../../../../utils';
 
 export const getStaticPaths: GetStaticPaths<PathParams> = async () => {
     return {
@@ -28,17 +28,13 @@ export const getStaticPaths: GetStaticPaths<PathParams> = async () => {
 };
 
 export const getStaticProps: GetStaticProps<PageProps> = async (context) => {
-    const { rank, world, stage } = context.params as PathParams;
-    const pathParam: PathParam = { mode: 'practice', rank, world, stage };
-    const allWords = getAllWords(rank, world);
-    return { props: { allWords, pathParam } };
+    const pathParams = context.params as PathParams;
+    const pathParam: PathParam = { ...pathParams, mode: 'scoring' };
+    const words = getWords(pathParams);
+    return { props: { words, pathParam } };
 };
-const Scoring: NextPage<PageProps> = ({ allWords, pathParam }) => {
-    const { stage } = pathParam;
-    const words = useMemo(() => {
-        const words_ = stage === 'all' ? allWords : sliceByNumber(allWords, 10)[Number(stage)];
-        return words_ ? words_ : [];
-    }, [allWords, stage]);
+
+const Scoring: NextPage<PageProps> = ({ words, pathParam }) => {
     const { state: wordState, dispatch: wordDispatch } = useScoringWord(words);
     const ref = useRef<HTMLDivElement>(null);
     const pronounceVolume = useContext(pronounceVolumeContext);
