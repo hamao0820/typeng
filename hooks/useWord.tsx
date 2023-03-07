@@ -1,30 +1,15 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import { Stage, Word } from '../types';
-import { shuffle, sliceByNumber } from '../utils';
+import type { Word } from '../types';
+import { shuffle } from '../utils';
 
-const useWord = (allWords: Word[], stage: Stage) => {
+const useWord = (words: Word[]) => {
     const [word, setWord] = useState<Word | null>(null);
-    const [randomWords, setRandomWords] = useState<Word[]>([]);
+    const [randomWords, setRandomWords] = useState<Word[]>(shuffle(words));
     const [typed, setTyped] = useState<string>('');
     const [unTyped, setUnTyped] = useState<string>('');
     const [missed, setMissed] = useState<boolean>(false);
     const [missCount, setMissCount] = useState<number>(0); // challenge
-
-    useEffect(() => {
-        if (stage === 'all') {
-            setRandomWords((preWords) => (preWords.length === 0 ? shuffle(allWords) : shuffle(preWords)));
-        } else {
-            const words_ = sliceByNumber(allWords, 10)[Number(stage)];
-            if (words_ !== undefined) {
-                setRandomWords((preWords) => (preWords.length === 0 ? shuffle(words_) : preWords));
-            }
-        }
-        return () => {
-            setMissCount(0);
-            setRandomWords([]);
-        };
-    }, [allWords, stage]);
 
     useEffect(() => {
         if (randomWords.length > 0) setWord(randomWords[0]);

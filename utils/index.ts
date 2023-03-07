@@ -135,4 +135,6 @@ export const stageIdRange = (
     .flat()
     .map((v) => [...sliceByNumber(v, 10), v])
     .flat()
-    .map((v, i) => ({ ...stageLoadMap[i], v }));
+    .map((v, i) => ({ ...stageLoadMap[i], IDs: v }));
+
+// TODO: データにクエリを適用する処理を共通化
