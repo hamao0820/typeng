@@ -29,8 +29,6 @@ const Favorites: NextPage<FavoritesPageProps> = ({ rankWords }) => {
     const pronounceVolume = useContext(pronounceVolumeContext);
     const soundEffectVolume = useContext(soundEffectVolumeContext);
     const typingVolume = useContext(typingVolumeContext);
-    const contentRef = useRef<HTMLSpanElement>(null);
-    const [isOver, setIsOver] = useState<boolean>(false);
     const [showUnTyped, setShowUnTyped] = useState<boolean>(false);
 
     const router = useRouter();
@@ -46,13 +44,6 @@ const Favorites: NextPage<FavoritesPageProps> = ({ rankWords }) => {
         }
         pronounce(word.en, pronounceVolume / 100);
         setShowUnTyped(false);
-        const content = contentRef.current;
-        if (content === null) return;
-        if (800 <= content.clientWidth) {
-            setIsOver(true);
-        } else {
-            setIsOver(false);
-        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [word]);
 
