@@ -65,18 +65,14 @@ const Favorites: NextPage<FavoritesPageProps> = ({ rankWords }) => {
         [unTyped, typingVolume, soundEffectVolume]
     );
 
-    const handleKeyDown = useCallback(
-        (e: React.KeyboardEvent<HTMLDivElement> | KeyboardEvent) => {
+    useEffect(() => {
+        const handleKeydown = (e: React.KeyboardEvent<HTMLDivElement> | KeyboardEvent) => {
             handleWord(e);
             handleEffect(e);
-        },
-        [handleWord, handleEffect]
-    );
-
-    useEffect(() => {
-        window.addEventListener('keydown', handleKeyDown);
-        return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [handleKeyDown]);
+        };
+        window.addEventListener('keydown', handleKeydown);
+        return () => window.removeEventListener('keydown', handleKeydown);
+    }, [handleEffect, handleWord]);
 
     return (
         <div className="h-screen w-screen" ref={ref}>
