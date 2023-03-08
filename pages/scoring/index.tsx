@@ -8,7 +8,6 @@ const ScoringHome = () => {
         <>
             <Head>
                 <title>scoring</title>
-                <link rel="shortcut icon" href="favicons/favicon.ico" />
             </Head>
             <StageSelection mode="scoring" />
         </>

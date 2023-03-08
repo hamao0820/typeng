@@ -8,7 +8,6 @@ const TestHome = () => {
         <>
             <Head>
                 <title>test</title>
-                <link rel="shortcut icon" href="favicons/favicon.ico" />
             </Head>
             <StageSelection mode="test" />
         </>

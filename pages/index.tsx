@@ -26,7 +26,6 @@ const Home: NextPage = () => {
         <>
             <Head>
                 <title>Typeng</title>
-                <link rel="icon" href="favicons/favicon.ico" />
             </Head>
             <Snackbar
                 anchorOrigin={{ vertical: 'top', horizontal: 'center' }}

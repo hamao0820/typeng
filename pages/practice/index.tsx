@@ -8,7 +8,6 @@ const PracticeHome = () => {
         <>
             <Head>
                 <title>practice</title>
-                <link rel="shortcut icon" href="favicons/favicon.ico" />
             </Head>
             <StageSelection mode="practice" />
         </>

@@ -8,7 +8,6 @@ const ChallengeHome = () => {
         <>
             <Head>
                 <title>challenge</title>
-                <link rel="shortcut icon" href="favicons/favicon.ico" />
             </Head>
             <StageSelection mode="challenge" />
         </>
