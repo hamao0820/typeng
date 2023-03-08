@@ -13,6 +13,7 @@ export const pronounce = async (word: string, volume: number) => {
     const synthesis = window.speechSynthesis;
     synthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(word);
+    if (volume === Infinity) return;
     utterance.volume = volume;
     const voices = synthesis.getVoices();
     if (voices.length === 0) {
