@@ -141,7 +141,7 @@ const Favorites: NextPage<FavoritesPageProps> = ({ rankWords }) => {
             <Head>
                 <title>scoring</title>
             </Head>
-            <div className="h-screen w-screen overflow-hidden" ref={ref}>
+            <div className="h-screen w-screen" ref={ref}>
                 {!ready && <FavoriteCountDown setReady={setReady} />}
                 <div className="flex flex-col">
                     <FavoriteHeader text="選択画面に戻る" href="/scoring" mode="scoring" />

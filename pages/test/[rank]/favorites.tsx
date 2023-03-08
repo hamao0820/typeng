@@ -79,7 +79,7 @@ const Favorites: NextPage<FavoritesPageProps> = ({ rankWords }) => {
     }, [handleKeyDown]);
 
     return (
-        <div className="h-screen w-screen overflow-hidden" ref={ref}>
+        <div className="h-screen w-screen" ref={ref}>
             <Head>
                 <title>test</title>
             </Head>

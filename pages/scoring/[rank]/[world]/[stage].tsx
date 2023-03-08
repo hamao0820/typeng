@@ -143,7 +143,7 @@ const Scoring: NextPage<PageProps> = ({ words, pathParam }) => {
             <Head>
                 <title>scoring</title>
             </Head>
-            <div className="h-screen w-screen overflow-hidden" ref={ref}>
+            <div className="h-screen w-screen" ref={ref}>
                 {!ready && <CountDown setReady={setReady} />}
                 <div className="flex flex-col">
                     <WorkHeader
