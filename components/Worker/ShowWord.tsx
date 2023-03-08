@@ -44,7 +44,7 @@ const ShowWord: FC<Props> = ({
         if (word === null) return;
         const handleKeydown = (e: React.KeyboardEvent<HTMLDivElement> | KeyboardEvent) => {
             if ((e.altKey || e.metaKey || e.ctrlKey) && e.key === 'Enter' && canPronounce) {
-                pronounce(word.en, 100 / pronounceVolume);
+                pronounce(word.en, pronounceVolume / 100);
             }
         };
         window.addEventListener('keydown', handleKeydown);
@@ -72,7 +72,7 @@ const ShowWord: FC<Props> = ({
                     </div>
                     <div
                         className="my-2 flex h-20 w-5/6 border-collapse cursor-pointer items-center justify-center whitespace-nowrap border-b-4 border-gray-300"
-                        onClick={() => word && pronounce(word.en, 100 / pronounceVolume)}
+                        onClick={() => word && pronounce(word.en, pronounceVolume / 100)}
                     >
                         <span className="whitespace-nowrap text-7xl font-bold">{typed.replaceAll(' ', '␣')}</span>
                         {showUnTyped ? (
