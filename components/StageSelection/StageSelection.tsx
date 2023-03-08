@@ -1,4 +1,3 @@
-import Head from 'next/head';
 import React, { FC } from 'react';
 
 import useListOpenStates from '../../hooks/useListOpenStates';
@@ -15,10 +14,6 @@ const StageSelection: FC<Props> = ({ mode }) => {
     const { openStates, handleClick, collapseAll } = useListOpenStates();
     return (
         <div className="flex h-screen min-w-fit flex-col">
-            <Head>
-                <title>{mode}</title>
-                <link rel="shortcut icon" href="favicons/favicon.ico" />
-            </Head>
             <Header text="モード選択に戻る" href="/" mode={mode} collapseAll={collapseAll} />
             <div className="flex flex-1 justify-center">
                 {allRanks.map((rank, i) => {
