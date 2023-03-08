@@ -24,12 +24,13 @@ export const getStaticPaths: GetStaticPaths<PathParams> = async () => {
 
 export const getStaticProps: GetStaticProps<PageProps> = async (context) => {
     const pathParams = context.params as PathParams;
-    const pathParam: PathParam = { ...pathParams, mode: 'practice' };
+    const pathParam: PathParam = { ...pathParams, mode: 'test' };
     const words = getStageWords(pathParams);
     return { props: { words, pathParam } };
 };
 
-const Test: NextPage<PageProps> = ({ words }) => {
+const Test: NextPage<PageProps> = ({ words, pathParam }) => {
+    const { mode } = pathParam;
     const router = useRouter();
     const { word, typed, unTyped, missed, handleWord } = useWord(words);
     const ref = useRef<HTMLDivElement>(null);
@@ -68,13 +69,17 @@ const Test: NextPage<PageProps> = ({ words }) => {
     );
 
     useEffect(() => {
-        const handleKeydown = (e: React.KeyboardEvent<HTMLDivElement> | KeyboardEvent) => {
+        const handleKeydown = async (e: React.KeyboardEvent<HTMLDivElement> | KeyboardEvent) => {
+            if (e.key === 'Escape') {
+                await router.push(`/${mode}`);
+                return;
+            }
             handleWord(e);
             handleEffect(e);
         };
         window.addEventListener('keydown', handleKeydown);
         return () => window.removeEventListener('keydown', handleKeydown);
-    }, [handleEffect, handleWord]);
+    }, [handleEffect, handleWord, mode, router]);
 
     return (
         <div className="h-screen w-screen" ref={ref}>
