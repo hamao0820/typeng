@@ -15,7 +15,7 @@ import { soundEffectVolumeContext } from '../../../Contexts/SoundEffectProvider'
 import { typingVolumeContext } from '../../../Contexts/TypingVolumeProvider';
 import useScoringWord from '../../../hooks/useScoringWord';
 import { getRankWords } from '../../../middleware/getWords';
-import type { PathParams, Word } from '../../../types';
+import type { Mode, PathParams, Word } from '../../../types';
 import { FavoritesPageProps } from '../../../types/favorite';
 import { pronounce, sound, typeSound } from '../../../utils';
 
@@ -120,6 +120,18 @@ const Favorites: NextPage<FavoritesPageProps> = ({ rankWords }) => {
             setShowResult(true);
         }
     }, [wordState.results, wordState.words]);
+
+    useEffect(() => {
+        const escape = async (e: React.KeyboardEvent<HTMLDivElement> | KeyboardEvent) => {
+            if (e.key === 'Escape') {
+                await router.push('/scoring');
+                return;
+            }
+        };
+
+        window.addEventListener('keydown', escape);
+        return () => window.removeEventListener('keydown', escape);
+    }, [router]);
 
     useEffect(() => {
         const handleKeydown = (event: React.KeyboardEvent<HTMLDivElement> | KeyboardEvent) => {

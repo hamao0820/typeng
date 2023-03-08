@@ -40,6 +40,7 @@ const Scoring: NextPage<PageProps> = ({ words, pathParam }) => {
     const pronounceVolume = useContext(pronounceVolumeContext);
     const soundEffectVolume = useContext(soundEffectVolumeContext);
     const typingVolume = useContext(typingVolumeContext);
+    const { mode } = pathParam;
     const router = useRouter();
     const [showUnTyped, setShowUnTyped] = useState<boolean>(false);
     const [ready, setReady] = useState<boolean>(false);
@@ -122,6 +123,17 @@ const Scoring: NextPage<PageProps> = ({ words, pathParam }) => {
             setShowResult(true);
         }
     }, [wordState.results, wordState.words]);
+
+    useEffect(() => {
+        const escape = async (e: React.KeyboardEvent<HTMLDivElement> | KeyboardEvent) => {
+            if (e.key === 'Escape') {
+                await router.push('/scoring');
+                return;
+            }
+        };
+        window.addEventListener('keydown', escape);
+        return () => window.removeEventListener('keydown', escape);
+    }, [router]);
 
     useEffect(() => {
         const handleKeydown = (event: React.KeyboardEvent<HTMLDivElement> | KeyboardEvent) => {
